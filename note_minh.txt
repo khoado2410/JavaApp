@@ -1,0 +1,4 @@
+(*) Tổng quan
+-Hàng hóa:- chia làm 2 bảng:-món ăn+nguyên liệu
+	  - Thiết lập giá
+-thu ngân:-
