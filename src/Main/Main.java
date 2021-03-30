@@ -3,6 +3,7 @@ package Main;
 import Staff_Manager.Manager_Budget;
 import Staff_Manager.Manager_Menu;
 import Staff_Manager.Manager_Staff;
+import Staff_Manager.Staff;
 
 public class Main {
 	public static void main(String[] args)
@@ -16,9 +17,10 @@ public class Main {
 	                    ignore = (char)System.in.read();
 	                }while(ignore != '\n');
 	                switch(choose){
-	                    case '1': 
-	                        Manager_Staff staff = new Manager_Staff();
-	                        staff.addStaff();
+	                    case '1':
+	                    	Manager_Staff manager_Staff = new Manager_Staff();
+	                        Staff staff = new Staff("S10000", "Khoa Do Minh", "10/24/2000", "HCM", "Male", 20, 10);
+	                        manager_Staff.addStaff(staff);
 	                        break;
 	                    case '2': 
 	                        Manager_Menu a = new Manager_Menu();

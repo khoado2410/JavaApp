@@ -1,46 +1,123 @@
 package Staff_Manager;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import DBConnection.DBConnection;
 
 
 public class Manager_Staff extends Manager{
-	private String type = "1";
-	
-	public void addStaff() {
-		ArrayList<Staff> ds_nhanvien;
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Enter the number of stalves: ");
-		int n = scan.nextInt();
-		ds_nhanvien = new ArrayList<Staff>(n);
-		for(int i = 0; i < n; i++) {
-			Staff a = new Staff();
-			a.inputStaff();
-			ds_nhanvien.add(a);
+	static boolean addStaffToDB(Staff s) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				/*
+				 * Statement statement = DBConnection.connection.createStatement(); String
+				 * insertString =
+				 * "Insert into Staff(StaffID, StaffName, DateOfBirth, Gender," +
+				 * "Address, Salary, Point) " + "values('" + s.getStaffID() + "','" +
+				 * s.getStaffName() + "','" + s.getDateOfBirth() +"','" + s.getGender() + "','"
+				 * + s.getAddress() + "','" + s.getSalary() + "','" + s.getPoint() + "')";
+				 * statement.executeUpdate(insertString); DBConnection.connection.commit();
+				 * statement.close();
+				 */
+				String storeProcedure = "{call sp_insertStaff(?,?,?,?,?,?,?)}";
+				CallableStatement callableStatement = DBConnection.connection.prepareCall(storeProcedure);
+				callableStatement.setString(1, s.getStaffID());
+				callableStatement.setString(2, s.getStaffName());
+				callableStatement.setString(3, s.getDateOfBirth());
+				callableStatement.setString(4, s.getGender());
+				callableStatement.setString(5, s.getAddress());
+				callableStatement.setInt(6, s.getSalary());
+				callableStatement.setInt(7, s.getPoint());
+				callableStatement.execute();
+				DBConnection.connection.commit();
+				callableStatement.close();
+				return true;
+			}
+			catch (SQLException e) {
+				System.out.println("Cannot insert staff: " + e);
+				return false;
+			}
 		}
-		
-		System.out.println("List of staff: ");
-		for(int i = 0; i < n; i++) {
-			ds_nhanvien.get(i).printStaff();
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
 		}
-		
-		System.out.println("Addded new staff successfully!"); 
-		
+	}
+	public void addStaff(Staff s) {
+		if (addStaffToDB(s)) {
+			System.out.println("Add staff successfully!!!");
+		}
+		else {
+			System.out.println("Failed to add staff!!!");
+		}
 	}
 	
-	public void editStaff() {
-		System.out.println("Edited staff successfully!");
+	static boolean editStaffFromDB(Staff s, String name) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String updateString = "Update Staff set StaffName = '" + name + 
+									  "' where StaffID = " + s.getStaffID();
+				Statement statement =  DBConnection.connection.createStatement();
+				statement.executeUpdate(updateString);
+				DBConnection.connection.commit();
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete staff: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
 	
-	public void deleteStaff() {
-		System.out.println("Deleted staff successfully!");
+	public void editStaff(Staff s, String name) {
+		if (editStaffFromDB(s, name)) {
+			System.out.println("Update staff successfully!!!");
+		}
+		else {
+			System.out.println("Failed to update staff!!!");
+		}
+	}
+	
+	static boolean deleteStaffFromDB(Staff s) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String deleteString = "Delete from Staff where StaffID = " + s.getStaffID();
+				Statement statement =  DBConnection.connection.createStatement();
+				statement.executeUpdate(deleteString);
+				DBConnection.connection.commit();
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete staff: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
+	public void deleteStaff(Staff s) {
+		if (deleteStaffFromDB(s)) {
+			System.out.println("Detele staff successfully!!!");
+		}
+		else {
+			System.out.println("Failed to delete staff!!!");
+		}
 	}
 	
 	public void editTimeSheet() {
-		System.out.println("Edited timesheet successfully! ");
+		System.out.println("Edit time sheet thanh cong ");
 	}
 	
 	public void sortStaffPoint() {
-		System.out.println("Sort staff by point successfully!");
+		System.out.println("Sort success!");
 	}
 }

@@ -1,100 +1,66 @@
 package Staff_Manager;
 
-import java.util.Scanner;
-
 public class Staff {
-	protected String ID;
-	protected String name;
-	protected String birthDay;
-	protected String address;
-	protected String type = "0";
-
-	public String getID() {
-		return ID;
+	private String StaffID;
+	private String StaffName;
+	private String DateOfBirth;
+	private String Gender;
+	private int Salary;
+	private int Point;
+	private String Address;
+	public Staff() {
+		this.Salary = 0;
+		this.Point = 0;
 	}
-
-	public void setID(String iD) {
-		ID = iD;
+	public Staff(String id, String sname, String dob, String addr, String gen, int sal, int p) {
+		this.StaffID = id;
+		this.StaffName = sname;
+		this.DateOfBirth = dob;
+		this.Gender = gen;
+		this.Salary = sal;
+		this.Address = addr;
+		this.Point = p;
 	}
-
-	public String getName() {
-		return name;
+	public String getStaffID() {
+		return StaffID;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setStaffID(String staffID) {
+		StaffID = staffID;
 	}
-
-	public String getBirthDay() {
-		return birthDay;
+	public String getStaffName() {
+		return StaffName;
 	}
-
-	public void setBirthDay(String birthDay) {
-		this.birthDay = birthDay;
+	public void setStaffName(String staffName) {
+		StaffName = staffName;
 	}
-
+	public String getDateOfBirth() {
+		return DateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		DateOfBirth = dateOfBirth;
+	}
+	public String getGender() {
+		return Gender;
+	}
+	public void setGender(String gender) {
+		Gender = gender;
+	}
+	public int getSalary() {
+		return Salary;
+	}
+	public void setSalary(int salary) {
+		Salary = salary;
+	}
+	public int getPoint() {
+		return Point;
+	}
+	public void setPoint(int point) {
+		Point = point;
+	}
 	public String getAddress() {
-		return address;
+		return Address;
 	}
-
 	public void setAddress(String address) {
-		this.address = address;
+		Address = address;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void inputStaff() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Enter ID: ");
-		this.ID = scan.nextLine();
-		System.out.println("Enter name: ");
-		this.name = scan.nextLine();
-		System.out.println("Enter date of birth: ");
-		this.birthDay = scan.nextLine();
-		System.out.println("Enter address: ");
-		this.address = scan.nextLine();
-	}
-
-	public void printStaff() {
-		System.out.println("ID: " + this.ID);
-		System.out.println("Name: " + this.name);
-		System.out.println("Birthday: " + this.birthDay);
-		System.out.println("Address: " + this.address);
-		System.out.println("Type: Staff");
-	}
-
-	public void logIn() {
-		System.out.println("Logged in successfully!");
-	}
-
-	public void logOut() {
-		System.out.println("Logged out successfully!");
-	}
-
-	public void chooseTable() {
-		System.out.println("Chose table successfully!");
-	}
-
-	public void orderFood() {
-		System.out.println("Ordered food successfully!");
-	}
-
-	public void orderTable() {
-		System.out.println("Ordered table successfully!");
-	}
-
-	public void printBill() {
-		System.out.println("Print Bill successfully!");
-	}
-
-	public void payBill() {
-		System.out.println("Successful payment!");
-	}
-
 }

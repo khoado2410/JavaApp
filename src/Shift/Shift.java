@@ -75,9 +75,9 @@ public class Shift {
 		System.out.println("Enter list of staffs: ");
 		System.out.println("How many staffs?");
 		int n = sc.nextInt();
-		for (int i = 0; i < n; i++) {
-			this.ListStaff.get(i).inputStaff();
-		}
+		/*
+		 * for ( i = 0; i < n; i++) { this.ListStaff.get(i).inputStaff(); }
+		 */
 
 		System.out.println("Working time starts from: ");
 		String startingTime = sc.nextLine();
@@ -92,8 +92,10 @@ public class Shift {
 		System.out.println("Shift ID: " + this.getShiftID());
 
 		System.out.println("List staff: ");
-		for (int i = 0; i < this.ListStaff.size(); i++)
-			this.ListStaff.get(i).printStaff();
+		/*
+		 * for ( i = 0; i < this.ListStaff.size(); i++)
+		 * this.ListStaff.get(i).printStaff();
+		 */
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		System.out.println("Working time starts from: " + formatter.format(this.getWorkingTimeStart()));
@@ -133,9 +135,9 @@ public class Shift {
 			System.out.println("Enter list of staffs: ");
 			System.out.println("How many staffs?");
 			int n = sc.nextInt();
-			for (int i = 0; i < n; i++) {
-				l.get(i).inputStaff();
-			}
+			/*
+			 * for ( i = 0; i < n; i++) { l.get(i).inputStaff(); }
+			 */
 
 			if (checkID(list, id) == false) {
 				Shift st = new Shift(id, l, workingTimeStart, workingTimeEnd);
