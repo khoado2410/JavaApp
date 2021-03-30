@@ -12,9 +12,9 @@ public class TimeSheet {
 	public void setListShift(ArrayList<Shift> listShift) {
 		ListShift = listShift;
 	}
-	
+
 	public void printListTimeSheet() {
 		System.out.println("List time sheet");
 	}
-	
+
 }

@@ -38,52 +38,52 @@ public class Staff {
 		this.type = type;
 	}
 	
-	public void NhapThongTinNhanVien() {
+	public void inputStaff() {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhap ID: ");
+		System.out.println("Enter ID: ");
 		this.ID =  scan.nextLine();
-		System.out.println("Nhap ho ten: ");
+		System.out.println("Enter name: ");
 		this.name = scan.nextLine();
-		System.out.println("Nhap birthday: ");
+		System.out.println("Enter date of birth: ");
 		this.birthDay = scan.nextLine();
-		System.out.println("Nhap dia chi: ");
+		System.out.println("Enter address: ");
 		this.address = scan.nextLine();
 	}
 	
-	public void XuatThongTin() {
+	public void printStaff() {
 		System.out.println("ID: " + this.ID);
 		System.out.println("Name: " + this.name);
 		System.out.println("Birthday: " + this.birthDay);
 		System.out.println("Address: " + this.address);
-		System.out.println("Type: NhanVien");
+		System.out.println("Type: Staff");
 	}
 	
 	public void logIn() {
-		System.out.println("Log in thanh cong");
+		System.out.println("Logged in successfully!");
 	}
 	
 	public void logOut() {
-		System.out.println("Log out thanh cong");
+		System.out.println("Logged out successfully!");
 	}
 	
 	public void	chooseTable() {
-		System.out.println("Chon ban thanh cong !");
+		System.out.println("Chose table successfully!");
 	}
 	
 	public void orderFood() {
-		System.out.println("Order Food thanh cong");
+		System.out.println("Ordered food successfully!");
 	}
 	
 	public void orderTable() {
-		System.out.println("Order Table thanh cong");	
+		System.out.println("Ordered table successfully!");	
 	}
 	
 	public void printBill() {
-		System.out.println("Print Bill thanh cong");
+		System.out.println("Print Bill successfully!");
 	}
 	
 	public void payBill() {
-		System.out.println("Pay bill thanh cong");
+		System.out.println("Successful payment!");
 	}
 	
 	
