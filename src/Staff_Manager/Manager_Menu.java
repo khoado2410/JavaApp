@@ -1,38 +1,133 @@
 package Staff_Manager;
 
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import Food_Product.Food;
 import java.util.Scanner;
 
+import DBConnection.DBConnection;
+
 public class Manager_Menu extends Manager{
 	private String type = "2";
-	public void addNewFood() {
-		ArrayList<Food> ds_monan;
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhap thong tin mon an moi can them vao: ");
-		ds_monan = new ArrayList<Food>(1);
-		for(int i = 0; i < 1; i++) {
-			Food a = new Food();
-			a.NhapThongTinMonAn();
-			ds_monan.add(a);
+	
+	public boolean addNewFood(Food a) {
+		String sql= "INSERT INTO Menu(FoodId, Name, Price, FoodtypeID, QuantityOfStock)"
+	               + "VALUES(?,?,?,?,?)";
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				
+				PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
+	            ps.setString(1, a.getFoodID());
+	            ps.setString(2, a.getNameFood());
+	            ps.setInt(3, a.getPrice());
+	            ps.setString(4, a.getFoodType());
+	            ps.setInt(5, a.getQuantityOfStock());
+	            ps.executeUpdate();
+	            
+				return true;
+			}
+			catch (SQLException e) {
+				System.out.println("Cannot insert food to menu: " + e);
+				return false;
+			}
 		}
-		System.out.println("Add new food thanh cong");
-		System.out.println("Thong tin mon an moi them vao: ");
-		for(int i = 0; i < 1; i++) {
-			ds_monan.get(i).XuatThongTinMonAn();
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
 		}
 		
 	}
 	
-	public void editFood() {
-		System.out.println("Edit food thanh cong");
+	public void addFood(Food s) {
+		if (addNewFood(s)) {
+			System.out.println("Add food successfully!!!");
+		}
+		else {
+			System.out.println("Failed to add staff!!!");
+		}
 	}
 	
-	public void deleteFood() {
-		System.out.println("Delete food");
+	
+	public boolean editFoodFromDB(Food s, int price) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String updateString = "Update Menu set Price = '" + price + 
+									  "' where FoodID = '" + s.getFoodID() +"'";
+				Statement statement =  DBConnection.connection.createStatement();
+				statement.executeUpdate(updateString);
+				DBConnection.connection.commit();
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot update food: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
 	
-	public void searchFood() {
-		System.out.println("Search food thanh cong");
+	public void editFood(Food f, int price) {
+		if (editFoodFromDB(f, price)) {
+			System.out.println("Update food successfully!!!");
+		}
+		else {
+			System.out.println("Failed to update food!!!");
+		}
+	}
+	
+	static boolean deleteFoodFromMenu(Food s) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String deleteString = "Delete from Menu where FoodID = '" + s.getFoodID() +"'";
+				Statement statement =  DBConnection.connection.createStatement();
+				statement.executeUpdate(deleteString);
+				DBConnection.connection.commit();
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete food: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
+	public void deleteFood(Food f) {
+		if (deleteFoodFromMenu(f)) {
+			System.out.println("Detele food successfully!!!");
+		}
+		else {
+			System.out.println("Failed to delete food!!!");
+		}
+	}
+	
+	public boolean SearchFoodfromMenu(String s) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String searchString = "Select * from Menu where Name = '" + s +"'";
+				Statement statement =  DBConnection.connection.createStatement();
+				ResultSet rs = statement.executeQuery(searchString);
+				System.out.println(rs);
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot search food: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
 }

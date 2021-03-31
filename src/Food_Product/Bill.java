@@ -2,45 +2,136 @@ package Food_Product;
 
 import Staff_Manager.Staff;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Bill {
-	private String idBill;
-	private Staff server;
-	private ArrayList<Food> listFood;
-	private Table statusTable;
-	private boolean statusBill;
-	public String getIdBill() {
-		return idBill;
+	private String BillID;
+	private String StaffName;
+	private int payment;
+	private int status;
+	private String TableID;
+	private String CheckInHour;
+	private String CheckOutHour;
+	private String accManagerID;
+	Dictionary<String, String> listFood = new Hashtable<String, String>();
+
+	public Bill() {
+		
 	}
-	public void setIdBill(String idBill) {
-		this.idBill = idBill;
+
+	public Bill(String billID, String staffName, int payment, int status, String tableID, String checkInHour,
+			String checkOutHour, String accManagerID) {
+		super();
+		BillID = billID;
+		StaffName = staffName;
+		this.payment = payment;
+		this.status = status;
+		TableID = tableID;
+		CheckInHour = checkInHour;
+		CheckOutHour = checkOutHour;
+		this.accManagerID = accManagerID;
 	}
-	public Staff getServer() {
-		return server;
+
+
+
+	public String getBillID() {
+		return BillID;
 	}
-	public void setServer(Staff server) {
-		this.server = server;
+
+
+
+	public void setBillID(String billID) {
+		BillID = billID;
 	}
-	public ArrayList<Food> getListFood() {
-		return listFood;
+
+
+
+	public String getStaffName() {
+		return StaffName;
 	}
-	public void setListFood(ArrayList<Food> listFood) {
-		this.listFood = listFood;
+
+
+
+	public void setStaffName(String staffName) {
+		StaffName = staffName;
 	}
-	public Table getStatusTable() {
-		return statusTable;
+
+
+
+	public int getPayment() {
+		return payment;
 	}
-	public void setStatusTable(Table statusTable) {
-		this.statusTable = statusTable;
+
+
+
+	public void setPayment(int payment) {
+		this.payment = payment;
 	}
-	public boolean isStatusBill() {
-		return statusBill;
+
+
+
+	public int getStatus() {
+		return status;
 	}
-	public void setStatusBill(boolean statusBill) {
-		this.statusBill = statusBill;
+
+
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
-	
+
+
+
+	public String getTableID() {
+		return TableID;
+	}
+
+
+
+	public void setTableID(String tableID) {
+		TableID = tableID;
+	}
+
+
+
+	public String getCheckInHour() {
+		return CheckInHour;
+	}
+
+
+
+	public void setCheckInHour(String checkInHour) {
+		CheckInHour = checkInHour;
+	}
+
+
+
+	public String getCheckOutHour() {
+		return CheckOutHour;
+	}
+
+
+
+	public void setCheckOutHour(String checkOutHour) {
+		CheckOutHour = checkOutHour;
+	}
+
+
+
+	public String getAccManagerID() {
+		return accManagerID;
+	}
+
+
+
+	public void setAccManagerID(String accManagerID) {
+		this.accManagerID = accManagerID;
+	}
+
+
+
 	public void sumBill() {
 		System.out.println("Sum bill: 1.000.000");
 	}
