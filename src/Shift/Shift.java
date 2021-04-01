@@ -142,7 +142,7 @@ public class Shift {
 			if (checkID(list, id) == false) {
 				Shift st = new Shift(id, l, workingTimeStart, workingTimeEnd);
 				for (int i = 0; i < l.size(); i++) {
-					cmd = "INSERT INTO SinhVien VALUES('" + st.getShiftID() + "','" + st + "','"
+					cmd = "INSERT INTO Shift VALUES('" + st.getShiftID() + "','" + st + "','"
 							+ st.getListStaff().get(i) + "','" + st.getWorkingTimeStart() + "','"
 							+ st.getWorkingTimeEnd() + "')";
 					ps = connection.prepareStatement(cmd);
@@ -167,7 +167,7 @@ public class Shift {
 			Scanner sc = new Scanner(System.in);
 			String id = sc.nextLine();
 			if(checkID(list, id)) {
-				cmd = "DELETE FROM SinhVien WHERE ID = '" + id + "'";
+				cmd = "DELETE FROM Shift WHERE ID = '" + id + "'";
 				ps = connection.prepareStatement(cmd);
 	     		ps.executeUpdate();
 	     		System.out.println("Deleted successfully! ");
