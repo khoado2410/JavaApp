@@ -1,7 +1,6 @@
 package Staff_Manager;
 
 public class Manager_Budget {
-	private String type = "3";
 	public void sumBudget() {
 		System.out.println("Sum budget: 1.000.000");
 	}

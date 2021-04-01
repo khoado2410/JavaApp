@@ -1,7 +1,8 @@
 package Staff_Manager;
 
-public class Manager_Inventory {
-	private String type = "3";
+import Food_Product.OrderProduct;
+
+public class Manager_Inventory extends AccountManager{
 	public void editProduct() {
 		System.out.println("Edit product thanh cong");
 	}
@@ -11,5 +12,8 @@ public class Manager_Inventory {
 	
 	public void deleteProduct() {
 		System.out.println("delete product thanh cong");
+	}
+	public void importProductFromOrderProduct(OrderProduct od) {
+		
 	}
 }

@@ -1,13 +1,9 @@
 package Food_Product;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
-
 public class Product {
 	private String nameProduct;
-	private int price;
-	private int amount;
+	private int cost;
+	private int mass;
 	public String getNameProduct() {
 		return nameProduct;
 	}
@@ -15,32 +11,15 @@ public class Product {
 		this.nameProduct = nameProduct;
 	}
 	public int getPrice() {
-		return price;
+		return cost;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setPrice(int c) {
+		this.cost = c;
 	}
 	public int getAmount() {
-		return amount;
+		return mass;
 	}
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setAmount(int m) {
+		this.mass = m;
 	}
-	
-	public void NhapThongTinProduct() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhap ten san pham: ");
-		this.nameProduct = scan.nextLine();
-		System.out.println("Nhap price: ");
-		this.price = scan.nextInt();
-		System.out.println("Nhap khoi luong: ");
-		this.amount = scan.nextInt();
-	}
-	
-	public void XuatThongTinProduct() {
-		System.out.println("Ten san pham: " + this.nameProduct);
-		System.out.println("Gia tien: " + this.price);
-		System.out.println("Khoi luong: " + this.amount);
-	}
-	
 }

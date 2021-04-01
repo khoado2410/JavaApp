@@ -1,7 +1,6 @@
 package Food_Product;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Food {
 	private String FoodID;
@@ -54,37 +53,5 @@ public class Food {
 	}
 	public void setIngredient(ArrayList<Product> ingredient) {
 		this.ingredient = ingredient;
-	}
-	
-	public void NhapThongTinMonAn() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhap ten mon an: ");
-		this.nameFood = scan.nextLine();
-		System.out.println("Nhap loai mon an: ");
-		this.foodType = scan.nextLine();
-		System.out.println("Nhap gia tien: ");
-		this.price = scan.nextInt();
-		System.out.println("Nhap so thanh phan: ");
-		int n = scan.nextInt();
-		this.ingredient = new ArrayList<Product>(n);
-		for(int i = 0; i < n; i++) {
-			Product a = new Product();
-			a.NhapThongTinProduct();
-			this.ingredient.add(a);
-		}
-		
-	}
-	
-	public void XuatThongTinMonAn() {
-		System.out.println("Ten mon an: " + this.nameFood);
-		System.out.println("Loai mon an: " + this.foodType);
-		System.out.println("Gia tien: " + this.price);
-		System.out.println("Thanh phan cua mon an: ");
-		for(int i = 0; i < this.ingredient.size(); i++) {
-			this.ingredient.get(i).XuatThongTinProduct();
-		}
-	}
-	
-	
-	
+	}	
 }

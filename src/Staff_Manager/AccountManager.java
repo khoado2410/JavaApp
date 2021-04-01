@@ -1,19 +1,13 @@
 package Staff_Manager;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
-
 import Food_Product.Bill;
-import Food_Product.Food;
 import Food_Product.Table;
-
-import java.util.Scanner;
 
 import DBConnection.DBConnection;
 
