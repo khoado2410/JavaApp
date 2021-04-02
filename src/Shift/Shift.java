@@ -2,11 +2,15 @@ package Shift;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import DBConnection.DBConnection;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -18,15 +22,17 @@ public class Shift {
 	private String ShiftID;
 	private ArrayList<Staff> ListStaff;
 	private Date WorkingTimeStart;
-	private Date WorkingTimeEnd;
-
-	public Shift(String shiftID, ArrayList<Staff> listStaff, Date workingTimeStart, Date workingTimeEnd) {
-		super();
-		ShiftID = shiftID;
-		ListStaff = listStaff;
-		WorkingTimeStart = workingTimeStart;
-		WorkingTimeEnd = workingTimeEnd;
+	
+	public String getAccountManager() {
+		return accountManager;
 	}
+
+	public void setAccountManager(String accountManager) {
+		this.accountManager = accountManager;
+	}
+
+	private Date WorkingTimeEnd;
+	private String accountManager;
 
 	public Date getWorkingTimeEnd() {
 		return WorkingTimeEnd;
@@ -112,71 +118,87 @@ public class Shift {
 		return false;
 	}
 
-	public static void addShiftCmd(ArrayList<Shift> list) throws ParseException, SQLException {
+	public static void addShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws ParseException, SQLException {
 		String id, startingTime, endingTime;
-		String cmd = "";
 
-		String usernameDB = "han";
-		String passwordDB = "666";
-		String connectionUrl = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement";
-		try (Connection connection = DriverManager.getConnection(connectionUrl, usernameDB, passwordDB);) {
-			PreparedStatement ps;
-
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Enter shift ID: ");
-			id = sc.nextLine();
-			System.out.println("Working time starts from: ");
-			startingTime = sc.nextLine();
-			Date workingTimeStart = readDate(startingTime);
-			endingTime = sc.nextLine();
-			Date workingTimeEnd = readDate(endingTime);
-
-			ArrayList<Staff> l = new ArrayList<>();
-			System.out.println("Enter list of staffs: ");
-			System.out.println("How many staffs?");
-			int n = sc.nextInt();
-			/*
-			 * for ( i = 0; i < n; i++) { l.get(i).inputStaff(); }
-			 */
-
-			if (checkID(list, id) == false) {
-				Shift st = new Shift(id, l, workingTimeStart, workingTimeEnd);
-				for (int i = 0; i < l.size(); i++) {
-					cmd = "INSERT INTO Shift VALUES('" + st.getShiftID() + "','" + st + "','"
-							+ st.getListStaff().get(i) + "','" + st.getWorkingTimeStart() + "','"
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				if (checkID(list, st.getShiftID()) == false) {
+					String cmd1 = "INSERT INTO Shift VALUES('" + st.getShiftID() + "','" + st.getAccountManager() + "','" + st.getWorkingTimeStart() + "','"
 							+ st.getWorkingTimeEnd() + "')";
-					ps = connection.prepareStatement(cmd);
-					ps.executeUpdate();
+					Statement stm1 = DBConnection.connection.createStatement();
+					stm1.executeUpdate(cmd1);
+					DBConnection.connection.commit();
+					stm1.close();
+					
+					System.out.println("Successfully added new shift!");
+					System.out.println("Add list staff to the new shift: ");
+					for(int i = 0; i < listStaff.size(); i++) {
+						String cmd2 = "INSERT INTO ShiftDetail VALUES('" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
+						Statement stm2 = DBConnection.connection.createStatement();
+						stm2.executeUpdate(cmd2);
+						DBConnection.connection.commit();
+						stm2.close();
+					}											
 				}
-
-			} else
-				System.out.println("Try again! ");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+				else
+					System.out.println("Try again! ");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else
+			System.out.println("Something went wrong!!!");
 	}
 	
-	public static void removeShiftCmd(ArrayList<Shift> list) {
-		String cmd = "";
-		String usernameDB = "han";
-		String passwordDB = "666";
-		String connectionUrl = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement";
-		try (Connection connection = DriverManager.getConnection(connectionUrl, usernameDB, passwordDB);) {
-			PreparedStatement ps;
-			System.out.println("Enter ID of shift need to remove: ");
-			Scanner sc = new Scanner(System.in);
-			String id = sc.nextLine();
-			if(checkID(list, id)) {
-				cmd = "DELETE FROM Shift WHERE ID = '" + id + "'";
-				ps = connection.prepareStatement(cmd);
-	     		ps.executeUpdate();
-	     		System.out.println("Deleted successfully! ");
+
+	public static void editShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws SQLException {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			if(checkID(list, st.getShiftID())) {
+				String cmd1 = "UPDATE Shift SET ShiftID = '" + st.getShiftID() + "', AccountManagerID = '"
+						+ st.getAccountManager() + "', WorkingTimeStart = '" + st.getWorkingTimeStart() + "', WorkingTimeEnd ='"
+						+ st.getWorkingTimeEnd() +"' Where ID ='" + st.getShiftID() + "'";
+				Statement stm1 = DBConnection.connection.createStatement();
+				stm1.executeUpdate(cmd1);
+				DBConnection.connection.commit();
+				stm1.close();
+				
+				System.out.println("Edit list of staff");
+				for(int i = 0; i < listStaff.size(); i++) {
+					String cmd2 = "UPDATE ShiftDetail SET ShiftID = '" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
+					Statement stm2 = DBConnection.connection.createStatement();
+					stm2.executeUpdate(cmd2);
+					DBConnection.connection.commit();
+					stm2.close();
+				}			
 			}
 			else
-				System.out.println("This shift does not exist! ");
-		} catch (SQLException e) {
-			e.printStackTrace();	            
+				System.out.println("Something went wrong!!!");
 		}
+		else
+			System.out.println("Something went wrong!!!");
+		
+	}
+	
+	public static void removeShift(ArrayList<Shift> list) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				System.out.println("Enter ID of shift need to remove: ");
+				Scanner sc = new Scanner(System.in);
+				String id = sc.nextLine();
+				if (checkID(list, id)) {
+					String cmd = "DELETE FROM Shift WHERE ID = '" + id + "'";
+					Statement statement = DBConnection.connection.createStatement();
+					statement.executeUpdate(cmd);
+					DBConnection.connection.commit();
+					statement.close();
+					System.out.println("Deleted successfully! ");
+				} else
+					System.out.println("This shift does not exist! ");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} else
+			System.out.println("Something went wrong!!!");
 	}
 
 }

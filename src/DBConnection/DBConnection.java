@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-	public static final String DB_URL = "jdbc:sqlserver://localhost;databaseName=RestaurantManagement;integratedSecurity=true";
+	public static final String DB_URL = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement;integratedSecurity=true";
 	static final String USER = "";
 	static final String PASS = "";
 	public static Connection connection;

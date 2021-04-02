@@ -65,7 +65,7 @@ public class Manager_Staff extends AccountManager{
 				statement.close();
 				return true;
 			} catch (SQLException e) {
-				System.out.println("Cannot delete staff: " + e);
+				System.out.println("Cannot edit staff: " + e);
 				return false;
 			}
 		}
