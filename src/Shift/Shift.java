@@ -183,12 +183,18 @@ public class Shift {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
 				if (checkID(list, st.getShiftID())) {
-					String cmd = "DELETE FROM Shift WHERE ID = '" + st.getShiftID() + "'";
-					Statement statement = DBConnection.connection.createStatement();
-					statement.executeUpdate(cmd);
+					String cmd1 = "DELETE FROM ShiftDetail WHERE ID = '" + st.getShiftID() + "'";
+					Statement stm1 = DBConnection.connection.createStatement();
+					stm1.executeUpdate(cmd1);
 					DBConnection.connection.commit();
-					statement.close();
-					System.out.println("Deleted successfully! ");
+					stm1.close();
+					
+					String cmd2 = "DELETE FROM Shift WHERE ID = '" + st.getShiftID() + "'";
+					Statement stm2 = DBConnection.connection.createStatement();
+					stm2.executeUpdate(cmd2);
+					DBConnection.connection.commit();
+					stm2.close();
+					
 				} else
 					System.out.println("This shift does not exist! ");
 			} catch (SQLException e) {
