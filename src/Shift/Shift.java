@@ -179,14 +179,11 @@ public class Shift {
 		
 	}
 	
-	public static void removeShift(ArrayList<Shift> list) {
+	public static void removeShift(ArrayList<Shift> list, Shift st) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				System.out.println("Enter ID of shift need to remove: ");
-				Scanner sc = new Scanner(System.in);
-				String id = sc.nextLine();
-				if (checkID(list, id)) {
-					String cmd = "DELETE FROM Shift WHERE ID = '" + id + "'";
+				if (checkID(list, st.getShiftID())) {
+					String cmd = "DELETE FROM Shift WHERE ID = '" + st.getShiftID() + "'";
 					Statement statement = DBConnection.connection.createStatement();
 					statement.executeUpdate(cmd);
 					DBConnection.connection.commit();
