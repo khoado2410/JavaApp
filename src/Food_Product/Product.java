@@ -1,8 +1,8 @@
 package Food_Product;
 
 public class Product {
+	private String productID;
 	private String nameProduct;
-	private int cost;
 	private int mass;
 	public String getNameProduct() {
 		return nameProduct;
@@ -10,11 +10,11 @@ public class Product {
 	public void setNameProduct(String nameProduct) {
 		this.nameProduct = nameProduct;
 	}
-	public int getPrice() {
-		return cost;
+	public String getProductID() {
+		return productID;
 	}
-	public void setPrice(int c) {
-		this.cost = c;
+	public void setProductID(String s) {
+		this.productID = s;
 	}
 	public int getAmount() {
 		return mass;

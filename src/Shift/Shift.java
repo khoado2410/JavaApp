@@ -119,8 +119,6 @@ public class Shift {
 	}
 
 	public static void addShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws ParseException, SQLException {
-		String id, startingTime, endingTime;
-
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
 				if (checkID(list, st.getShiftID()) == false) {
