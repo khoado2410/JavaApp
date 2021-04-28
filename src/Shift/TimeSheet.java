@@ -27,7 +27,6 @@ public class TimeSheet {
 		System.out.println("List time sheet");
 		for(int i = 0; i < this.ListShift.size(); i++)
 			this.ListShift.get(i).printShift();
-	}
-	
+	}	
 	
 }

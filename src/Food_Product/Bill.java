@@ -1,10 +1,7 @@
 package Food_Product;
 
-import Staff_Manager.Staff;
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.Scanner;
 
 public class Bill {
 	private String BillID;

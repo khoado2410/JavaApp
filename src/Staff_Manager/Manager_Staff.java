@@ -7,20 +7,10 @@ import java.sql.Statement;
 import DBConnection.DBConnection;
 
 
-public class Manager_Staff extends Manager{
+public class Manager_Staff extends AccountManager{
 	static boolean addStaffToDB(Staff s) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				/*
-				 * Statement statement = DBConnection.connection.createStatement(); String
-				 * insertString =
-				 * "Insert into Staff(StaffID, StaffName, DateOfBirth, Gender," +
-				 * "Address, Salary, Point) " + "values('" + s.getStaffID() + "','" +
-				 * s.getStaffName() + "','" + s.getDateOfBirth() +"','" + s.getGender() + "','"
-				 * + s.getAddress() + "','" + s.getSalary() + "','" + s.getPoint() + "')";
-				 * statement.executeUpdate(insertString); DBConnection.connection.commit();
-				 * statement.close();
-				 */
 				String storeProcedure = "{call sp_insertStaff(?,?,?,?,?,?,?)}";
 				CallableStatement callableStatement = DBConnection.connection.prepareCall(storeProcedure);
 				callableStatement.setString(1, s.getStaffID());
@@ -65,7 +55,7 @@ public class Manager_Staff extends Manager{
 				statement.close();
 				return true;
 			} catch (SQLException e) {
-				System.out.println("Cannot delete staff: " + e);
+				System.out.println("Cannot edit staff: " + e);
 				return false;
 			}
 		}

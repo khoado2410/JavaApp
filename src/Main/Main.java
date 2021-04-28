@@ -1,9 +1,7 @@
 package Main;
 
 import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.Hashtable;
-
 import Food_Product.Bill;
 import Food_Product.Food;
 import Food_Product.Table;

@@ -1,47 +1,31 @@
 package Food_Product;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
-
 public class Product {
+	private String productID;
 	private String nameProduct;
+<<<<<<< HEAD
 	private int price;
 	private int amount;
 	
+=======
+	private int mass;
+>>>>>>> 4d94622fdd73ed47298308d65eebc3060a0eb9fc
 	public String getNameProduct() {
 		return nameProduct;
 	}
 	public void setNameProduct(String nameProduct) {
 		this.nameProduct = nameProduct;
 	}
-	public int getPrice() {
-		return price;
+	public String getProductID() {
+		return productID;
 	}
-	public void setPrice(int price) {
-		this.price = price;
+	public void setProductID(String s) {
+		this.productID = s;
 	}
 	public int getAmount() {
-		return amount;
+		return mass;
 	}
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setAmount(int m) {
+		this.mass = m;
 	}
-	
-	public void NhapThongTinProduct() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Nhap ten san pham: ");
-		this.nameProduct = scan.nextLine();
-		System.out.println("Nhap price: ");
-		this.price = scan.nextInt();
-		System.out.println("Nhap khoi luong: ");
-		this.amount = scan.nextInt();
-	}
-	
-	public void XuatThongTinProduct() {
-		System.out.println("Ten san pham: " + this.nameProduct);
-		System.out.println("Gia tien: " + this.price);
-		System.out.println("Khoi luong: " + this.amount);
-	}
-	
 }

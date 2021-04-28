@@ -1,19 +1,14 @@
 package Staff_Manager;
 
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import Food_Product.Food;
-import java.util.Scanner;
 
 import DBConnection.DBConnection;
 
-public class Manager_Menu extends Manager{
-	private String type = "2";
-	
+public class Manager_Menu extends AccountManager{
 	public boolean addNewFood(Food a) {
 		String sql= "INSERT INTO Menu(FoodId, Name, Price, FoodtypeID, QuantityOfStock)"
 	               + "VALUES(?,?,?,?,?)";

@@ -1,7 +1,6 @@
 package Food_Product;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Menu {
 	

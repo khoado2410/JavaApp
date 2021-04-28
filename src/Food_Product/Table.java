@@ -1,7 +1,5 @@
 package Food_Product;
 
-import java.sql.Date;
-
 public class Table {
 	private String idTable;
 	private int numClients;
@@ -32,6 +30,4 @@ public class Table {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
 }
