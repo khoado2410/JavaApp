@@ -3,13 +3,8 @@ package Food_Product;
 public class Product {
 	private String productID;
 	private String nameProduct;
-<<<<<<< HEAD
 	private int price;
-	private int amount;
-	
-=======
 	private int mass;
->>>>>>> 4d94622fdd73ed47298308d65eebc3060a0eb9fc
 	public String getNameProduct() {
 		return nameProduct;
 	}
@@ -27,5 +22,11 @@ public class Product {
 	}
 	public void setAmount(int m) {
 		this.mass = m;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
 	}
 }
