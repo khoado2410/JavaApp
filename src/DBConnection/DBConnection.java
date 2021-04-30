@@ -10,7 +10,7 @@ public class DBConnection {
 	static final String USER = "";
 	static final String PASS = "";
 	public static Connection connection;
-	//connect DB
+//	connect DB
 	public static boolean loadDriver() {
 		try {
 			Driver myDriver = new com.microsoft.sqlserver.jdbc.SQLServerDriver();
