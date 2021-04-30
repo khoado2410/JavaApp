@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
-	<classpathentry kind="lib" path="C:/Users/Asus Zenbook/Downloads/sqljdbc_9.2.0.0_enu/sqljdbc_9.2/enu/mssql-jdbc-9.2.0.jre15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Asus Zenbook/Downloads/sqljdbc_9.2.0.0_enu/sqljdbc_9.2/enu/mssql-jdbc-9.2.0.jre8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
