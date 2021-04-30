@@ -127,6 +127,7 @@ public class addFoodForm extends JFrame{
 		mainFramePanel.add(title);
 		mainFramePanel.add(formContent);
 		mainFramePanel.add(buttonField);
+		
 		setVisible(true);
 	}
 	
