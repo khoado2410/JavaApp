@@ -33,4 +33,8 @@ public class DBConnection {
 			return false;
 		}
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(DBConnection.connectDatabase(DB_URL));
+	}
 }

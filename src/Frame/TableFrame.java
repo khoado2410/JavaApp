@@ -1,5 +1,9 @@
 package Frame;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> c4ab826ba42ac55ebb565da2acd2fe3d10662281
 import java.awt.*;
 
 import javax.swing.*;
