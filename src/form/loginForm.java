@@ -85,8 +85,8 @@ public class loginForm extends JFrame{
 		loginBtn.setFont(loginBtn.getFont().deriveFont(Font.PLAIN, 20));
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username = usernameField.getText();
-				String pass = passField.getText();				
+				String username = String.valueOf(usernameField.getText());
+				String pass = String.valueOf(passField.getPassword());				
 				if(checkUser(username, pass)) {
 					JOptionPane.showMessageDialog(null, "Successfully!");
 				}
@@ -104,25 +104,39 @@ public class loginForm extends JFrame{
 	}
 	
 	public static boolean checkUser(String username, String pass) {
-		boolean flag = false;  
+		boolean flag = false;
+		if(username.isEmpty() || pass.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "All fields are required");
+			System.out.println("Try again");
+		}
+			
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			
 			try {
-			   String queryString = "SELECT Username, Password FROM AccountManager where Username=? and Password=?";
-	       	   Statement stm = DBConnection.connection.createStatement();;
-	       	   ResultSet results = stm.executeQuery(queryString);
-		       DBConnection.connection.commit();
-		       stm.close();
-	       	   
-	       	   if (results.next()) flag = true;
-	       	   else flag = false;
-		        	  
-	       	   results.close();
+			   String query = "Select Username, Password from AccountManager WHERE Username=? and Password =?";
+			   PreparedStatement ps =  DBConnection.connection.prepareStatement(query);
+			   ps.setString(1, username);
+			   ps.setString(2, pass);
+			   ResultSet rs = ps.executeQuery();
+			   
+			   if(!rs.next()){
+				   flag = false;
+				   JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", 2);
+		            ps.close();
+		            rs.close();
+		       }
+			   
+			   else {
+				   flag = true;
+				   System.out.println("Succeeded");
+			   }
+			   
+			   rs.close();
 	       	   DBConnection.connection.close();
 	       	   
 			} catch (SQLException e) {
 	            e.printStackTrace();	            
-	        }	        	             
+	        }       	             
 		}
 		else {
 			System.out.println("Something went wrong!!!");
