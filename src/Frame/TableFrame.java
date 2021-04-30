@@ -1,9 +1,5 @@
 package Frame;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c4ab826ba42ac55ebb565da2acd2fe3d10662281
 import java.awt.*;
 
 import javax.swing.*;
@@ -26,6 +22,7 @@ public class TableFrame extends JFrame {
 	private JPanel listFoodPanel;
 	private JPanel foodPanel;
 	private JLabel tableName;
+
 	public TableFrame() {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +103,7 @@ public class TableFrame extends JFrame {
 		homeButtonArea.setPreferredSize(new Dimension(50, heightSub));
 		subPanel.add(homeButtonArea, BorderLayout.WEST);
 		subPanel.add(typePanel, BorderLayout.CENTER);
-		
+
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		JPanel tableUsedAreaJPanel = new JPanel();
 		JPanel listTableJPanel = new JPanel();
@@ -115,7 +112,7 @@ public class TableFrame extends JFrame {
 		numTableUsedLabel = new JLabel("Use 0/0");
 		tableUsedAreaJPanel.add(numTableUsedLabel);
 		listTableJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-		
+
 		for (int i = 0; i < 20; i++) {
 			tablePanel = new JPanel();
 			tablePanel.setLayout(new BorderLayout());
@@ -130,14 +127,14 @@ public class TableFrame extends JFrame {
 			nameTableLabel.setText("Table " + (i + 1));
 			listTableJPanel.add(tablePanel);
 		}
-		
+
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
 		nameTablePanel.add(tableName);
 		listFoodPanel = new JPanel();
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		for(int i = 0; i < 3; i++) {
+
+		for (int i = 0; i < 3; i++) {
 			foodPanel = new JPanel();
 			foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
 			JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
@@ -158,10 +155,13 @@ public class TableFrame extends JFrame {
 			foodPanel.add(totalPrice);
 			listFoodPanel.add(foodPanel);
 		}
-		
+
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
+	}
+	public static void main(String[] args) {
+		new TableFrame();
 	}
 }
 

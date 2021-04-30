@@ -1,10 +1,8 @@
 package Frame;
 
 import java.awt.*;
-import javax.swing.table.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
