@@ -8,6 +8,7 @@ import DBConnection.DBConnection;
 
 
 public class Manager_Staff extends AccountManager{
+	
 	static boolean addStaffToDB(Staff s) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {

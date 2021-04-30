@@ -10,48 +10,64 @@ import javax.swing.table.TableCellRenderer;
 
 
 public class DetailBillUI extends JFrame{
+	private JFrame jfrm;
+	private JPanel navbar;
+	private JButton buttonRevenue;
+	private JButton buttonSpending;
+	private JPanel top;
+	private JPanel left;
+	private JLabel icon;
+	private JLabel jlb_staff;
+	private JPanel center;
+	private JPanel right;
+	private JPanel content;
+	private JLabel add;
+	private JLabel edit;
+	private ImageIcon _remove;
+	private JLabel remove;
+	private JPanel fonc;
+	private JScrollPane scrollPane;
+	private JPanel totalBill;
+	private JLabel total;
 	
 	public DetailBillUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
+		jfrm = new JFrame("Manager Staff");
 		jfrm.setVisible(true);
 		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
 		
 		
-		JPanel navbar = new JPanel();
+		navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
 
-		JButton buttonRevenue = new JButton("<html><span style='font-size:20px'>Revenue</span></html>");
+		buttonRevenue = new JButton("<html><span style='font-size:20px'>Revenue</span></html>");
 		buttonRevenue.setBackground(new Color(255, 192, 203));
 				
-		JButton buttonSpending = new JButton("<html><span style='font-size:20px'>Spending</span></html>");
+		buttonSpending = new JButton("<html><span style='font-size:20px'>Spending</span></html>");
 		buttonSpending.setBackground(new Color(0, 0, 0));
 		buttonSpending.setForeground(new Color(255, 192, 203));
-		
-		
-		
 		
 		navbar.setLayout(new GridLayout(1, 2));
 		navbar.add(buttonRevenue);
 		navbar.add(buttonSpending);
 		
 		// TOP
-		JPanel top = new JPanel();
+		top = new JPanel();
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
 		top.setLayout(new GridLayout(1, 3));
 		
 		
-		JPanel left = new JPanel();
+		left = new JPanel();
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 		
-		JLabel icon = new JLabel();
+		icon = new JLabel();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
 		
-		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>List of spending</span></html>");
+		jlb_staff = new JLabel("<html><span style='font-size:25px'>List of spending</span></html>");
 		
 		SpringLayout springlayout = new SpringLayout();
 		left.setLayout(springlayout);
@@ -65,12 +81,12 @@ public class DetailBillUI extends JFrame{
 		left.add(jlb_staff);
 		
 		
-		JPanel center = new JPanel();
+		center = new JPanel();
 		center.setBackground(new Color(255, 255, 255));
 		
-		JPanel right = new JPanel();
+		right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		JLabel add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
+		add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
 		add.setOpaque(true);
 		ImageIcon ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
 		add.setIcon(ad);
@@ -87,7 +103,7 @@ public class DetailBillUI extends JFrame{
 		
 		// CONTENT
 		// CONTENT
-				JPanel content = new JPanel();
+				content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));
 				
@@ -102,15 +118,15 @@ public class DetailBillUI extends JFrame{
 				}
 				
 				// JLabel chua 2 icon
-				JLabel edit = new JLabel();
+				edit = new JLabel();
 				ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
 				edit.setIcon(_edit);
 				
-				ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-				JLabel remove = new JLabel();
+				_remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
+				remove = new JLabel();
 				remove.setIcon(_remove);
 				
-				JPanel fonc = new JPanel();
+				fonc = new JPanel();
 				SpringLayout springlayout2 = new SpringLayout();
 				fonc.setLayout(springlayout2);
 				springlayout2.putConstraint(SpringLayout.WEST, edit, 120, SpringLayout.WEST, fonc);
@@ -149,7 +165,7 @@ public class DetailBillUI extends JFrame{
 					}
 				}
 				MyJTable table = new MyJTable(data, columnNames);
-				JScrollPane scrollPane = new JScrollPane(table);
+				scrollPane = new JScrollPane(table);
 				scrollPane.setPreferredSize(new Dimension(500, 100));
 				table.setFillsViewportHeight(true);
 				table.setRowHeight(60);
@@ -169,8 +185,8 @@ public class DetailBillUI extends JFrame{
 				content.add(scrollPane, BorderLayout.CENTER);
 				
 				
-				JPanel totalBill = new JPanel();
-				JLabel total = new JLabel("Total: 20$");
+				totalBill = new JPanel();
+				total = new JLabel("Total: 20$");
 				total.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 				totalBill.setPreferredSize(new Dimension(100, 200));
 				totalBill.setBackground(new Color(255, 255, 255));
