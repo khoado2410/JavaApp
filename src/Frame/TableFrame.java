@@ -1,12 +1,5 @@
 package Frame;
 
-<<<<<<< HEAD
-//public class TableFrame {
-//	public static void main(String[] args) {
-//		System.out.println("Hello");
-//	}
-//}
-=======
 import java.awt.*;
 
 import javax.swing.*;
@@ -167,4 +160,4 @@ public class TableFrame extends JFrame {
 		setVisible(true);
 	}
 }
->>>>>>> a007b38401b2b30e1d74acf7965f665d9d5b3586
+
