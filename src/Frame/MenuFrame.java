@@ -1,18 +1,11 @@
 package Frame;
 
-<<<<<<< HEAD
-//public class TableFrame {
-//	public static void main(String[] args) {
-//		System.out.println("Hello");
-//	}
-//}
-=======
+import javax.swing.*;
+import javax.swing.border.*;
+
 import java.awt.*;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-public class TableFrame extends JFrame {
+public class MenuFrame extends JFrame {
 	private JPanel mainFramePanel;
 	private JPanel sideFramePanel;
 	private JPanel navbarPanel;
@@ -23,13 +16,14 @@ public class TableFrame extends JFrame {
 	private JButton menuButton;
 	private JButton payButton;
 	private JButton homeButton;
-	private JLabel numTableUsedLabel;
-	private JPanel tablePanel;
+	private JComboBox<String> listTypeFood;
+	private JPanel menuPanel;
 	private JPanel nameTablePanel;
 	private JPanel listFoodPanel;
 	private JPanel foodPanel;
 	private JLabel tableName;
-	public TableFrame() {
+
+	public MenuFrame() {
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Restaurant Management System");
@@ -56,12 +50,12 @@ public class TableFrame extends JFrame {
 		navbarPanel.setLayout(new GridLayout(1, 2));
 
 		tablesButton = new JButton("Tables");
-		tablesButton.setBackground(Color.PINK);
+		tablesButton.setBackground(Color.BLACK);
+		tablesButton.setForeground(Color.PINK);
 		tablesButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
 
 		menuButton = new JButton("Menu");
-		menuButton.setBackground(Color.BLACK);
-		menuButton.setForeground(Color.PINK);
+		menuButton.setBackground(Color.PINK);
 		menuButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
 
 		navbarPanel.add(tablesButton);
@@ -98,49 +92,50 @@ public class TableFrame extends JFrame {
 		homeButton.setBackground(Color.BLACK);
 		JPanel homeButtonArea = new JPanel();
 		JPanel typePanel = new JPanel();
-		typePanel.setLayout(new BorderLayout());
+		typePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel type = new JLabel();
-		type.setBorder(new EmptyBorder(0, 50, 10, 0));
-		type.setText("All");
+		typePanel.setBorder(new EmptyBorder(10, 50, 10, 0));
+		type.setText("Type Food: ");
 		type.setFont(type.getFont().deriveFont(Font.BOLD, 18));
-		typePanel.add(type, BorderLayout.CENTER);
+		typePanel.add(type);
+		listTypeFood = new JComboBox<>();
+		listTypeFood.setPreferredSize(new Dimension(300, 20));
+		typePanel.add(listTypeFood);
 		homeButtonArea.setLayout(new GridLayout(2, 1));
 		homeButtonArea.add(homeButton);
 		homeButtonArea.setPreferredSize(new Dimension(50, heightSub));
 		subPanel.add(homeButtonArea, BorderLayout.WEST);
 		subPanel.add(typePanel, BorderLayout.CENTER);
-		
+
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		JPanel tableUsedAreaJPanel = new JPanel();
-		JPanel listTableJPanel = new JPanel();
+		JPanel listMenuJPanel = new JPanel();
 		mainPanel.add(tableUsedAreaJPanel, BorderLayout.NORTH);
-		mainPanel.add(listTableJPanel, BorderLayout.CENTER);
-		numTableUsedLabel = new JLabel("Use 0/0");
-		tableUsedAreaJPanel.add(numTableUsedLabel);
-		listTableJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-		
+		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
+		listMenuJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+
 		for (int i = 0; i < 20; i++) {
-			tablePanel = new JPanel();
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.setPreferredSize(new Dimension(80, 80));
+			menuPanel = new JPanel();
+			menuPanel.setLayout(new BorderLayout());
+			menuPanel.setPreferredSize(new Dimension(80, 80));
 			JButton resButton = new JButton();
 			ImageIcon resIcon = new ImageIcon("./src/Icon/restaurant.png");
 			resButton.setIcon(resIcon);
 			resButton.setBackground(Color.WHITE);
 			JLabel nameTableLabel = new JLabel("", SwingConstants.CENTER);
-			tablePanel.add(resButton, BorderLayout.CENTER);
-			tablePanel.add(nameTableLabel, BorderLayout.SOUTH);
+			menuPanel.add(resButton, BorderLayout.CENTER);
+			menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
 			nameTableLabel.setText("Table " + (i + 1));
-			listTableJPanel.add(tablePanel);
+			listMenuJPanel.add(menuPanel);
 		}
-		
+
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
 		nameTablePanel.add(tableName);
 		listFoodPanel = new JPanel();
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
-		for(int i = 0; i < 3; i++) {
+
+		for (int i = 0; i < 3; i++) {
 			foodPanel = new JPanel();
 			foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
 			JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
@@ -161,10 +156,9 @@ public class TableFrame extends JFrame {
 			foodPanel.add(totalPrice);
 			listFoodPanel.add(foodPanel);
 		}
-		
+
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
 	}
 }
->>>>>>> a007b38401b2b30e1d74acf7965f665d9d5b3586
