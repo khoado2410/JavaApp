@@ -1,6 +1,7 @@
 package Frame;
 
 import javax.swing.*;
+
 import javax.swing.border.*;
 
 import java.awt.*;
@@ -114,51 +115,125 @@ public class MenuFrame extends JFrame {
 		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
 		listMenuJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
-		for (int i = 0; i < 20; i++) {
-			menuPanel = new JPanel();
-			menuPanel.setLayout(new BorderLayout());
-			menuPanel.setPreferredSize(new Dimension(80, 80));
-			JButton resButton = new JButton();
-			ImageIcon resIcon = new ImageIcon("./src/Icon/restaurant.png");
-			resButton.setIcon(resIcon);
-			resButton.setBackground(Color.WHITE);
-			JLabel nameTableLabel = new JLabel("", SwingConstants.CENTER);
-			menuPanel.add(resButton, BorderLayout.CENTER);
-			menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-			nameTableLabel.setText("Table " + (i + 1));
-			listMenuJPanel.add(menuPanel);
-		}
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BorderLayout());
+		menuPanel.setPreferredSize(new Dimension(150, 150));
+		JButton resButton = new JButton();
+		ImageIcon resIcon = new ImageIcon(
+				new ImageIcon("./src/foodImg/1.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		resButton.setIcon(resIcon);
+		resButton.setBackground(Color.WHITE);
+		JLabel nameTableLabel = new JLabel("<html>ShellFish Flatter<br/>155$</html>", SwingConstants.CENTER);
+		menuPanel.add(resButton, BorderLayout.CENTER);
+		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
+		listMenuJPanel.add(menuPanel);
+
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BorderLayout());
+		menuPanel.setPreferredSize(new Dimension(150, 150));
+		resButton = new JButton();
+		resIcon = new ImageIcon(
+				new ImageIcon("./src/foodImg/2.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		resButton.setIcon(resIcon);
+		resButton.setBackground(Color.WHITE);
+		nameTableLabel = new JLabel("<html>Scrimp Cocktail<br/>21$</html>", SwingConstants.CENTER);
+		menuPanel.add(resButton, BorderLayout.CENTER);
+		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
+		listMenuJPanel.add(menuPanel);
+
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BorderLayout());
+		menuPanel.setPreferredSize(new Dimension(150, 150));
+		resButton = new JButton();
+		resIcon = new ImageIcon(
+				new ImageIcon("./src/foodImg/3.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		resButton.setIcon(resIcon);
+		resButton.setBackground(Color.WHITE);
+		nameTableLabel = new JLabel("<html>Golden Osetra<br/>320$</html>", SwingConstants.CENTER);
+		menuPanel.add(resButton, BorderLayout.CENTER);
+		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
+		listMenuJPanel.add(menuPanel);
+
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BorderLayout());
+		menuPanel.setPreferredSize(new Dimension(150, 150));
+		resButton = new JButton();
+		resIcon = new ImageIcon(
+				new ImageIcon("./src/foodImg/4.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		resButton.setIcon(resIcon);
+		resButton.setBackground(Color.WHITE);
+		nameTableLabel = new JLabel("<html>Osetra<br/>220$</html>", SwingConstants.CENTER);
+		menuPanel.add(resButton, BorderLayout.CENTER);
+		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
+		listMenuJPanel.add(menuPanel);
+
+		menuPanel = new JPanel();
+		menuPanel.setLayout(new BorderLayout());
+		menuPanel.setPreferredSize(new Dimension(150, 150));
+		resButton = new JButton();
+		resIcon = new ImageIcon(
+				new ImageIcon("./src/foodImg/5.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+		resButton.setIcon(resIcon);
+		resButton.setBackground(Color.WHITE);
+		nameTableLabel = new JLabel("<html>Blue Crab Soup<br/>18$</html>", SwingConstants.CENTER);
+		menuPanel.add(resButton, BorderLayout.CENTER);
+		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
+		listMenuJPanel.add(menuPanel);
 
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
 		nameTablePanel.add(tableName);
 		listFoodPanel = new JPanel();
+		listFoodPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		for (int i = 0; i < 3; i++) {
-			foodPanel = new JPanel();
-			foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
-			JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
-			JLabel idLabel = new JLabel(Integer.toString(i + 1) + ".");
-			JLabel nameFood = new JLabel("Fried Chicken");
-			JButton minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
-			JLabel quantityLabel = new JLabel("1");
-			JButton plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
-			JLabel singlePrice = new JLabel("12$");
-			JLabel totalPrice = new JLabel("12$");
-			foodPanel.add(trashButton);
-			foodPanel.add(idLabel);
-			foodPanel.add(nameFood);
-			foodPanel.add(minusButton);
-			foodPanel.add(quantityLabel);
-			foodPanel.add(plusButton);
-			foodPanel.add(singlePrice);
-			foodPanel.add(totalPrice);
-			listFoodPanel.add(foodPanel);
-		}
+		foodPanel = new JPanel();
+		foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
+		JLabel idLabel = new JLabel("1.");
+		JLabel nameFood = new JLabel("Blue Crab Soup");
+		JButton minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
+		JLabel quantityLabel = new JLabel("1");
+		JButton plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
+		JLabel singlePrice = new JLabel("18$");
+		JLabel totalPrice = new JLabel("18$");
+		foodPanel.add(trashButton);
+		foodPanel.add(idLabel);
+		foodPanel.add(nameFood);
+		foodPanel.add(minusButton);
+		foodPanel.add(quantityLabel);
+		foodPanel.add(plusButton);
+		foodPanel.add(singlePrice);
+		foodPanel.add(totalPrice);
+		listFoodPanel.add(foodPanel);
+		
+		foodPanel = new JPanel();
+		foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
+		idLabel = new JLabel("2.");
+		nameFood = new JLabel("ShellFish Flatter");
+		minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
+		quantityLabel = new JLabel("1");
+		plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
+		singlePrice = new JLabel("155$");
+		totalPrice = new JLabel("155$");
+		foodPanel.add(trashButton);
+		foodPanel.add(idLabel);
+		foodPanel.add(nameFood);
+		foodPanel.add(minusButton);
+		foodPanel.add(quantityLabel);
+		foodPanel.add(plusButton);
+		foodPanel.add(singlePrice);
+		foodPanel.add(totalPrice);
+		listFoodPanel.add(foodPanel);
+		
 
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		new MenuFrame();
 	}
 }
