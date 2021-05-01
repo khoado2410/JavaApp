@@ -19,8 +19,7 @@ public class Staff_TimekeepingUI extends JFrame{
 		
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
-//		navbar.setBackground(Color.black);
-		
+
 		JButton buttonStaff = new JButton("<html><span style='font-size:20px'>Staff</span></html>");
 		buttonStaff.setBackground(new Color(0, 0, 0));
 		buttonStaff.setForeground(new Color(255, 192, 203));

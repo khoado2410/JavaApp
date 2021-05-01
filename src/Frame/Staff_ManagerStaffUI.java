@@ -1,6 +1,9 @@
 package Frame;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.table.*;
 
 import javax.swing.*;
@@ -8,10 +11,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 
-public class Staff_ManagerStaffUI extends JFrame{
+public class Staff_ManagerStaffUI extends JFrame implements ActionListener{
+	JFrame jfrm;
 	
 	public Staff_ManagerStaffUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
+		jfrm = new JFrame("Manager Staff");
 		jfrm.setVisible(true);
 		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
 		
@@ -28,6 +32,13 @@ public class Staff_ManagerStaffUI extends JFrame{
 		JButton buttonPayroll = new JButton("<html><span style='font-size:20px'>Payroll</span></html>");
 		buttonPayroll.setBackground(new Color(0, 0, 0));
 		buttonPayroll.setForeground(new Color(255, 192, 203));
+		
+		buttonStaff.setActionCommand("Staff");
+		buttonTimekeeping.setActionCommand("Timekeeping");
+		buttonPayroll.setActionCommand("Payroll");
+		buttonStaff.addActionListener(this);
+		buttonTimekeeping.addActionListener(this);
+		buttonPayroll.addActionListener(this);
 		
 		navbar.setLayout(new GridLayout(1, 3));
 		navbar.add(buttonStaff);
@@ -166,7 +177,6 @@ public class Staff_ManagerStaffUI extends JFrame{
 		}
 		
 		table.getColumnModel().getColumn(7).setCellRenderer(new JPanelImage());
-	//	table.getColumnModel().getColumn(7).setWidth();
 		
 		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
 		table.getTableHeader().setPreferredSize(new Dimension(100, 60));
@@ -183,6 +193,19 @@ public class Staff_ManagerStaffUI extends JFrame{
 		
 	}
 	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String s = e.getActionCommand();
+		System.out.println(s);
+		if(s.equals("Staff")) {
+			
+		}
+		else if(s.equals("Timekeeping")) {
+			//System.out.println("nice");
+			this.jfrm.setVisible(false);
+			new Staff_TimekeepingUI();
+		}
+	}
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

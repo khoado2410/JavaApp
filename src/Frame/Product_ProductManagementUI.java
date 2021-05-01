@@ -10,22 +10,37 @@ import javax.swing.table.TableCellRenderer;
 
 
 public class Product_ProductManagementUI extends JFrame{
+	private JFrame jfrm ; 
+	private JPanel navbar;
+	private JButton buttonMenu; 
+	private JButton buttonProduct; 
+	private JPanel top;
+	private JPanel left;
+	private JLabel jlb1;
+	private JLabel icon;
+	private ImageIcon a;
+	private JLabel jlb_staff;
+	private JPanel center; 
+	private JPanel right; 
+	private JLabel add;
+	private ImageIcon ad;
+	private JPanel content;
 	
 	public Product_ProductManagementUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
+		jfrm = new JFrame("Manager Staff");
 		jfrm.setVisible(true);
 		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
 		
 		
-		JPanel navbar = new JPanel();
+		navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
 
-		JButton buttonMenu = new JButton("<html><span style='font-size:20px'>Menu Management</span></html>");
+		buttonMenu = new JButton("<html><span style='font-size:20px'>Menu Management</span></html>");
 		buttonMenu.setBackground(new Color(0, 0, 0));
 		buttonMenu.setForeground(new Color(255, 192, 203));
 		
 
-		JButton buttonProduct = new JButton("<html><span style='font-size:20px'>Product Management</span></html>");
+		buttonProduct = new JButton("<html><span style='font-size:20px'>Product Management</span></html>");
 		buttonProduct.setBackground(new Color(255, 192, 203));
 		
 		
@@ -34,23 +49,23 @@ public class Product_ProductManagementUI extends JFrame{
 		navbar.add(buttonProduct);
 		
 		// TOP
-		JPanel top = new JPanel();
+		top = new JPanel();
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
 		top.setLayout(new GridLayout(1, 3));
 		
 		
-		JPanel left = new JPanel();
+		left = new JPanel();
 		left.setBackground(new Color(255, 255, 255));
-		JLabel jlb1 = new JLabel("Staff");
+		jlb1 = new JLabel("Staff");
 		
-		JLabel icon = new JLabel();
+		icon = new JLabel();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
-		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
+		a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
 		
-		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>Products</span></html>");
+		jlb_staff = new JLabel("<html><span style='font-size:25px'>Products</span></html>");
 		
 		SpringLayout springlayout = new SpringLayout();
 		left.setLayout(springlayout);
@@ -64,14 +79,14 @@ public class Product_ProductManagementUI extends JFrame{
 		left.add(jlb_staff);
 		
 		
-		JPanel center = new JPanel();
+		center = new JPanel();
 		center.setBackground(new Color(255, 255, 255));
 		
-		JPanel right = new JPanel();
+		right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		JLabel add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
+		add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
 		add.setOpaque(true);
-		ImageIcon ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
+		ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
 		add.setIcon(ad);
 		
 		SpringLayout springlayout1 = new SpringLayout();
@@ -86,7 +101,7 @@ public class Product_ProductManagementUI extends JFrame{
 		
 		// CONTENT
 		// CONTENT
-				JPanel content = new JPanel();
+				content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));
 				
