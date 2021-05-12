@@ -8,10 +8,7 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-public class DetailBillUI extends JFrame {
 
-<<<<<<< HEAD
-=======
 public class DetailBillUI extends JFrame{
 	private JFrame jfrm;
 	private JPanel navbar;
@@ -33,36 +30,26 @@ public class DetailBillUI extends JFrame{
 	private JPanel totalBill;
 	private JLabel total;
 	
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 	public DetailBillUI() {
 		jfrm = new JFrame("Manager Staff");
 		jfrm.setVisible(true);
 		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
-<<<<<<< HEAD
 
-		JPanel navbar = new JPanel();
-=======
-		
-		
+		JPanel navbar = new JPanel();	
 		navbar = new JPanel();
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 		navbar.setPreferredSize(new Dimension(100, 70));
 
 		buttonRevenue = new JButton("<html><span style='font-size:20px'>Revenue</span></html>");
 		buttonRevenue.setBackground(new Color(255, 192, 203));
-<<<<<<< HEAD
 
 		JButton buttonSpending = new JButton("<html><span style='font-size:20px'>Spending</span></html>");
 		buttonSpending.setBackground(new Color(0, 0, 0));
 		buttonSpending.setForeground(new Color(255, 192, 203));
-
-=======
 				
 		buttonSpending = new JButton("<html><span style='font-size:20px'>Spending</span></html>");
 		buttonSpending.setBackground(new Color(0, 0, 0));
 		buttonSpending.setForeground(new Color(255, 192, 203));
 		
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 		navbar.setLayout(new GridLayout(1, 2));
 		navbar.add(buttonRevenue);
 		navbar.add(buttonSpending);
@@ -72,14 +59,13 @@ public class DetailBillUI extends JFrame{
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
 		top.setLayout(new GridLayout(1, 3));
-<<<<<<< HEAD
-
+		
 		JPanel left = new JPanel();
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 
 		JLabel icon = new JLabel();
-=======
+
 		
 		
 		left = new JPanel();
@@ -87,20 +73,16 @@ public class DetailBillUI extends JFrame{
 		JLabel jlb1 = new JLabel("Staff");
 		
 		icon = new JLabel();
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
-<<<<<<< HEAD
 
 		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>List of spending</span></html>");
 
-=======
 		
 		jlb_staff = new JLabel("<html><span style='font-size:25px'>List of spending</span></html>");
 		
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 		SpringLayout springlayout = new SpringLayout();
 		left.setLayout(springlayout);
 		springlayout.putConstraint(SpringLayout.WEST, icon, 0, SpringLayout.WEST, left);
@@ -111,20 +93,17 @@ public class DetailBillUI extends JFrame{
 		springlayout.putConstraint(SpringLayout.SOUTH, jlb_staff, -40, SpringLayout.SOUTH, left);
 
 		left.add(jlb_staff);
-<<<<<<< HEAD
 
 		JPanel center = new JPanel();
 		center.setBackground(new Color(255, 255, 255));
 
 		JPanel right = new JPanel();
-=======
 		
 		
 		center = new JPanel();
 		center.setBackground(new Color(255, 255, 255));
 		
 		right = new JPanel();
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 		right.setBackground(new Color(255, 255, 255));
 		add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
 		add.setOpaque(true);
@@ -140,7 +119,6 @@ public class DetailBillUI extends JFrame{
 		top.add(left);
 		top.add(center);
 		top.add(right);
-<<<<<<< HEAD
 
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
@@ -225,8 +203,6 @@ public class DetailBillUI extends JFrame{
 		jfrm.add(navbar);
 		jfrm.add(top);
 		jfrm.add(content);
-
-=======
 		
 		// CONTENT
 		// CONTENT
@@ -325,8 +301,6 @@ public class DetailBillUI extends JFrame{
 				jfrm.add(top);
 				jfrm.add(content);
 				
-		
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 	}
 
 	public static void main(String[] args) {
