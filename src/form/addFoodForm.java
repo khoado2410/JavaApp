@@ -33,9 +33,10 @@ public class addFoodForm extends JFrame{
 		setSize(700, 700);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUndecorated(true);
+		setLocationRelativeTo(null);
 		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		mainFramePanel = new JPanel();
 		add(mainFramePanel, BorderLayout.CENTER);

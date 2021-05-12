@@ -84,8 +84,6 @@ public class SpendingUI extends JFrame{
 		top.add(center);
 		top.add(right);
 		
-		// CONTENT
-		// CONTENT
 				JPanel content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));

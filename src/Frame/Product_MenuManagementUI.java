@@ -177,9 +177,7 @@ public class Product_MenuManagementUI extends JFrame{
 		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
 		jfrm.add(navbar);
 		jfrm.add(top);
-		jfrm.add(content);
-		
-		
+		jfrm.add(content);		
 	}
 	
 	

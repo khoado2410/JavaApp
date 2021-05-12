@@ -1,9 +1,5 @@
 package Frame;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c4ab826ba42ac55ebb565da2acd2fe3d10662281
 import java.awt.*;
 
 import javax.swing.*;
@@ -162,6 +158,18 @@ public class TableFrame extends JFrame {
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new TableFrame();
+					} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
 

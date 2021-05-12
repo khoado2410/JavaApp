@@ -38,11 +38,12 @@ public class addStaffForm extends JFrame{
 	
 	public addStaffForm() {
 		setSize(700, 700);
+		setUndecorated(true);
+		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		mainFramePanel = new JPanel();
 		add(mainFramePanel, BorderLayout.CENTER);
@@ -166,7 +167,6 @@ public class addStaffForm extends JFrame{
 		mainFramePanel.add(formContent);
 		mainFramePanel.add(buttonField);
 		setVisible(true);
-
 	}
 	
 	public static void main(String[] args) {

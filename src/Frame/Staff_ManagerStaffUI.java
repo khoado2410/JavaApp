@@ -166,7 +166,6 @@ public class Staff_ManagerStaffUI extends JFrame{
 		}
 		
 		table.getColumnModel().getColumn(7).setCellRenderer(new JPanelImage());
-	//	table.getColumnModel().getColumn(7).setWidth();
 		
 		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
 		table.getTableHeader().setPreferredSize(new Dimension(100, 60));
@@ -178,9 +177,7 @@ public class Staff_ManagerStaffUI extends JFrame{
 		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
 		jfrm.add(navbar);
 		jfrm.add(top);
-		jfrm.add(content);
-		
-		
+		jfrm.add(content);		
 	}
 	
 	
