@@ -5,7 +5,9 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class TableFrame extends JFrame {
+import Controller.PanelChange.ControllerPanel;
+
+public class TableFrame extends JPanel {
 	private JPanel mainFramePanel;
 	private JPanel sideFramePanel;
 	private JPanel navbarPanel;
@@ -22,13 +24,11 @@ public class TableFrame extends JFrame {
 	private JPanel listFoodPanel;
 	private JPanel foodPanel;
 	private JLabel tableName;
+	private ControllerPanel controller;
 
 	public TableFrame() {
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		int leftSide = screenSize.width * 2 / 3;
 		int heightNav = screenSize.height * 1 / 8;
@@ -57,7 +57,9 @@ public class TableFrame extends JFrame {
 		menuButton.setBackground(Color.BLACK);
 		menuButton.setForeground(Color.PINK);
 		menuButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
-
+		controller = new ControllerPanel(this);
+		controller.setEventButton(menuButton, menuButton.getText());
+		
 		navbarPanel.add(tablesButton);
 		navbarPanel.add(menuButton);
 
@@ -88,6 +90,7 @@ public class TableFrame extends JFrame {
 
 		ImageIcon homeIcon = new ImageIcon("./src/Icon/Home.png");
 		homeButton = new JButton(homeIcon);
+		controller.setEventButton(homeButton, "Home");
 		homeButton.setPreferredSize(new Dimension(50, 50));
 		homeButton.setBackground(Color.BLACK);
 		JPanel homeButtonArea = new JPanel();
@@ -155,13 +158,9 @@ public class TableFrame extends JFrame {
 			foodPanel.add(totalPrice);
 			listFoodPanel.add(foodPanel);
 		}
-
+		
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
 	}
-	public static void main(String[] args) {
-		new TableFrame();
-	}
 }
-
