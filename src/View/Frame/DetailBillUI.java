@@ -66,9 +66,6 @@ public class DetailBillUI extends JFrame{
 
 		JLabel icon = new JLabel();
 	
-		left = new JPanel();
-		left.setBackground(new Color(255, 255, 255));
-		JLabel jlb1 = new JLabel("Staff");
 		
 		icon = new JLabel();
 		icon.setOpaque(true);
@@ -202,88 +199,7 @@ public class DetailBillUI extends JFrame{
 		jfrm.add(top);
 		jfrm.add(content);
 		
-		// CONTENT
-		// CONTENT
-				content = new JPanel();
-				content.setLayout(new BorderLayout());
-				content.setPreferredSize(new Dimension(100, 400));
-				
-				class JPanelImage implements TableCellRenderer{
-
-					@Override
-					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-							boolean hasFocus, int row, int column) {
-						return (Component)value;
-					}
-					
-				}
-				
-				// JLabel chua 2 icon
-				edit = new JLabel();
-				ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
-				edit.setIcon(_edit);
-				
-				_remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-				remove = new JLabel();
-				remove.setIcon(_remove);
-				
-				fonc = new JPanel();
-				SpringLayout springlayout2 = new SpringLayout();
-				fonc.setLayout(springlayout2);
-				springlayout2.putConstraint(SpringLayout.WEST, edit, 120, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, edit, -15, SpringLayout.SOUTH, fonc);
-				springlayout2.putConstraint(SpringLayout.WEST, remove, 150, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, remove, -15, SpringLayout.SOUTH, fonc);
-				fonc.add(edit);
-				fonc.add(remove);
-				String[] columnNames = {"IDFood", "Food", "Price", "Amount", "Total"};
-				
-				Object[][] data = {
-						{
-							"F001", "Fried Chicken", "8$", "1", "8$",
-						},
-						{
-							"F002", "Salmon and Chips", "12$", "1", "12$",
-						}	
-				};
-						
-				class MyJTable extends JTable{
-					MyJTable(Object[][] data, String[] columnNames){
-						super(data, columnNames);
-					}
-					public java.awt.Component prepareRenderer
-					(javax.swing.table.TableCellRenderer rendrer, int row, int col){
-						Component comp = super.prepareRenderer(rendrer, row, col);
-						if(row % 2 == 0 && !isCellSelected(row, col)) {
-							comp.setBackground(new Color(196, 196, 196));
-						}else if(!isCellSelected(row, col)) {
-							comp.setBackground(new Color(169, 169, 169));
-							
-						}else {
-							comp.setBackground(Color.black);
-						}
-						return comp;
-					}
-				}
-				MyJTable table = new MyJTable(data, columnNames);
-				scrollPane = new JScrollPane(table);
-				scrollPane.setPreferredSize(new Dimension(500, 100));
-				table.setFillsViewportHeight(true);
-				table.setRowHeight(60);
-				DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-				centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-				for(int i = 0; i < 5; i++) {
-					table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-				}
-				
-				//table.getColumnModel().getColumn(4).setCellRenderer(new JPanelImage());
-			
-				
-				table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-				table.getTableHeader().setPreferredSize(new Dimension(100, 60));
-				table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
-				content.add(scrollPane, BorderLayout.CENTER);
+		
 				
 				
 				totalBill = new JPanel();

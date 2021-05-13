@@ -8,12 +8,15 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-public class Staff_TimekeepingUI extends JFrame {
 
+public class Staff_TimekeepingUI extends JFrame{
+	
+	JPanel panelTime = new JPanel();
+	
 	public Staff_TimekeepingUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		super("Timekeeping");
+		
+		
 
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
@@ -166,18 +169,27 @@ public class Staff_TimekeepingUI extends JFrame {
 		content.add(shift);
 		content.add(time);
 
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);
+	
+		this.panelTime.setLayout(new BoxLayout(this.panelTime, BoxLayout.Y_AXIS));
+		this.panelTime.add(navbar);
+		this.panelTime.add(top);
+		this.panelTime.add(content);
+		
+		add(this.panelTime);
+		
+		setExtendedState(MAXIMIZED_BOTH);
+		
+		
+
 	}
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Staff_TimekeepingUI();
-				} catch (Exception e) {
+					new Staff_TimekeepingUI().setVisible(true);;
+					} catch (Exception e) {
+
 					e.printStackTrace();
 				}
 			}

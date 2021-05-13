@@ -9,12 +9,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 
-public class Product_ProductManagementUI extends JFrame{
-	private JFrame jfrm ; 
+public class Product_ProductManagementUI extends JPanel{
+	
+	public JPanel top;
+	public JPanel content;
+	
 	private JPanel navbar;
 	private JButton buttonMenu; 
-	private JButton buttonProduct; 
-	private JPanel top;
+	private JButton buttonProduct;
 	private JPanel left;
 	private JLabel jlb1;
 	private JLabel icon;
@@ -24,31 +26,13 @@ public class Product_ProductManagementUI extends JFrame{
 	private JPanel right; 
 	private JLabel add;
 	private ImageIcon ad;
-	private JPanel content;
+	
 	
 	public Product_ProductManagementUI() {
-		jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
 		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-		navbar = new JPanel();
-		navbar.setPreferredSize(new Dimension(100, 70));
-
-		buttonMenu = new JButton("<html><span style='font-size:20px'>Menu Management</span></html>");
-		buttonMenu.setBackground(new Color(0, 0, 0));
-		buttonMenu.setForeground(new Color(255, 192, 203));
-		
-
-		buttonProduct = new JButton("<html><span style='font-size:20px'>Product Management</span></html>");
-		buttonProduct.setBackground(new Color(255, 192, 203));
-		
-		
-		navbar.setLayout(new GridLayout(1, 2));
-		navbar.add(buttonMenu);
-		navbar.add(buttonProduct);
-		
-		// TOP
+	
 		top = new JPanel();
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
@@ -99,7 +83,6 @@ public class Product_ProductManagementUI extends JFrame{
 		top.add(center);
 		top.add(right);
 
-				JPanel content = new JPanel();
 
 				content = new JPanel();
 				content.setLayout(new BorderLayout());
@@ -188,23 +171,16 @@ public class Product_ProductManagementUI extends JFrame{
 				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 				content.add(scrollPane, BorderLayout.CENTER);
 	
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);	
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(top);
+				add(content);
+				
+				setVisible(true);
+		
+		
 	}
 	
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Product_ProductManagementUI();
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 }

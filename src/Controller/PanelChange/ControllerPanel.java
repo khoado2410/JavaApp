@@ -41,6 +41,15 @@ public class ControllerPanel implements ActionListener{
 		case "Home":
 			setPanel(new MainFrame());
 			break;
+		case "Staff": {
+			setPanel(new Staff_ManagerStaffUI());
+			break;
+		}
+		case "Stock": {
+			setPanel(new Product_MenuManagementUI());
+			break;
+		
+			}
 		}
 	}
 }

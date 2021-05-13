@@ -11,14 +11,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 
-public class Staff_ManagerStaffUI extends JFrame implements ActionListener{
-	JFrame jfrm;
+public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
+	
+	JPanel panelManageStaff = new JPanel();
 	
 	public Staff_ManagerStaffUI() {
-		jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
-		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
@@ -183,26 +181,31 @@ public class Staff_ManagerStaffUI extends JFrame implements ActionListener{
 		table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 		content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		content.add(scrollPane, BorderLayout.CENTER);
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(navbar);
+		add(top);
+		add(content);
 		
-	
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);		
+		
+		
+		setVisible(true);
+		
+
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String s = e.getActionCommand();
-		System.out.println(s);
-		if(s.equals("Staff")) {
-			
-		}
-		else if(s.equals("Timekeeping")) {
-			//System.out.println("nice");
-			this.jfrm.setVisible(false);
-			new Staff_TimekeepingUI();
-		}
+//		String s = e.getActionCommand();
+//		System.out.println(s);
+//		if(s.equals("Staff")) {
+//			
+//		}
+//		else if(s.equals("Timekeeping")) {
+//			//System.out.println("nice");
+//			this.jfrm.setVisible(false);
+//			new Staff_TimekeepingUI();
+//		}
 	}
 	
 	public static void main(String[] args) {
