@@ -65,9 +65,7 @@ public class DetailBillUI extends JFrame{
 		JLabel jlb1 = new JLabel("Staff");
 
 		JLabel icon = new JLabel();
-
-		
-		
+	
 		left = new JPanel();
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");

@@ -1,12 +1,13 @@
 package View.Frame;
 
 import javax.swing.*;
-
 import javax.swing.border.*;
+
+import Controller.PanelChange.ControllerPanel;
 
 import java.awt.*;
 
-public class MenuFrame extends JFrame {
+public class MenuFrame extends JPanel {
 	private JPanel mainFramePanel;
 	private JPanel sideFramePanel;
 	private JPanel navbarPanel;
@@ -23,14 +24,12 @@ public class MenuFrame extends JFrame {
 	private JPanel listFoodPanel;
 	private JPanel foodPanel;
 	private JLabel tableName;
-
+	private ControllerPanel controller;
+	
 	public MenuFrame() {
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+		setSize(screenSize);
 		int leftSide = screenSize.width * 2 / 3;
 		int heightNav = screenSize.height * 1 / 8;
 		int heightSub = heightNav;
@@ -54,7 +53,9 @@ public class MenuFrame extends JFrame {
 		tablesButton.setBackground(Color.BLACK);
 		tablesButton.setForeground(Color.PINK);
 		tablesButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
-
+		controller = new ControllerPanel(this);
+		controller.setEventButton(tablesButton, tablesButton.getText());
+		
 		menuButton = new JButton("Menu");
 		menuButton.setBackground(Color.PINK);
 		menuButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
@@ -89,6 +90,7 @@ public class MenuFrame extends JFrame {
 
 		ImageIcon homeIcon = new ImageIcon("./src/Icon/Home.png");
 		homeButton = new JButton(homeIcon);
+		controller.setEventButton(homeButton, "Home");
 		homeButton.setPreferredSize(new Dimension(50, 50));
 		homeButton.setBackground(Color.BLACK);
 		JPanel homeButtonArea = new JPanel();
@@ -227,13 +229,11 @@ public class MenuFrame extends JFrame {
 		foodPanel.add(totalPrice);
 		listFoodPanel.add(foodPanel);
 		
-
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
 	}
-<<<<<<< HEAD
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -245,11 +245,4 @@ public class MenuFrame extends JFrame {
 			}
 		});
 	}
-
-=======
-
-	public static void main(String[] args) {
-		new MenuFrame();
-	}
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 }

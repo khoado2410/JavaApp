@@ -98,15 +98,10 @@ public class Product_ProductManagementUI extends JFrame{
 		top.add(left);
 		top.add(center);
 		top.add(right);
-<<<<<<< HEAD
 
 				JPanel content = new JPanel();
-=======
-		
-		// CONTENT
-		// CONTENT
+
 				content = new JPanel();
->>>>>>> c408d838404aacb74d2fe54da9f0bf0cad00b426
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));
 				
