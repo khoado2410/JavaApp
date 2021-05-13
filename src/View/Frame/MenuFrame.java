@@ -22,7 +22,6 @@ public class MenuFrame extends JPanel {
 	private JComboBox<String> listTypeFood;
 	private JPanel nameTablePanel;
 	private JPanel listFoodPanel;
-	private JPanel foodPanel;
 	private JLabel tableName;
 	private ControllerPanel controllerPanel;
 	private ControllerMenu controllerMenu;
@@ -121,70 +120,18 @@ public class MenuFrame extends JPanel {
 		listMenuJPanel.add(sp);
 		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
 		
-		controllerMenu = new ControllerMenu();
+		listFoodPanel = new JPanel();
+		controllerMenu = new ControllerMenu(listFoodPanel);
 		controllerMenu.loadListMenu(coverPanel);
 
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
 		nameTablePanel.add(tableName);
-		listFoodPanel = new JPanel();
-		listFoodPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		foodPanel = new JPanel();
-		foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
-		JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
-		JLabel idLabel = new JLabel("1.");
-		JLabel nameFood = new JLabel("Blue Crab Soup");
-		JButton minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
-		JLabel quantityLabel = new JLabel("1");
-		JButton plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
-		JLabel singlePrice = new JLabel("18$");
-		JLabel totalPrice = new JLabel("18$");
-		foodPanel.add(trashButton);
-		foodPanel.add(idLabel);
-		foodPanel.add(nameFood);
-		foodPanel.add(minusButton);
-		foodPanel.add(quantityLabel);
-		foodPanel.add(plusButton);
-		foodPanel.add(singlePrice);
-		foodPanel.add(totalPrice);
-		listFoodPanel.add(foodPanel);
-		
-		foodPanel = new JPanel();
-		foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
-		trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
-		idLabel = new JLabel("2.");
-		nameFood = new JLabel("ShellFish Flatter");
-		minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
-		quantityLabel = new JLabel("1");
-		plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
-		singlePrice = new JLabel("155$");
-		totalPrice = new JLabel("155$");
-		foodPanel.add(trashButton);
-		foodPanel.add(idLabel);
-		foodPanel.add(nameFood);
-		foodPanel.add(minusButton);
-		foodPanel.add(quantityLabel);
-		foodPanel.add(plusButton);
-		foodPanel.add(singlePrice);
-		foodPanel.add(totalPrice);
-		listFoodPanel.add(foodPanel);
-		
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new MenuFrame();
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
