@@ -1,13 +1,13 @@
 package Controller.DBConnection;
-////okeeee
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-//	public static final String DB_URL = "jdbc:sqlserver://localhost:49702;databaseName=RestaurantManagement;integratedSecurity=true";
-	public static final String DB_URL = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement";
+	public static final String DB_URL = "jdbc:sqlserver://localhost:49702;databaseName=RestaurantManagement;integratedSecurity=true";
+//	public static final String DB_URL = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement";
 	static final String USER = "sa";
 	static final String PASS = "123456";
 	public static Connection connection;

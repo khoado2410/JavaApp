@@ -8,14 +8,16 @@ public class Food {
 	private String foodType;
 	private int QuantityOfStock;
 	private int price;
+	private String ImageFood;
 	private ArrayList<Product> ingredient;
 	
-	public Food(String id, String name, int price, String type, int quantity) {
+	public Food(String id, String name, int price, String type, int quantity, String img) {
 		this.FoodID = id;
 		this.nameFood = name;
 		this.price = price;
 		this.foodType = type;
 		this.QuantityOfStock = quantity;
+		this.setImageFood(img);
 	}
 	
 	public int getQuantityOfStock() {
@@ -53,5 +55,13 @@ public class Food {
 	}
 	public void setIngredient(ArrayList<Product> ingredient) {
 		this.ingredient = ingredient;
+	}
+
+	public String getImageFood() {
+		return ImageFood;
+	}
+
+	public void setImageFood(String imageFood) {
+		ImageFood = imageFood;
 	}
 }
