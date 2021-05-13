@@ -1,6 +1,7 @@
 package Model.Food_Product;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,14 +11,17 @@ import Controller.DBConnection.DBConnection;
 
 public class Menu {
 	
-	private ArrayList<Food> Menu;
+	private ArrayList<Food> menu;
 	
+	public Menu() {
+		this.menu = new ArrayList<>();
+	}
 	public ArrayList<Food> getMenu() {
-		return Menu;
+		return menu;
 	}
 
-	public void setMenu(ArrayList<Food> menu) {
-		Menu = menu;
+	public void setMenu(ArrayList<Food> m) {
+		menu = m;
 	}
 
 	public void showMenu() {
@@ -111,5 +115,41 @@ public class Menu {
 			return false;
 		}
 	}
-	
+	public boolean loadFoodFromDB() {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call sp_loadmenu}";
+				Statement statement = DBConnection.connection.createStatement();
+				ResultSet rs = statement.executeQuery(sp_load);
+				while(rs.next()) {
+					String fid = rs.getString("FoodID");
+					String fn = rs.getString("Name");
+					int fp = rs.getInt("Price");
+					String ft = rs.getString("FoodTypeID");
+					int fq = rs.getInt("QuantityOfStock");
+					String fi = rs.getString("ImageFood");
+					Food f = new Food(fid, fn, fp, ft, fq, fi);
+					this.menu.add(f);
+				}
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		}
+		else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	public static void main(String[] args) {
+		Menu m = new Menu();
+		if(m.loadFoodFromDB()) {
+			ArrayList<Food> a = m.getMenu();
+			for (Food f: a) {
+				System.out.println(f.getNameFood());
+			}
+		}
+	}
 }

@@ -3,6 +3,7 @@ package View.Frame;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import Controller.ControlMenuTable.ControllerMenu;
 import Controller.PanelChange.ControllerPanel;
 
 import java.awt.*;
@@ -19,13 +20,12 @@ public class MenuFrame extends JPanel {
 	private JButton payButton;
 	private JButton homeButton;
 	private JComboBox<String> listTypeFood;
-	private JPanel menuPanel;
 	private JPanel nameTablePanel;
 	private JPanel listFoodPanel;
 	private JPanel foodPanel;
 	private JLabel tableName;
-	private ControllerPanel controller;
-	
+	private ControllerPanel controllerPanel;
+	private ControllerMenu controllerMenu;
 	public MenuFrame() {
 		setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -53,8 +53,8 @@ public class MenuFrame extends JPanel {
 		tablesButton.setBackground(Color.BLACK);
 		tablesButton.setForeground(Color.PINK);
 		tablesButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
-		controller = new ControllerPanel(this);
-		controller.setEventButton(tablesButton, tablesButton.getText());
+		controllerPanel = new ControllerPanel(this);
+		controllerPanel.setEventButton(tablesButton, tablesButton.getText());
 		
 		menuButton = new JButton("Menu");
 		menuButton.setBackground(Color.PINK);
@@ -90,7 +90,7 @@ public class MenuFrame extends JPanel {
 
 		ImageIcon homeIcon = new ImageIcon("./src/Icon/Home.png");
 		homeButton = new JButton(homeIcon);
-		controller.setEventButton(homeButton, "Home");
+		controllerPanel.setEventButton(homeButton, "Home");
 		homeButton.setPreferredSize(new Dimension(50, 50));
 		homeButton.setBackground(Color.BLACK);
 		JPanel homeButtonArea = new JPanel();
@@ -113,74 +113,15 @@ public class MenuFrame extends JPanel {
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		JPanel tableUsedAreaJPanel = new JPanel();
 		JPanel listMenuJPanel = new JPanel();
+		JScrollPane sp = new JScrollPane(listMenuJPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		//listMenuJPanel.add(sp);
+		mainPanel.add(sp);
 		mainPanel.add(tableUsedAreaJPanel, BorderLayout.NORTH);
 		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
 		listMenuJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-
-		menuPanel = new JPanel();
-		menuPanel.setLayout(new BorderLayout());
-		menuPanel.setPreferredSize(new Dimension(150, 150));
-		JButton resButton = new JButton();
-		ImageIcon resIcon = new ImageIcon(
-				new ImageIcon("./src/foodImg/1.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-		resButton.setIcon(resIcon);
-		resButton.setBackground(Color.WHITE);
-		JLabel nameTableLabel = new JLabel("<html>ShellFish Flatter<br/>155$</html>", SwingConstants.CENTER);
-		menuPanel.add(resButton, BorderLayout.CENTER);
-		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-		listMenuJPanel.add(menuPanel);
-
-		menuPanel = new JPanel();
-		menuPanel.setLayout(new BorderLayout());
-		menuPanel.setPreferredSize(new Dimension(150, 150));
-		resButton = new JButton();
-		resIcon = new ImageIcon(
-				new ImageIcon("./src/foodImg/2.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-		resButton.setIcon(resIcon);
-		resButton.setBackground(Color.WHITE);
-		nameTableLabel = new JLabel("<html>Scrimp Cocktail<br/>21$</html>", SwingConstants.CENTER);
-		menuPanel.add(resButton, BorderLayout.CENTER);
-		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-		listMenuJPanel.add(menuPanel);
-
-		menuPanel = new JPanel();
-		menuPanel.setLayout(new BorderLayout());
-		menuPanel.setPreferredSize(new Dimension(150, 150));
-		resButton = new JButton();
-		resIcon = new ImageIcon(
-				new ImageIcon("./src/foodImg/3.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-		resButton.setIcon(resIcon);
-		resButton.setBackground(Color.WHITE);
-		nameTableLabel = new JLabel("<html>Golden Osetra<br/>320$</html>", SwingConstants.CENTER);
-		menuPanel.add(resButton, BorderLayout.CENTER);
-		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-		listMenuJPanel.add(menuPanel);
-
-		menuPanel = new JPanel();
-		menuPanel.setLayout(new BorderLayout());
-		menuPanel.setPreferredSize(new Dimension(150, 150));
-		resButton = new JButton();
-		resIcon = new ImageIcon(
-				new ImageIcon("./src/foodImg/4.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-		resButton.setIcon(resIcon);
-		resButton.setBackground(Color.WHITE);
-		nameTableLabel = new JLabel("<html>Osetra<br/>220$</html>", SwingConstants.CENTER);
-		menuPanel.add(resButton, BorderLayout.CENTER);
-		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-		listMenuJPanel.add(menuPanel);
-
-		menuPanel = new JPanel();
-		menuPanel.setLayout(new BorderLayout());
-		menuPanel.setPreferredSize(new Dimension(150, 150));
-		resButton = new JButton();
-		resIcon = new ImageIcon(
-				new ImageIcon("./src/foodImg/5.jpg").getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
-		resButton.setIcon(resIcon);
-		resButton.setBackground(Color.WHITE);
-		nameTableLabel = new JLabel("<html>Blue Crab Soup<br/>18$</html>", SwingConstants.CENTER);
-		menuPanel.add(resButton, BorderLayout.CENTER);
-		menuPanel.add(nameTableLabel, BorderLayout.SOUTH);
-		listMenuJPanel.add(menuPanel);
+		
+		controllerMenu = new ControllerMenu();
+		controllerMenu.loadListMenu(listMenuJPanel);
 
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
