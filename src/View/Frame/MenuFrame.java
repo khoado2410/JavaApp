@@ -111,17 +111,18 @@ public class MenuFrame extends JPanel {
 		subPanel.add(typePanel, BorderLayout.CENTER);
 
 		mainPanel.setLayout(new BorderLayout(0, 0));
-		JPanel tableUsedAreaJPanel = new JPanel();
 		JPanel listMenuJPanel = new JPanel();
-		JScrollPane sp = new JScrollPane(listMenuJPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		//listMenuJPanel.add(sp);
-		mainPanel.add(sp);
-		mainPanel.add(tableUsedAreaJPanel, BorderLayout.NORTH);
+		JPanel coverPanel = new JPanel();
+		listMenuJPanel.setLayout(new BorderLayout(0, 0));
+		coverPanel.setPreferredSize(new Dimension(leftSide, heightMain + 500));
+		listMenuJPanel.add(coverPanel, BorderLayout.CENTER);
+		JScrollPane sp = new JScrollPane(coverPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		listMenuJPanel.add(sp);
 		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
-		listMenuJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
 		controllerMenu = new ControllerMenu();
-		controllerMenu.loadListMenu(listMenuJPanel);
+		controllerMenu.loadListMenu(coverPanel);
 
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");
