@@ -175,4 +175,16 @@ public class MenuFrame extends JPanel {
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
 	}
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new MenuFrame();
+					} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }

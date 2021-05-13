@@ -30,12 +30,13 @@ public class loginForm extends JFrame{
 	
 	public loginForm() {
 		setSize(700, 700);
+		setUndecorated(true);
+		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+
 		mainFramePanel = new JPanel();
 		add(mainFramePanel, BorderLayout.CENTER);
 		mainFramePanel.setLayout(new FlowLayout(1, 0, 0));
@@ -106,7 +107,7 @@ public class loginForm extends JFrame{
 	
 	public static boolean checkUser(String username, String pass) {
 		boolean flag = false;
-		if(username.isEmpty() || pass.isEmpty()) {
+		if(username.isEmpty() || pass.isEmpty()) 		{
 			JOptionPane.showMessageDialog(null, "All fields are required");
 			System.out.println("Try again");
 		}

@@ -163,4 +163,17 @@ public class TableFrame extends JPanel {
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
 	}
+	
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new TableFrame();
+					} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
 }

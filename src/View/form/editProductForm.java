@@ -30,11 +30,12 @@ public class editProductForm extends JFrame{
 	
 	public editProductForm() {
 		setSize(700, 700);
+		setUndecorated(true);
+		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Restaurant Management System");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		mainFramePanel = new JPanel();
 		add(mainFramePanel, BorderLayout.CENTER);

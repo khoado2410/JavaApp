@@ -98,9 +98,9 @@ public class Product_ProductManagementUI extends JFrame{
 		top.add(left);
 		top.add(center);
 		top.add(right);
-		
-		// CONTENT
-		// CONTENT
+
+				JPanel content = new JPanel();
+
 				content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));
@@ -191,9 +191,7 @@ public class Product_ProductManagementUI extends JFrame{
 		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
 		jfrm.add(navbar);
 		jfrm.add(top);
-		jfrm.add(content);
-		
-		
+		jfrm.add(content);	
 	}
 	
 	

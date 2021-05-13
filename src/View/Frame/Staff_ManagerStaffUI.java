@@ -188,9 +188,7 @@ public class Staff_ManagerStaffUI extends JFrame implements ActionListener{
 		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
 		jfrm.add(navbar);
 		jfrm.add(top);
-		jfrm.add(content);
-		
-		
+		jfrm.add(content);		
 	}
 	
 	@Override
