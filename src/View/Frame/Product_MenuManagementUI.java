@@ -1,6 +1,9 @@
 package View.Frame;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.table.*;
 
 import javax.swing.*;
@@ -8,14 +11,18 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import Controller.MenuAndProduct.ManageMenuAndProduct;
 
-public class Product_MenuManagementUI extends JFrame{
+
+public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	
-	private JFrame jfrm;
+	ManageMenuAndProduct menuAndProduct = new ManageMenuAndProduct(this);
+	public JPanel content;
+	public JPanel top;
+	public JButton buttonMenu;
+	public JButton buttonProduct;
+	
 	private JPanel navbar;
-	private JButton buttonMenu;
-	private JButton buttonProduct;
-	private JPanel top;
 	private JPanel left;
 	private JLabel jlb1;
 	private JLabel icon;
@@ -25,7 +32,6 @@ public class Product_MenuManagementUI extends JFrame{
 	private JPanel right;
 	private JLabel add;
 	private ImageIcon ad; 
-	private JPanel content;
 	private JLabel edit; 
 	private ImageIcon _edit;
 	private ImageIcon _remove; 
@@ -33,9 +39,7 @@ public class Product_MenuManagementUI extends JFrame{
 	private JPanel fonc;
 	
 	public Product_MenuManagementUI() {
-		jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		
 		navbar = new JPanel();
@@ -43,10 +47,18 @@ public class Product_MenuManagementUI extends JFrame{
 
 		buttonMenu = new JButton("<html><span style='font-size:20px'>Menu Management</span></html>");
 		buttonMenu.setBackground(new Color(255, 192, 203));
+		
 
 		buttonProduct = new JButton("<html><span style='font-size:20px'>Product Management</span></html>");
 		buttonProduct.setBackground(new Color(0, 0, 0));
 		buttonProduct.setForeground(new Color(255, 192, 203));
+		
+		
+		buttonMenu.setActionCommand("Menu Management");
+		buttonProduct.setActionCommand("Product Management");
+		
+		buttonMenu.addActionListener(this);
+		buttonProduct.addActionListener(this);
 		
 		navbar.setLayout(new GridLayout(1, 2));
 		navbar.add(buttonMenu);
@@ -192,23 +204,32 @@ public class Product_MenuManagementUI extends JFrame{
 				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 				content.add(scrollPane, BorderLayout.CENTER);
 	
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);		
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(navbar);
+				add(top);
+				add(content);
+				
+				setVisible(true);
+		
+		
 	}
 	
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Product_MenuManagementUI();
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String s = e.getActionCommand();
+		
+		
+		if(s.equals("Menu Management")) {
+			
+			this.menuAndProduct.changePanelMenu();
+		}else if(s.equals("Product Management")) {
+			
+			this.menuAndProduct.changePanelProduct();
+			
+		}
+		
 	}
 
 }

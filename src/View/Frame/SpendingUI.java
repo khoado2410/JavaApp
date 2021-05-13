@@ -9,10 +9,10 @@ import javax.swing.table.TableCellRenderer;
 
 public class SpendingUI extends JFrame{
 	
+	JPanel panelSpending = new JPanel();
+	
 	public SpendingUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		
 		
 		
 		JPanel navbar = new JPanel();
@@ -169,10 +169,14 @@ public class SpendingUI extends JFrame{
 				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 				content.add(scrollPane, BorderLayout.CENTER);
 	
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);
+				this.panelSpending.setLayout(new BoxLayout(this.panelSpending, BoxLayout.Y_AXIS));
+				this.panelSpending.add(navbar);
+				this.panelSpending.add(top);
+				this.panelSpending.add(content);
+				
+				add(this.panelSpending);
+				
+				setExtendedState(MAXIMIZED_BOTH);
 		
 		
 	}
@@ -182,7 +186,7 @@ public class SpendingUI extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new SpendingUI();
+					new SpendingUI().setVisible(true);;
 					} catch (Exception e) {
 					e.printStackTrace();
 				}

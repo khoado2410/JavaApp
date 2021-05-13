@@ -26,6 +26,7 @@ public class MainFrame extends JPanel {
 				case 0:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Stock.png"));
 					jbtn.setText("Stock");
+					controller.setEventButton(jbtn, jbtn.getText());	
 					break;
 				case 1:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Cashier.png"));
@@ -39,10 +40,12 @@ public class MainFrame extends JPanel {
 				case 3:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Staff.png"));
 					jbtn.setText("Staff");
+					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 				case 4:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Login.png"));
 					jbtn.setText("Login");
+					
 					break;
 				case 5:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Deal.png"));

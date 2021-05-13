@@ -11,10 +11,11 @@ import javax.swing.table.TableCellRenderer;
 
 public class RevenueUI extends JFrame{
 	
+	JPanel panelRevenue = new JPanel();
+	
 	public RevenueUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		
+		super("Revenue");
 		
 		
 		JPanel navbar = new JPanel();
@@ -173,10 +174,14 @@ public class RevenueUI extends JFrame{
 				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 				content.add(scrollPane, BorderLayout.CENTER);
 	
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);
+				this.panelRevenue.setLayout(new BoxLayout(this.panelRevenue, BoxLayout.Y_AXIS));
+				this.panelRevenue.add(navbar);
+				this.panelRevenue.add(top);
+				this.panelRevenue.add(content);
+				
+				add(this.panelRevenue);
+				
+				setExtendedState(MAXIMIZED_BOTH);
 		
 		
 	}
@@ -186,7 +191,7 @@ public class RevenueUI extends JFrame{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new RevenueUI();
+					new RevenueUI().setVisible(true);
 					} catch (Exception e) {
 					e.printStackTrace();
 				}
