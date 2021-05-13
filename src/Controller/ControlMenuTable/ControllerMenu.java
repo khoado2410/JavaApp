@@ -3,7 +3,6 @@ package Controller.ControlMenuTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,16 +11,19 @@ import javax.swing.*;
 
 import Model.Food_Product.*;
 
-public class ControllerMenu implements ActionListener{
+public class ControllerMenu implements ActionListener {
 	private Menu menu;
+	private Bill bill;
 	private JPanel p;
-	private int count = 1;
+	private ControllerBill controllerBill;
+
 	public ControllerMenu(JPanel fpanel) {
 		menu = new Menu();
 		menu.loadFoodFromDB();
 		p = fpanel;
+		bill = new Bill();
 	}
-	
+
 	public void loadListMenu(JPanel jp) {
 		for (Food f : menu.getMenu()) {
 			JPanel menuPanel = new JPanel();
@@ -46,31 +48,13 @@ public class ControllerMenu implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for (Food f: menu.getMenu()) {
+		for (Food f : menu.getMenu()) {
 			if (f.getNameFood().equals(e.getActionCommand())) {
-				JPanel foodPanel = new JPanel();
-				foodPanel.setPreferredSize(new Dimension(500, 60));
-				foodPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
-				JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
-				JLabel idLabel = new JLabel(Integer.toString(count) + ".");
-				JLabel nameFood = new JLabel(f.getNameFood().trim());
-				JButton minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
-				JLabel quantityLabel = new JLabel("1");
-				JButton plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
-				JLabel singlePrice = new JLabel(Integer.toString(f.getPrice()));
-				JLabel totalPrice = new JLabel(Integer.toString(f.getPrice()));
-				foodPanel.add(trashButton);
-				foodPanel.add(idLabel);
-				foodPanel.add(nameFood);
-				foodPanel.add(minusButton);
-				foodPanel.add(quantityLabel);
-				foodPanel.add(plusButton);
-				foodPanel.add(singlePrice);
-				foodPanel.add(totalPrice);
-				p.add(foodPanel);
-				p.revalidate();
-				p.repaint();
-				count++;
+				if (!bill.getListFood().containsKey(f)) {
+					bill.addFood(f, 1);
+					controllerBill = new ControllerBill(bill, f, p);
+					controllerBill.addToBill();
+				}
 			}
 		}
 	}
