@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -13,6 +14,8 @@ import Model.Food_Product.*;
 
 public class ControllerMenu implements ActionListener {
 	private Menu menu;
+	private ArrayList<FoodType> listFoodType;
+	private FoodType foodType;
 	private Bill bill;
 	private JPanel p;
 	private ControllerBill controllerBill;
@@ -20,6 +23,8 @@ public class ControllerMenu implements ActionListener {
 	public ControllerMenu(JPanel fpanel) {
 		menu = new Menu();
 		menu.loadFoodFromDB();
+		FoodType foodType = new FoodType();
+		listFoodType = foodType.getListFoodTypeFromDB();
 		p = fpanel;
 		bill = new Bill();
 	}
@@ -46,6 +51,13 @@ public class ControllerMenu implements ActionListener {
 		}
 	}
 
+	public void loadTypeMenu(JComboBox<String> jcb, String type) {
+		for (FoodType ft: listFoodType) {
+			if (ft.getFoodTypeName().equals(type))
+				menu.loadFoodByTypeFood(ft.getFoodTypeID());
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for (Food f : menu.getMenu()) {
