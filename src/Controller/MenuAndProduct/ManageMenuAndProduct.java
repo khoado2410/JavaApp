@@ -1,10 +1,14 @@
 package Controller.MenuAndProduct;
 
-import java.awt.Color;
+import java.awt.*;
+import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
+import Model.Food_Product.Food;
+//import Model.Food_Product.*;
+import Model.Food_Product.Menu;
 import View.Frame.Product_MenuManagementUI;
 import View.Frame.Product_ProductManagementUI;
 
@@ -14,9 +18,11 @@ public class ManageMenuAndProduct {
 	
 	private Product_ProductManagementUI product = new Product_ProductManagementUI();
 	
+	private Menu menu;
+	
 	public ManageMenuAndProduct(Product_MenuManagementUI a){
 		this.productAndMenu = a;
-		
+		menu = new Menu();
 	}
 
 	public void changePanelProduct() {
@@ -51,4 +57,13 @@ public class ManageMenuAndProduct {
 		this.productAndMenu.buttonProduct.setForeground(new Color(255, 192, 203));
 
 	}
+	
+	public ArrayList<Food> loadFoodFromMenu(){
+		ArrayList<Food> listFood = new ArrayList<Food>();
+		if(this.menu.loadFoodFromDB()) {
+			listFood = this.menu.getMenu();
+		}
+		return listFood;
+	}
+	
 }

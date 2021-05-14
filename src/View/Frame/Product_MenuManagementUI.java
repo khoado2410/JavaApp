@@ -3,24 +3,32 @@ package View.Frame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.table.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import Controller.MenuAndProduct.ManageMenuAndProduct;
+import Model.Food_Product.Food;
+
 
 
 public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	
 	ManageMenuAndProduct menuAndProduct = new ManageMenuAndProduct(this);
+	
 	public JPanel content;
 	public JPanel top;
 	public JButton buttonMenu;
 	public JButton buttonProduct;
+	public Object[][] data;
+	public JPanel fonc;
 	
 	private JPanel navbar;
 	private JPanel left;
@@ -36,9 +44,10 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	private ImageIcon _edit;
 	private ImageIcon _remove; 
 	private JLabel remove;
-	private JPanel fonc;
+	
 	
 	public Product_MenuManagementUI() {
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		
@@ -119,7 +128,7 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		// CONTENT
 				content = new JPanel();
 				content.setLayout(new BorderLayout());
-				content.setPreferredSize(new Dimension(100, 400));
+				content.setPreferredSize(new Dimension(50, 50));
 				
 				class JPanelImage implements TableCellRenderer{
 
@@ -130,79 +139,131 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 					}
 					
 				}
-				
-				// JLabel chua 2 icon
-				edit = new JLabel();
+			
 				_edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
+
+				_remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
+
+				JTable mytable = new JTable();
+				DefaultTableModel defaultModel = new DefaultTableModel();
+				
+				JButton edit = new JButton();
 				edit.setIcon(_edit);
 				
-				_remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-				remove = new JLabel();
-				remove.setIcon(_remove);
+				JButton delete = new JButton();
+				delete.setIcon(_remove);
 				
-				fonc = new JPanel();
-				SpringLayout springlayout2 = new SpringLayout();
-				fonc.setLayout(springlayout2);
-				springlayout2.putConstraint(SpringLayout.WEST, edit, 130, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, edit, -15, SpringLayout.SOUTH, fonc);
-				springlayout2.putConstraint(SpringLayout.WEST, remove, 160, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, remove, -15, SpringLayout.SOUTH, fonc);
-				fonc.add(edit);
-				fonc.add(remove);
-				String[] columnNames = {"ID Food", "Name", "Amount", ""};
+				edit.addActionListener(this);
+				edit.setActionCommand("edit");
+				delete.addActionListener(this);
+				delete.setActionCommand("delete");
 				
-				Object[][] data = {
-						{
-							"F001", "Fried Chicken", "15", fonc,
-						},
-						{
-							"F002", "Beafsteak", "20", fonc,
-						},
-						{
-							"F003", "Fish and Chips", "8", fonc,
-						},
-						{
-							"F004", "Fried Chicken", "15", fonc,
-						}		
-				};
-						
-				class MyJTable extends JTable{
-					MyJTable(Object[][] data, String[] columnNames){
-						super(data, columnNames);
-					}
-					public java.awt.Component prepareRenderer
-					(javax.swing.table.TableCellRenderer rendrer, int row, int col){
-						Component comp = super.prepareRenderer(rendrer, row, col);
-						if(row % 2 == 0 && !isCellSelected(row, col)) {
-							comp.setBackground(new Color(196, 196, 196));
-						}else if(!isCellSelected(row, col)) {
-							comp.setBackground(new Color(169, 169, 169));
-							
-						}else {
-							comp.setBackground(Color.black);
-						}
-						return comp;
-					}
+				mytable.setModel(defaultModel);
+				
+				defaultModel.addColumn("ID Food");
+				defaultModel.addColumn("Name");
+				defaultModel.addColumn("Food Type");
+				defaultModel.addColumn("Amount");
+				defaultModel.addColumn("Price");
+				defaultModel.addColumn("Edit");
+				defaultModel.addColumn("Remove");
+				
+				ArrayList<Food> listFood = new ArrayList<Food>();
+				listFood = this.menuAndProduct.loadFoodFromMenu();
+				
+				for(Food food : listFood) {
+					defaultModel.addRow(new Object[] {food.getFoodID(), food.getNameFood(), food.getFoodType(), 
+											food.getQuantityOfStock(), food.getPrice(),edit, delete});
 				}
-				MyJTable table = new MyJTable(data, columnNames);
-				JScrollPane scrollPane = new JScrollPane(table);
-				scrollPane.setPreferredSize(new Dimension(500, 100));
-				table.setFillsViewportHeight(true);
-				table.setRowHeight(60);
+				
+
+			     TableColumn column = mytable.getColumnModel().getColumn(0);
+			     column.setMinWidth(100);
+			     column.setMaxWidth(150);
+			     column.setPreferredWidth(150);
+			     
+			     TableColumn column6 = mytable.getColumnModel().getColumn(2);
+			     column6.setMinWidth(100);
+			     column6.setMaxWidth(200);
+			     column6.setPreferredWidth(200);
+//			     
+			     
+			     TableColumn column5 = mytable.getColumnModel().getColumn(3);
+			     column5.setMinWidth(100);
+			     column5.setMaxWidth(200);
+			     column5.setPreferredWidth(200);
+//			     
+			     TableColumn column4 = mytable.getColumnModel().getColumn(4);
+			     column4.setMinWidth(100);
+			     column4.setMaxWidth(150);
+			     column4.setPreferredWidth(150);
+			     
+			     
+			     TableColumn column1 = mytable.getColumnModel().getColumn(5);
+			     column1.setMinWidth(100);
+			     column1.setMaxWidth(150);
+			     column1.setPreferredWidth(150);
+			     
+			     TableColumn column2 = mytable.getColumnModel().getColumn(6);
+			     column2.setMinWidth(100);
+			     column2.setMaxWidth(150);
+			     column2.setPreferredWidth(150);
+			    
+			       				
+				mytable.setRowHeight(50);
+				
+				JScrollPane scrollPane = new JScrollPane(mytable);
+				scrollPane.setPreferredSize(new Dimension(400, 100));
+				
 				DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 				centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-				for(int i = 0; i < 4; i++) {
-					table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-				}
+				DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+				bgcolor.setBackground(Color.white);
 				
-				table.getColumnModel().getColumn(3).setCellRenderer(new JPanelImage());
-			//	table.getColumnModel().getColumn(7).setWidth();
+				for(int i = 0; i < 6; i++) {
+					mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+				}				
 				
-				table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-				table.getTableHeader().setPreferredSize(new Dimension(100, 60));
-				table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
+				mytable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+				
+				mytable.getColumnModel().getColumn(5).setCellRenderer(new JPanelImage());
+				mytable.getColumnModel().getColumn(6).setCellRenderer(new JPanelImage());
+				
+				mytable.setFillsViewportHeight(true);
+				
+				ListSelectionModel listSelectionMode = mytable.getSelectionModel();
+				
+				listSelectionMode.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				
+				listSelectionMode.addListSelectionListener(new ListSelectionListener() {
+
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						// TODO Auto-generated method stub
+						System.out.println(e.getSource().toString());
+						int[] rows = mytable.getSelectedRows();
+						int[] cols = mytable.getSelectedColumns();
+//						if(!listSelectionMode.isSelectionEmpty()) {
+//							int selectedRow = listSelectionMode.getMinSelectionIndex();
+//							//int selectedCol = listSelectionMode.getMinSelectionIndex();
+//							JOptionPane.showMessageDialog(null, "Selected Row ");
+//						}
+						
+						if(mytable.getSelectedColumn() == 5) {
+							//JOptionPane.showMessageDialog(null, "Selected Col: " + mytable.getSelectedColumn() + "row: " + mytable.getSelectedRow());
+						}
+						
+					}
+					
+				});
+				
+				
+				mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+				mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
+				//mytable.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+				
 				content.add(scrollPane, BorderLayout.CENTER);
+	
 	
 				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 				add(navbar);
@@ -227,6 +288,10 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		}else if(s.equals("Product Management")) {
 			
 			this.menuAndProduct.changePanelProduct();
+			
+		}else if(s.equals("edit")) {
+			
+		}else if(s.equals("delete")) {
 			
 		}
 		
