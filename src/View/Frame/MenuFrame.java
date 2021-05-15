@@ -21,6 +21,7 @@ public class MenuFrame extends JPanel {
 	private JButton homeButton;
 	private JComboBox<String> listTypeFood;
 	private JPanel nameTablePanel;
+	private JPanel coverPanel;
 	private JPanel listFoodPanel;
 	private JLabel tableName;
 	private ControllerPanel controllerPanel;
@@ -43,7 +44,18 @@ public class MenuFrame extends JPanel {
 		add(sideFramePanel, BorderLayout.EAST);
 
 		mainFramePanel.setLayout(new FlowLayout(1, 0, 0));
-
+		
+		JPanel listMenuJPanel = new JPanel();
+		coverPanel = new JPanel();
+		listMenuJPanel.setLayout(new BorderLayout(0, 0));
+		coverPanel.setPreferredSize(new Dimension(leftSide, heightMain + 500));
+		listTypeFood = new JComboBox<>();
+		listTypeFood.setPreferredSize(new Dimension(300, 20));
+		listFoodPanel = new JPanel();
+		
+		controllerMenu = new ControllerMenu(coverPanel, listFoodPanel, listTypeFood);
+		controllerPanel = new ControllerPanel(this);
+		
 		navbarPanel = new JPanel();
 		navbarPanel.setPreferredSize(new Dimension(leftSide, heightNav));
 		navbarPanel.setLayout(new GridLayout(1, 2));
@@ -52,7 +64,7 @@ public class MenuFrame extends JPanel {
 		tablesButton.setBackground(Color.BLACK);
 		tablesButton.setForeground(Color.PINK);
 		tablesButton.setFont(tablesButton.getFont().deriveFont(Font.BOLD, 20));
-		controllerPanel = new ControllerPanel(this);
+		
 		controllerPanel.setEventButton(tablesButton, tablesButton.getText());
 		
 		menuButton = new JButton("Menu");
@@ -78,6 +90,7 @@ public class MenuFrame extends JPanel {
 
 		payPanel = new JPanel();
 		payPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
 		sideFramePanel.add(payPanel, BorderLayout.CENTER);
 
 		payButton = new JButton("Pay");
@@ -85,6 +98,7 @@ public class MenuFrame extends JPanel {
 		payButton.setForeground(Color.PINK);
 		payButton.setFont(payButton.getFont().deriveFont(Font.BOLD, 20));
 		payButton.setPreferredSize(new Dimension(screenSize.width - leftSide, 100));
+		
 		sideFramePanel.add(payButton, BorderLayout.SOUTH);
 
 		ImageIcon homeIcon = new ImageIcon("./src/Icon/Home.png");
@@ -92,37 +106,35 @@ public class MenuFrame extends JPanel {
 		controllerPanel.setEventButton(homeButton, "Home");
 		homeButton.setPreferredSize(new Dimension(50, 50));
 		homeButton.setBackground(Color.BLACK);
+		
 		JPanel homeButtonArea = new JPanel();
 		JPanel typePanel = new JPanel();
+		
 		typePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel type = new JLabel();
 		typePanel.setBorder(new EmptyBorder(10, 50, 10, 0));
 		type.setText("Type Food: ");
 		type.setFont(type.getFont().deriveFont(Font.BOLD, 18));
 		typePanel.add(type);
-		listTypeFood = new JComboBox<>();
-		listTypeFood.setPreferredSize(new Dimension(300, 20));
+		controllerMenu.loadTypeFood();
 		typePanel.add(listTypeFood);
+		
 		homeButtonArea.setLayout(new GridLayout(2, 1));
 		homeButtonArea.add(homeButton);
 		homeButtonArea.setPreferredSize(new Dimension(50, heightSub));
+		
 		subPanel.add(homeButtonArea, BorderLayout.WEST);
 		subPanel.add(typePanel, BorderLayout.CENTER);
 
 		mainPanel.setLayout(new BorderLayout(0, 0));
-		JPanel listMenuJPanel = new JPanel();
-		JPanel coverPanel = new JPanel();
-		listMenuJPanel.setLayout(new BorderLayout(0, 0));
-		coverPanel.setPreferredSize(new Dimension(leftSide, heightMain + 500));
+		
 		listMenuJPanel.add(coverPanel, BorderLayout.CENTER);
 		JScrollPane sp = new JScrollPane(coverPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		listMenuJPanel.add(sp);
 		mainPanel.add(listMenuJPanel, BorderLayout.CENTER);
 		
-		listFoodPanel = new JPanel();
-		controllerMenu = new ControllerMenu(listFoodPanel);
-		controllerMenu.loadListMenu(coverPanel);
+		controllerMenu.loadListMenu();
 
 		nameTablePanel = new JPanel();
 		tableName = new JLabel("Table 1");

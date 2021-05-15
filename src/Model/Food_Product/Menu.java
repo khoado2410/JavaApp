@@ -17,6 +17,10 @@ public class Menu {
 	public Menu() {
 		this.menu = new ArrayList<>();
 	}
+	
+	public Menu(ArrayList<Food> m) {
+		this.menu = new ArrayList<>(m);
+	}
 
 	public ArrayList<Food> getMenu() {
 		return menu;
