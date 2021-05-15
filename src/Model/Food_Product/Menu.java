@@ -30,18 +30,20 @@ public class Menu {
 		System.out.println("Show menu");
 	}
 
+	
 	public boolean addNewFood(Food a) {
-		String sql = "INSERT INTO Menu(FoodId, Name, Price, FoodtypeID, QuantityOfStock)" + "VALUES(?,?,?,?,?)";
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+		String querySql = "{call addFood(?, ?, ?, ?, ?, ?)}";
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)){
 			try {
-
-				PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
-				ps.setString(1, a.getFoodID());
-				ps.setString(2, a.getNameFood());
-				ps.setInt(3, a.getPrice());
-				ps.setString(4, a.getFoodType());
-				ps.setInt(5, a.getQuantityOfStock());
-				ps.executeUpdate();
+				CallableStatement cstmt = DBConnection.connection.prepareCall(querySql);
+				
+				cstmt.setString(1, a.getFoodID());
+				cstmt.setString(2, a.getNameFood());
+				cstmt.setInt(3, a.getPrice());
+				cstmt.setString(4, a.getFoodType());
+				cstmt.setInt(5, a.getQuantityOfStock());
+				cstmt.setString(6, a.getImageFood());
+				cstmt.executeUpdate();
 
 				return true;
 			} catch (SQLException e) {
@@ -52,7 +54,6 @@ public class Menu {
 			System.out.println("Something went wrong!!!");
 			return false;
 		}
-
 	}
 
 	public boolean editFoodFromDB(Food s, int price) {
@@ -74,14 +75,16 @@ public class Menu {
 		}
 	}
 
-	static boolean deleteFoodFromMenu(Food s) {
+	public  boolean deleteFoodFromMenu(Food s) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				String deleteString = "Delete from Menu where FoodID = '" + s.getFoodID() + "'";
-				Statement statement = DBConnection.connection.createStatement();
-				statement.executeUpdate(deleteString);
-				DBConnection.connection.commit();
-				statement.close();
+				
+				String deleteString = "{call removeFood(?)}";
+				
+				CallableStatement cstmt = DBConnection.connection.prepareCall(deleteString);
+				cstmt.setString(1, s.getFoodID());
+				cstmt.executeUpdate();
+
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Cannot delete food: " + e);
@@ -125,7 +128,8 @@ public class Menu {
 					String ft = rs.getString("FoodTypeID");
 					int fq = rs.getInt("QuantityOfStock");
 					String fi = rs.getString("ImageFood");
-					Food f = new Food(fid, fn, fp, ft, fq, fi);
+					String ffn = rs.getString("Name Type");
+					Food f = new Food(fid, fn, fp, ft, fq, fi, ffn);
 					this.menu.add(f);
 				}
 				statement.close();
@@ -154,7 +158,8 @@ public class Menu {
 					String ft = rs.getString("FoodTypeID");
 					int fq = rs.getInt("QuantityOfStock");
 					String fi = rs.getString("ImageFood");
-					Food f = new Food(fid, fn, fp, ft, fq, fi);
+					String ffn = rs.getString("Name Type");
+					Food f = new Food(fid, fn, fp, ft, fq, fi, ffn);
 					this.menu.add(f);
 				}
 				statement.close();
@@ -168,24 +173,80 @@ public class Menu {
 			return false;
 		}
 	}
+	
+	public boolean updateFood(Food a) {
+		String querySql = "{call editFood(?, ?, ?, ?, ?, ?)}";
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)){
+			try {
+				CallableStatement cstmt = DBConnection.connection.prepareCall(querySql);
+				
+				cstmt.setString(1, a.getFoodID());
+				cstmt.setString(2, a.getNameFood());
+				cstmt.setInt(3, a.getPrice());
+				cstmt.setString(4, a.getFoodType());
+				cstmt.setInt(5, a.getQuantityOfStock());
+				cstmt.setString(6, a.getImageFood());
+				cstmt.executeUpdate();
+
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot insert food to menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
 
 	public ArrayList<Food> getListFoodByType(String type) {
 		ArrayList<Food> res = new ArrayList<>();
 		for (Food f : menu) {
-			if (f.getFoodType().equals(type)) {
+			if (f.getFoodType().equals(type)){
 				res.add(f);
 			}
 		}
 		return res;
 	}
+	
+	public String getIDMax() {
+		String id = "";
+
+		String cmd1 = "SELECT FoodID FROM Menu WHERE FoodID = (SELECT max(FoodID) FROM Menu)";
+
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			String temp = "";
+			int length = 0;
+			try {
+				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
+				ResultSet results = ps.executeQuery();
+				while (results.next()) {
+					id = results.getString("FoodID");
+					
+					DBConnection.connection.commit();
+				}
+				results.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return id;
+	}
+	
 
 	public static void main(String[] args) {
 		Menu m = new Menu();
 		if (m.loadFoodByTypeFood("Appetizers")) {
 			ArrayList<Food> a = m.getMenu();
 			for (Food f : a) {
-				System.out.println(f.getNameFood());
+				System.out.print(f);
 			}
 		}
+		System.out.println("ID max: " + m.getIDMax());
+//		Food a = new Food("ID", "aa", 1000, "Caviar", 12, "A");
+//		boolean b = m.addNewFood(a);
+//		System.out.println(b);
+		
+		
 	}
 }

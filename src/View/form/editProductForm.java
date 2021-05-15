@@ -6,12 +6,19 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Controller.MenuAndProduct.ManageMenuAndProduct;
 import net.miginfocom.swing.MigLayout;
 
-public class editProductForm extends JFrame{
+public class editProductForm extends JFrame implements ActionListener{
+	
+	private ManageMenuAndProduct controller = new ManageMenuAndProduct(this);
+	private String type;
+	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
@@ -28,7 +35,10 @@ public class editProductForm extends JFrame{
 	private JButton saveBtn;
 	private JButton cancelBtn;
 	
-	public editProductForm() {
+	public editProductForm(String id, String name, String mass1, String price1, String type) {
+		
+		this.type = type;
+		
 		setSize(700, 700);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
@@ -62,6 +72,7 @@ public class editProductForm extends JFrame{
 		productIDField = new JTextField(20);
 		productIDField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		productIDField.setFont(productIDField.getFont().deriveFont(Font.PLAIN, 20));
+		productIDField.setText(id);
 		
 		productName = new JLabel("Product's name");
 		productName.setHorizontalAlignment(JLabel.LEFT);
@@ -70,6 +81,7 @@ public class editProductForm extends JFrame{
 		productNameField = new JTextField(20);
 		productNameField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		productNameField.setFont(productNameField.getFont().deriveFont(Font.PLAIN, 20));
+		productNameField.setText(name);
 		
 		mass = new JLabel("Mass");
 		mass.setHorizontalAlignment(JLabel.LEFT);
@@ -78,6 +90,7 @@ public class editProductForm extends JFrame{
 		massField = new JTextField(20);
 		massField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		massField.setFont(productIDField.getFont().deriveFont(Font.PLAIN, 20));
+		massField.setText(mass1);
 		
 		price = new JLabel("Price");
 		price.setHorizontalAlignment(JLabel.LEFT);
@@ -86,6 +99,7 @@ public class editProductForm extends JFrame{
 		priceField = new JTextField(20);
 		priceField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		priceField.setFont(priceField.getFont().deriveFont(Font.PLAIN, 20));
+		priceField.setText(price1);
 		
 		formContent.add(productID);
 		formContent.add(productIDField, "wrap 30");
@@ -106,11 +120,15 @@ public class editProductForm extends JFrame{
 		saveBtn.setPreferredSize(new Dimension(100, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
 		
+		saveBtn.addActionListener(this);
+		
 		cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
 		cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		
+		cancelBtn.addActionListener(this);
 		
 		buttonField.add(saveBtn);
 		buttonField.add(Box.createHorizontalStrut(150));
@@ -122,13 +140,24 @@ public class editProductForm extends JFrame{
 		setVisible(true);
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new editProductForm();
-			}
-		}); 
+	public void actionPerformed(ActionEvent e) {
+		
+		String com = e.getActionCommand().toString();
+		if(com.equals("Save")) {
+			//this.controller.updateFood();
+			//controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+						
+		}
+		else if(com.equals("Cancel")) {
+			this.dispose();
+		}else if(com.equals("Choose a image")) {
+			this.controller.OpenFileImageEditForm();
+			//controllerAddFood.OpenFileImage();
+		}else if(com.equals("Choose ingredient")) {
+			addIngre ingre = new addIngre("edit");
+			
+		}
 	}
+	
 	
 }

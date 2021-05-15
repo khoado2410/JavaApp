@@ -6,18 +6,32 @@ public class Food {
 	private String FoodID;
 	private String nameFood;
 	private String foodType;
+	private String foodTypeName;
+	public String getFoodTypeName() {
+		return foodTypeName;
+	}
+
+	public void setFoodTypeName(String foodTypeName) {
+		this.foodTypeName = foodTypeName;
+	}
+
 	private int QuantityOfStock;
 	private int price;
 	private String ImageFood;
 	private ArrayList<Product> ingredient;
 
-	public Food(String id, String name, int price, String type, int quantity, String img) {
+	public Food(String id, String name, int price, String type, int quantity, String img, String foodTypeName){
 		this.FoodID = id;
 		this.nameFood = name;
 		this.price = price;
 		this.foodType = type;
 		this.QuantityOfStock = quantity;
 		this.setImageFood(img);
+		this.foodTypeName = foodTypeName;
+	}
+	
+	public Food(String id) {
+		this.FoodID = id;
 	}
 
 	public int getQuantityOfStock() {
