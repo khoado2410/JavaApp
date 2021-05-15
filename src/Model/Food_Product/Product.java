@@ -21,6 +21,10 @@ public class Product {
 		this.listProduct = new ArrayList<Product>();
 	}
 	
+	public Product(String id) {
+		this.productID = id;
+	}
+	
 	public Product(String id, String name, int price, int mass) {
 		this.productID = id;
 		this.nameProduct = name;
@@ -169,7 +173,52 @@ public class Product {
 			return false;
 		}
 	}
+	
+	public boolean updateProduct(Product a) {
+		String querySql = "{call editProduct(?, ?, ?, ?)}";
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)){
+			try {
+				CallableStatement cstmt = DBConnection.connection.prepareCall(querySql);
+				
+				cstmt.setString(1, a.getProductID());
+				cstmt.setString(2, a.getNameProduct());
+				cstmt.setInt(3, a.getMass());
+				cstmt.setInt(4, a.getPrice());
+	
+				cstmt.executeUpdate();
 
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot insert food to menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
+	public  boolean deleteProduct(Product s) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				
+				String deleteString = "{call removeProduct(?)}";
+				
+				CallableStatement cstmt = DBConnection.connection.prepareCall(deleteString);
+				cstmt.setString(1, s.getProductID());
+				cstmt.executeUpdate();
+
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete food: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		Product m = new Product();

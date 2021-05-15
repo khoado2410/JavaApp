@@ -23,8 +23,8 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 	
 	public JPanel top;
 	public JPanel content;
-	public JButton edit;
-	public JButton delete;
+	public static JButton edit;
+	public static JButton delete;
 	public static JTable mytable = new JTable();
 	public DefaultTableModel defaultModel = new DefaultTableModel();
 	public ManageMenuAndProduct controller = new ManageMenuAndProduct(this);
@@ -50,14 +50,14 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 		model.addRow(dataRow);
 	}
 	
-//	public static void updateMenu(ArrayList<Food> lst) {
-//		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
-//		model.setNumRows(0);
-//		for(Food food : lst) {
-//			model.addRow(new Object[] {food.getFoodID(), food.getNameFood(), food.getFoodTypeName(), 
-//									food.getQuantityOfStock(), food.getPrice(), edit, delete});
-//		}
-//	}
+	public static void updateProduct(ArrayList<Product> lst) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		model.setNumRows(0);
+		for(Product food : lst) {
+			model.addRow(new Object[] {food.getProductID(), food.getNameProduct(), food.getMass(), 
+									food.getPrice(), edit, delete});
+		}
+	}
 	
 	
 	public Product_ProductManagementUI() {
@@ -231,8 +231,9 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 				        	
 				        }
 				        else if(col == 5) {
-				        	
-				        	ManageMenuAndProduct.removeRow(id);
+				        	//ManageMenuAndProduct.
+				        	//ManageMenuAndProduct.removeRow(id);
+				        	ManageMenuAndProduct.removeRowOfProduct(id);
 				        	
 				        }
 				    }
@@ -253,7 +254,7 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 		
 		
 		if(s.equals("Menu Management")) {
-			
+		
 			//this.menuAndProduct.changePanelMenu();
 			
 		}else if(s.equals("Product Management")) {

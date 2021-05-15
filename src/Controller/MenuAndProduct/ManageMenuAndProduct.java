@@ -442,6 +442,61 @@ public class ManageMenuAndProduct {
 		this.productModel = new Product();
 	}
 	
+	public boolean updateProduct() {
+		
+		String productID = this.editProductUI.productIDField.getText();
+		String productName = this.editProductUI.productNameField.getText();
+
+		int price = 0;
+		try {
+			if (isNumeric(this.editProductUI.priceField.getText()))
+				price = Integer.parseInt(this.editProductUI.priceField.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Error");
+		}
+
+		int mass = Integer.parseInt(this.editProductUI.massField.getText());
+		
+		Product newProduct = new Product(productID, productName, mass, price);
+		
+		boolean check = this.productModel.updateProduct(newProduct);
+		
+		if(check == true) {
+			ArrayList<Product> li = this.getListProduct();
+			Product_ProductManagementUI.updateProduct(li);
+			
+			JOptionPane.showMessageDialog(this.editProductUI, "Chỉnh sửa " + newProduct.getNameProduct() + " thành công!");	
+			this.editProductUI.dispose();
+			return true;
+				
+			}else {
+				JOptionPane.showMessageDialog(this.editForm, "Thêm thất bại!");
+				this.editProductUI.dispose();
+				return false;
+			}
+		
+	}
+	
+	public static void removeRowOfProduct(String id) {
+		
+		Product a = new Product();
+		int input = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa không?",
+                null, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+		
+		if(input == 0) {
+			Product food = new Product(id);
+			boolean check = a.deleteProduct(food);
+			if(check) {
+				ArrayList<Product> listProduct = new ArrayList<Product>();
+				if(a.loadProductFromDB()) {
+					listProduct = a.getListProduct();
+				}
+				Product_ProductManagementUI.updateProduct(listProduct);
+			}
+		}
+		
+	}
+	
 	
 	
 }

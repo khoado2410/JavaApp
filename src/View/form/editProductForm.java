@@ -18,19 +18,19 @@ public class editProductForm extends JFrame implements ActionListener{
 	
 	private ManageMenuAndProduct controller = new ManageMenuAndProduct(this);
 	private String type;
+	public JTextField productIDField;
+	public JTextField productNameField;
+	public JTextField massField;
+	public JTextField priceField;
 	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel productID;
-	private JTextField productIDField;
 	private JLabel productName;
-	private JTextField productNameField;
 	private JLabel mass;
-	private JTextField massField;
 	private JLabel price;
-	private JTextField priceField;
 	private JPanel buttonField;
 	private JButton saveBtn;
 	private JButton cancelBtn;
@@ -144,8 +144,8 @@ public class editProductForm extends JFrame implements ActionListener{
 		
 		String com = e.getActionCommand().toString();
 		if(com.equals("Save")) {
-			//this.controller.updateFood();
-			//controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+			this.controller.updateProduct();
+			
 						
 		}
 		else if(com.equals("Cancel")) {
