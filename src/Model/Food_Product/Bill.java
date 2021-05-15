@@ -127,8 +127,9 @@ public class Bill {
 	}
 
 	public void addFood(Food a, int q) {
-		if (this.listFood.containsKey(a))
+		if (this.listFood.containsKey(a)) {
 			this.updateQuantity(a, 1);
+		}
 		else
 			this.listFood.put(a, q);
 	}

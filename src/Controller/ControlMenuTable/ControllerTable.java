@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Controller.PanelChange.ControllerPanel;
 import Model.Food_Product.Bill;
 import Model.Food_Product.Table;
 
@@ -21,7 +22,9 @@ public class ControllerTable implements ActionListener {
 	private ControllerBill controllerBill;
 	private JPanel listFoodInBillPanel;
 	private JLabel idTable;
-	public ControllerTable(JLabel usedTableLabel, JPanel liTablePanel, JLabel idTable, JPanel liFIBPanel) {
+	private Bill bill;
+	private ControllerPanel controllerPanel;
+	public ControllerTable(JLabel usedTableLabel, JPanel liTablePanel, JLabel idTable, JPanel liFIBPanel, ControllerPanel cp) {
 		listTablePanel = liTablePanel;
 		listTablePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 15, 5));
 		numUsedTableLabel = usedTableLabel;
@@ -30,6 +33,8 @@ public class ControllerTable implements ActionListener {
 		Table table = new Table();
 		listTable = table.loadTableFromDB();
 		numUsedTableLabel.setText("Used " + countTableInUse() + "/" + Integer.toString(listTable.size()));
+		controllerPanel = cp;
+		bill = new Bill();
 	}
 
 	public void loadListTable() {
@@ -61,11 +66,15 @@ public class ControllerTable implements ActionListener {
 		}
 		return count;
 	}
+	public Bill getBillFromTable() {
+		return this.bill;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Bill b = new Bill(listTable.get(Integer.parseInt(e.getActionCommand().trim()) - 1).getIdBill());
-		controllerBill = new ControllerBill(b, listFoodInBillPanel, listTable.get(Integer.parseInt(e.getActionCommand().trim()) - 1));
+		bill = new Bill(listTable.get(Integer.parseInt(e.getActionCommand().trim()) - 1).getIdBill());
+		controllerBill = new ControllerBill(bill, listFoodInBillPanel, listTable.get(Integer.parseInt(e.getActionCommand().trim()) - 1));
 		controllerBill.loadBill();
+		controllerPanel.setControllerBill(controllerBill, this, listFoodInBillPanel);
 		idTable.setText("Table " + e.getActionCommand());
 	}
 }

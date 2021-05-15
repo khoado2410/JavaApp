@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -24,9 +25,10 @@ public class ControllerMenu implements ActionListener, ItemListener {
 	private JPanel p;
 	private JPanel coverPanel;
 	private ControllerBill controllerBill;
+	private ControllerTable controllerTable;
 	JComboBox<String> jcb;
 
-	public ControllerMenu(JPanel cv, JPanel fpanel, JComboBox<String> cb) {
+	public ControllerMenu(JPanel cv, JPanel fpanel, JComboBox<String> cb, ControllerBill conb, ControllerTable ct) {
 		menu = new Menu();
 		menu.loadFoodFromDB();
 		menuSearchByType = menu;
@@ -36,7 +38,10 @@ public class ControllerMenu implements ActionListener, ItemListener {
 		jcb = cb;
 		coverPanel = cv;
 		cv.setLayout(new FlowLayout(FlowLayout.LEADING, 15, 5));
-		bill = new Bill();
+		controllerBill = conb;
+		controllerBill.setBillPanel(fpanel);
+		this.controllerTable = ct;
+		this.bill = controllerBill.getBill();
 	}
 
 	public void loadListMenu() {
@@ -70,16 +75,23 @@ public class ControllerMenu implements ActionListener, ItemListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		for (Food f : menu.getMenu()) {
+	public void actionPerformed(ActionEvent e) {		
+		/*
+		 * for (Food f : menu.getMenu()) { if
+		 * (f.getNameFood().equals(e.getActionCommand())) { if
+		 * (!controllerBill.getBill().getListFood().containsKey(f)) { bill.addFood(f,
+		 * 1); controllerBill.addToBill(f); } } }
+		 */
+		for (Food f: bill.getListFood().keySet())
+			if (!f.getNameFood().equals(e.getActionCommand()))
+				continue;
+			else
+				return;
+		for (Food f: menu.getMenu())
 			if (f.getNameFood().equals(e.getActionCommand())) {
-				if (!bill.getListFood().containsKey(f)) {
-					bill.addFood(f, 1);
-					controllerBill = new ControllerBill(bill, f, p);
-					controllerBill.addToBill();
-				}
+				bill.addFood(f, 1);
+				controllerBill.addToBill(f);
 			}
-		}
 	}
 
 	@Override
