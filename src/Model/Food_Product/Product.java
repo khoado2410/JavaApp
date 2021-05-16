@@ -83,6 +83,8 @@ public class Product {
 		this.price = price;
 	}
 	
+<<<<<<< HEAD
+=======
 	public boolean loadProductFromDB() {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
@@ -232,4 +234,5 @@ public class Product {
 		
 		
 	}
+>>>>>>> 1cb1a6cac1ad33fa4e1fb5a5ebe980ca2f16fd89
 }

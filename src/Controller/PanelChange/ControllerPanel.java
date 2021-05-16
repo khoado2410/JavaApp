@@ -5,11 +5,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Controller.ControlMenuTable.ControllerBill;
+import Controller.ControlMenuTable.ControllerTable;
 import View.Frame.*;
 
 public class ControllerPanel implements ActionListener{
 	private String nameAction;
 	private JPanel main;
+	private JPanel billPanel;
+	private ControllerBill controllerBill;
+	private ControllerTable controllerTable;
+	public ControllerBill getControllerBill() {
+		return controllerBill;
+	}
+	public void setControllerBill(ControllerBill controllerBill, ControllerTable controllerTable, JPanel billPanel) {
+		this.controllerBill = controllerBill;
+		this.controllerTable = controllerTable;
+		this.billPanel = billPanel;
+	}
 	public ControllerPanel(JPanel p) {
 		main = p;
 	}
@@ -32,7 +45,7 @@ public class ControllerPanel implements ActionListener{
 			break;
 		}
 		case "Menu": {
-			setPanel(new MenuFrame());
+			setPanel(new MenuFrame(controllerBill, controllerTable, billPanel));
 			break;
 		}
 		case "Tables":

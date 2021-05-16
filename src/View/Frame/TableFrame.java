@@ -125,7 +125,7 @@ public class TableFrame extends JPanel {
 		listFoodPanel = new JPanel();
 		tableName = new JLabel();
 		
-		controllerTable = new ControllerTable(numTableUsedLabel, coverPanel, tableName, listFoodPanel);
+		controllerTable = new ControllerTable(numTableUsedLabel, coverPanel, tableName, listFoodPanel, controller);
 		controllerTable.loadListTable();
 		
 		nameTablePanel.add(tableName);

@@ -3,7 +3,9 @@ package View.Frame;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import Controller.ControlMenuTable.ControllerBill;
 import Controller.ControlMenuTable.ControllerMenu;
+import Controller.ControlMenuTable.ControllerTable;
 import Controller.PanelChange.ControllerPanel;
 
 import java.awt.*;
@@ -26,7 +28,7 @@ public class MenuFrame extends JPanel {
 	private JLabel tableName;
 	private ControllerPanel controllerPanel;
 	private ControllerMenu controllerMenu;
-	public MenuFrame() {
+	public MenuFrame(ControllerBill cb, ControllerTable ct, JPanel billPanel) {
 		setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize);
@@ -51,9 +53,9 @@ public class MenuFrame extends JPanel {
 		coverPanel.setPreferredSize(new Dimension(leftSide, heightMain + 500));
 		listTypeFood = new JComboBox<>();
 		listTypeFood.setPreferredSize(new Dimension(300, 20));
-		listFoodPanel = new JPanel();
+		listFoodPanel = billPanel;
 		
-		controllerMenu = new ControllerMenu(coverPanel, listFoodPanel, listTypeFood);
+		controllerMenu = new ControllerMenu(coverPanel, listFoodPanel, listTypeFood, cb, ct);
 		controllerPanel = new ControllerPanel(this);
 		
 		navbarPanel = new JPanel();
