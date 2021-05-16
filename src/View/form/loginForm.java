@@ -14,21 +14,25 @@ import java.sql.Statement;
 import javax.swing.*;
 
 import Controller.DBConnection.*;
+import Controller.Login.ControllerLogin;
 import net.miginfocom.swing.MigLayout;
 
-public class loginForm extends JFrame{
+public class loginForm extends JFrame implements ActionListener{
+	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel username;
-	private JTextField usernameField;
+	public JTextField usernameField;
 	private JLabel pass;
-	private JPasswordField passField;
+	public JPasswordField passField;
 	private JPanel buttonField;
 	private JButton loginBtn;
 	
-	public loginForm() {
+	private ControllerLogin control = new ControllerLogin(this);
+	
+	public loginForm () {
 		setSize(700, 700);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
@@ -81,22 +85,21 @@ public class loginForm extends JFrame{
 		buttonField.setBackground(Color.white);
 		
 		loginBtn = new JButton("Login");
-		loginBtn.setBackground(Color.BLACK);
-		loginBtn.setForeground(Color.PINK);
+		loginBtn.setBackground(Color.PINK);
+		loginBtn.setForeground(Color.BLACK);
 		loginBtn.setPreferredSize(new Dimension(100, 40));
 		loginBtn.setFont(loginBtn.getFont().deriveFont(Font.PLAIN, 20));
-		loginBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String username = String.valueOf(usernameField.getText());
-				String pass = String.valueOf(passField.getPassword());				
-				if(checkUser(username, pass)) {
-					JOptionPane.showMessageDialog(null, "Successfully!");
-				}
-				else
-					JOptionPane.showMessageDialog(null, "Try again!");
-			}
-		});
+		loginBtn.addActionListener(this);
 		
+		JButton cancelBtn = new JButton("Cancel");
+		cancelBtn.setBackground(Color.BLACK);
+		cancelBtn.setForeground(Color.WHITE);
+		cancelBtn.setPreferredSize(new Dimension(100, 40));
+		cancelBtn.setFont(cancelBtn.getFont().deriveFont(Font.PLAIN, 20));
+		cancelBtn.addActionListener(this);
+		
+		buttonField.add(cancelBtn);
+		buttonField.add(Box.createHorizontalStrut(150));
 		buttonField.add(loginBtn);
 		
 		mainFramePanel.add(title);
@@ -105,46 +108,6 @@ public class loginForm extends JFrame{
 		setVisible(true);
 	}
 	
-	public static boolean checkUser(String username, String pass) {
-		boolean flag = false;
-		if(username.isEmpty() || pass.isEmpty()) 		{
-			JOptionPane.showMessageDialog(null, "All fields are required");
-			System.out.println("Try again");
-		}
-			
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			
-			try {
-			   String query = "Select Username, Password from AccountManager WHERE Username=? and Password =?";
-			   PreparedStatement ps =  DBConnection.connection.prepareStatement(query);
-			   ps.setString(1, username);
-			   ps.setString(2, pass);
-			   ResultSet rs = ps.executeQuery();
-			   
-			   if(!rs.next()){
-				   flag = false;
-				   JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", 2);
-		            ps.close();
-		            rs.close();
-		       }
-			   
-			   else {
-				   flag = true;
-				   System.out.println("Succeeded");
-			   }
-			   
-			   rs.close();
-	       	   DBConnection.connection.close();
-	       	   
-			} catch (SQLException e) {
-	            e.printStackTrace();	            
-	        }       	             
-		}
-		else {
-			System.out.println("Something went wrong!!!");
-		}
-		return flag;	
-	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -153,6 +116,19 @@ public class loginForm extends JFrame{
 				new loginForm();
 			}
 		}); 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		String com = e.getActionCommand().toString();
+		if(com.equals("Login")) {
+			this.control.checkLogin(this.usernameField.getText(), this.passField.getText());
+		}if(com.equals("Cancel")) {
+			this.dispose();
+		}
+		
 	}
 
 }

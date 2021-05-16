@@ -70,6 +70,8 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	}
 	
 	public Product_MenuManagementUI() {
+		
+		controller = new ControllerPanel(this);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		
@@ -84,12 +86,15 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		buttonProduct.setBackground(new Color(0, 0, 0));
 		buttonProduct.setForeground(new Color(255, 192, 203));
 		
+		controller.setEventButton(buttonProduct, "buttonProduct");
 		
-		buttonMenu.setActionCommand("Menu Management");
-		buttonProduct.setActionCommand("Product Management");
 		
-		buttonMenu.addActionListener(this);
-		buttonProduct.addActionListener(this);
+		
+		//buttonMenu.setActionCommand("Menu Management");
+		//buttonProduct.setActionCommand("Product Management");
+		
+		//buttonMenu.addActionListener(this);
+		//buttonProduct.addActionListener(this);
 		
 		navbar.setLayout(new GridLayout(1, 2));
 		navbar.add(buttonMenu);
@@ -112,7 +117,7 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
 		
-		controller = new ControllerPanel(this);
+		
 		controller.setEventButton(icon, "Home");
 		
 		jlb_staff = new JLabel("<html><span style='font-size:25px'>Menu</span></html>");
@@ -294,22 +299,16 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 				setVisible(true);
 		
 	}		
-	
-
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
-		
-		
 		if(s.equals("Menu Management")) {
 			
-			this.menuAndProduct.changePanelMenu();
+		//	this.menuAndProduct.changePanelMenu();
 			
 		}else if(s.equals("Product Management")) {
-			this.menuAndProduct.changePanelProduct();
+			//this.menuAndProduct.changePanelProduct();
 		}else if(s.equals("edit")) {
 			//JOptionPane.showConfirmDialog(this, "AA");
 		}else if(s.equals("delete")) {

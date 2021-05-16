@@ -154,7 +154,7 @@ public class editProductForm extends JFrame implements ActionListener{
 			this.controller.OpenFileImageEditForm();
 			//controllerAddFood.OpenFileImage();
 		}else if(com.equals("Choose ingredient")) {
-			addIngre ingre = new addIngre("edit");
+			//addIngre ingre = new addIngre("edit");
 			
 		}
 	}

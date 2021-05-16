@@ -25,6 +25,12 @@ public class Product {
 		this.productID = id;
 	}
 	
+	public Product(String id, String name, int mass) {
+		this.productID = id;
+		this.nameProduct = name;
+		this.mass = mass;
+	}
+	
 	public Product(String id, String name, int price, int mass) {
 		this.productID = id;
 		this.nameProduct = name;
@@ -83,6 +89,33 @@ public class Product {
 		this.price = price;
 	}
 
+	//public boolean 
+	public boolean getIngredientForFood(String idFood) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call getIngredientOfFood(?)}";
+				PreparedStatement pstatement = DBConnection.connection.prepareStatement(sp_load);
+				 pstatement.setString(1, idFood);
+				 ResultSet rs = pstatement.executeQuery();
+				while (rs.next()) {
+					String fid = rs.getString("ProductID");
+					String pname = rs.getString("ProductName");
+					int mass = rs.getInt("Mass");
+					Product f = new Product(fid, pname, mass);
+					this.listProduct.add(f);
+				}
+				pstatement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
 	public boolean loadProductFromDB() {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
@@ -110,14 +143,15 @@ public class Product {
 		}
 	}
 	
-	public void addIngredient(String foodName, String productName) {
+	public void addIngredient(String foodName, String productName, int mass) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				String query = "{call addIngredient(?, ?)}";
+				String query = "{call addIngredient(?, ?, ?)}";
 				CallableStatement cstmt = DBConnection.connection.prepareCall(query);
 
 				cstmt.setString(1, foodName);
 				cstmt.setString(2, productName);
+				cstmt.setInt(3, mass);
 
 				cstmt.execute();
 				cstmt.close();
@@ -150,6 +184,29 @@ public class Product {
 			}
 		}
 		return id;
+	}
+	
+	public boolean deleteIngredient(String idFood, String productID) {
+		
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				
+				String deleteString = "{call removeIngredient(?, ?)}";
+				
+				CallableStatement cstmt = DBConnection.connection.prepareCall(deleteString);
+				cstmt.setString(1, idFood);
+				cstmt.setString(2, productID);
+				cstmt.executeUpdate();
+
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete food: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
 	
 	public boolean addNewProduct(Product a) {

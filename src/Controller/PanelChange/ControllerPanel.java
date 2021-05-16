@@ -8,6 +8,7 @@ import javax.swing.*;
 import Controller.ControlMenuTable.ControllerBill;
 import Controller.ControlMenuTable.ControllerTable;
 import View.Frame.*;
+import View.form.loginForm;
 
 public class ControllerPanel implements ActionListener{
 	private String nameAction;
@@ -62,12 +63,21 @@ public class ControllerPanel implements ActionListener{
 			setPanel(new MainFrame());
 			break;
 		case "Staff": {
-			System.out.println("STaf uii");
-			setPanel(new Staff_ManagerStaffUI());
+			if(MainFrame.use>0) {
+				setPanel(new Staff_ManagerStaffUI());
+			}else {
+				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
+				loginForm a = new loginForm();
+			}
 			break;
 		}
 		case "Stock": {
-			setPanel(new Product_MenuManagementUI());
+			if(MainFrame.use>0) {
+				setPanel(new Product_MenuManagementUI());
+			}else {
+				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
+				loginForm a = new loginForm();
+			}
 			break;
 		
 			}
@@ -82,7 +92,12 @@ public class ControllerPanel implements ActionListener{
 		
 			}
 		case "Cash Book": {
-			setPanel(new RevenueUI());
+			;if(MainFrame.use>0) {
+				setPanel(new RevenueUI());
+			}else {
+				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
+				loginForm a = new loginForm();
+			}
 			break;
 		
 			}
@@ -91,8 +106,29 @@ public class ControllerPanel implements ActionListener{
 			break;
 		
 			}
+		case "buttonProduct": {
+			setPanel(new Product_ProductManagementUI());
+			break;
+		
+			}
+		case "MenuManagement": {
+			setPanel(new Product_MenuManagementUI());
+			break;
+		
+			}
+		case "Login": {
+			if(MainFrame.use == 0) {
+				loginForm a = new loginForm();
+			}
+			else {
+				JOptionPane.showMessageDialog(this.main, "Đã đăng nhập");
+			}
+				break;
+			}
 
-		}}
+		}
+		
+	}
 }
 
 

@@ -11,6 +11,9 @@ public class MainFrame extends JPanel {
 	public JPanel main;
 	private JPanel mainPanel;
 	private ControllerPanel controller;
+	
+	public static int use = 0;
+	
 	public MainFrame() {
 		setLayout(new BorderLayout());
 		controller = new ControllerPanel(this);
@@ -46,13 +49,15 @@ public class MainFrame extends JPanel {
 				case 4:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Login.png"));
 					jbtn.setText("Login");
-					
+					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 				case 5:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Deal.png"));
 					jbtn.setText("Deal");
 					break;
 			}
+			
+			
 			mainPanel.add(jbtn);
 		}
 		add(mainPanel, BorderLayout.CENTER);

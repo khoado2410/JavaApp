@@ -19,11 +19,13 @@ import net.miginfocom.swing.MigLayout;
 public class addIngre extends JFrame implements ActionListener, ItemListener{
 	
 	public String type;
+	public String idFood;
 	
 	ManageMenuAndProduct controllerIngre = new ManageMenuAndProduct(this);
     public ArrayList<String> ingreList = new ArrayList<>();
     public JCheckBox boxes[];
     public ArrayList<String> listOption = new ArrayList<String>();
+    
     
     private JPanel mainFramePanel;
 	private JPanel title;
@@ -34,9 +36,10 @@ public class addIngre extends JFrame implements ActionListener, ItemListener{
 	private JButton cancelBtn;
 	private static ArrayList<String> checkedList = new ArrayList<>();
     
-    public addIngre(String type) {
+    public addIngre(String type, String id) {
     	
     	this.type = type;
+    	this.idFood = id;
     	
     	mainFramePanel = new JPanel();
 		mainFramePanel.setLayout(new FlowLayout(1, 0, 0));
@@ -107,13 +110,7 @@ public class addIngre extends JFrame implements ActionListener, ItemListener{
 		// TODO Auto-generated method stub
 		String com = e.getActionCommand().toString();
 		if(com.equals("Save")) {
-			
-			if(this.type == "edit") {
-				controllerIngre.passDataToEditFood(this.listOption);
-			}else {
-				controllerIngre.passDataToFormFood(this.listOption);
-			}
-			//controllerIngre.passDataToEditFood(this.listOption);
+			controllerIngre.passDataToFormFood(this.listOption, this.idFood);
 			this.dispose();
 		}
 		else if(com.equals("Cancel")) {

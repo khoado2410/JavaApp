@@ -68,6 +68,7 @@ public class editFoodForm extends JFrame implements ActionListener{
 	
 	
 	
+	
 	public editFoodForm(String id, String name, String price1, String amount) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(700, screenSize.height);
@@ -170,7 +171,7 @@ public class editFoodForm extends JFrame implements ActionListener{
 		jresult = new JScrollPane(ingresL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jresult.setPreferredSize(new Dimension(340, 200));
 		
-		addIngredient = new JButton("Choose ingredient");
+		addIngredient = new JButton("View ingredient");
 		addIngredient.setPreferredSize(new Dimension(330, 40));
 		addIngredient.setFont(imageBtn.getFont().deriveFont(Font.PLAIN, 20));
 		addIngredient.setMaximumSize(new Dimension(330, 40));
@@ -192,9 +193,9 @@ public class editFoodForm extends JFrame implements ActionListener{
 		formContent.add(ingredient);
 		//formContent.add(ingredientField, "split");
 		formContent.add(addIngredient, "wrap 30");
-		formContent.add(ingres);
+		//formContent.add(ingres);
 		//formContent.add(ingresL);
-		formContent.add(jresult);
+		//formContent.add(jresult);
 //		scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		buttonField = new JPanel(new MigLayout("align 50%"));
@@ -244,19 +245,22 @@ public class editFoodForm extends JFrame implements ActionListener{
 		
 		String com = e.getActionCommand().toString();
 		if(com.equals("Save")) {
-			this.controller.updateFood();
-			//controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
-						
+			this.controller.updateFood();		
 		}
 		else if(com.equals("Cancel")) {
 			this.dispose();
 		}else if(com.equals("Choose a image")) {
 			this.controller.OpenFileImageEditForm();
 			//controllerAddFood.OpenFileImage();
-		}else if(com.equals("Choose ingredient")) {
-			addIngre ingre = new addIngre("edit");
+		}else if(com.equals("View ingredient")) {
+			
+			this.controller.viewIngredient(this.foodIDField.getText());
 			
 		}
+	}
+	
+	public static void main(String args[]) {
+		editFoodForm a = new editFoodForm("", "", "", "");
 	}
 
 	
