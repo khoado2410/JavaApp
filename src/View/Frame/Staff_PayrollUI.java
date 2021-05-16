@@ -1,22 +1,37 @@
 package View.Frame;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.table.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
+import Controller.ManageStaff.ControllerManageStaff;
 import Controller.PanelChange.ControllerPanel;
+import Model.Shift.Shift;
+import Model.Staff_Manager.Staff;
 
 public class Staff_PayrollUI extends JPanel {
 	
 	ControllerPanel controller;
+	
+	JPanel panelManageStaff = new JPanel();
+	public static JButton remove;
+	public static JButton edit;
+	public static JButton delete;
+	public static JTable mytable = new JTable();
+	public DefaultTableModel defaultModel = new DefaultTableModel();
+	public static ArrayList<Staff> listStaff;
+	
 
+	private ControllerManageStaff controlStaff = new ControllerManageStaff(this);
+	
 	public Staff_PayrollUI() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+		listStaff = new ArrayList<Staff>();
+		listStaff = this.controlStaff.loadStaff();
 
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
@@ -71,13 +86,22 @@ public class Staff_PayrollUI extends JPanel {
 
 		JPanel right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		JButton add = new JButton("<html><span style='font-size:18px; color:white'>Total salary</span></html>");
+		JLabel add = new JLabel("<html><span style='font-size:18px; color:white'></span></html>");
+		
 		add.setBackground(new Color(0, 0, 0));
 		add.setOpaque(true);
+		int sum = 0;
+		for(Staff st: listStaff) {
+			sum += st.getHourWorking()*st.getSalary();
+		}
+		add.setText("Total salary: " + sum);
+		add.setHorizontalAlignment(JLabel.LEFT);
+		add.setFont(add.getFont().deriveFont(Font.PLAIN, 30));
+		add.setForeground(Color.white);
 
 		SpringLayout springlayout1 = new SpringLayout();
 		right.setLayout(springlayout1);
-		springlayout1.putConstraint(SpringLayout.WEST, add, 200, SpringLayout.WEST, right);
+		springlayout1.putConstraint(SpringLayout.WEST, add, 170, SpringLayout.WEST, right);
 		springlayout1.putConstraint(SpringLayout.SOUTH, add, -30, SpringLayout.SOUTH, right);
 		right.add(add);
 
@@ -90,78 +114,84 @@ public class Staff_PayrollUI extends JPanel {
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
 		content.setPreferredSize(new Dimension(100, 400));
-
-		class JPanelImage implements TableCellRenderer {
+		
+		class JPanelImage implements TableCellRenderer{
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
-				return (Component) value;
+				return (Component)value;
 			}
-
+			
 		}
-
+		
 		// JLabel chua 2 icon
-		JLabel edit = new JLabel();
+		edit = new JButton();
 		ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
 		edit.setIcon(_edit);
-
+		
 		ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-		JLabel remove = new JLabel();
+		remove = new JButton();
 		remove.setIcon(_remove);
-
-		JPanel fonc = new JPanel();
-		SpringLayout springlayout2 = new SpringLayout();
-		fonc.setLayout(springlayout2);
-		springlayout2.putConstraint(SpringLayout.WEST, edit, 90, SpringLayout.WEST, fonc);
-		springlayout2.putConstraint(SpringLayout.SOUTH, edit, -15, SpringLayout.SOUTH, fonc);
-		springlayout2.putConstraint(SpringLayout.WEST, remove, 120, SpringLayout.WEST, fonc);
-		springlayout2.putConstraint(SpringLayout.SOUTH, remove, -15, SpringLayout.SOUTH, fonc);
-		fonc.add(edit);
-		fonc.add(remove);
-		String[] columnNames = { "Staff's ID", "Staff's name", "Working hours", "VND/hour", "Salary", "" };
-
-		Object[][] data = { { "NV1", "Nguyen Nhat Minh", "20", "5000", "10000", fonc, },
-				{ "NV2", "Nguyen Nhat Minh", "20", "5000", "10000", fonc, },
-				{ "NV3", "Nguyen Nhat Minh", "20", "5000", "10000", fonc, },
-				{ "NV4", "Nguyen Nhat Minh", "20", "5000", "10000", fonc, } };
-
-		class MyJTable extends JTable {
-			MyJTable(Object[][] data, String[] columnNames) {
-				super(data, columnNames);
-			}
-
-			public java.awt.Component prepareRenderer(javax.swing.table.TableCellRenderer rendrer, int row, int col) {
-				Component comp = super.prepareRenderer(rendrer, row, col);
-				if (row % 2 == 0 && !isCellSelected(row, col)) {
-					comp.setBackground(new Color(196, 196, 196));
-				} else if (!isCellSelected(row, col)) {
-					comp.setBackground(new Color(169, 169, 169));
-
-				} else {
-					comp.setBackground(Color.black);
-				}
-				return comp;
+		
+		
+		defaultModel = new DefaultTableModel();
+		mytable.setModel(defaultModel);
+		
+		defaultModel.addColumn("Staff ID");
+		defaultModel.addColumn("Staff's Name");
+		defaultModel.addColumn("Working hours");
+		defaultModel.addColumn("VND/hour");
+		defaultModel.addColumn("Salary");
+		
+		
+		
+		for(Staff s : listStaff) {
+			if(s.getHourWorking() != 0) {
+				defaultModel.addRow(new Object[] {s.getStaffID(), s.getStaffName(), s.getHourWorking(),
+						s.getSalary(), s.getSalary()*s.getHourWorking(),remove});
 			}
 		}
-		MyJTable table = new MyJTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(500, 100));
-		table.setFillsViewportHeight(true);
-		table.setRowHeight(60);
+		
+	       				
+		mytable.setRowHeight(50);
+		
+		JScrollPane scrollPane = new JScrollPane(mytable);
+		scrollPane.setPreferredSize(new Dimension(400, 100));
+		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < 6; i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
-
-		table.getColumnModel().getColumn(5).setCellRenderer(new JPanelImage());
-
-		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-		table.getTableHeader().setPreferredSize(new Dimension(100, 60));
-		table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		content.add(table.getTableHeader(), BorderLayout.PAGE_START);
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+		bgcolor.setBackground(Color.white);
+		
+		for(int i = 0; i < 5; i++) {
+			mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}				
+		
+		//mytable.getColumnModel().getColumn(5).setCellRenderer(new JPanelImage());
+		
+		mytable.setFillsViewportHeight(true);
+		mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+		mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
+		
+		mytable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int col = mytable.getSelectedColumn();
+		        int row = mytable.getSelectedRow();
+		        String id = (mytable.getModel().getValueAt(row, 0)).toString();
+		        if (col == 5) {
+		        	
+		        	
+		        	ControllerManageStaff.RemoveTimekeeping(id);
+		        	
+		        }
+		       
+		    }
+		});
+		
 		content.add(scrollPane, BorderLayout.CENTER);
+
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(navbar);

@@ -26,6 +26,8 @@ import javax.swing.filechooser.FileSystemView;
 import net.miginfocom.swing.MigLayout;
 import Controller.DBConnection.DBConnection;
 import Controller.MenuAndProduct.ManageMenuAndProduct;
+import Model.Food_Product.Food;
+import View.Frame.Product_MenuManagementUI;
 
 public class addFoodForm extends JFrame implements ActionListener {
 	
@@ -189,14 +191,7 @@ public class addFoodForm extends JFrame implements ActionListener {
 		formContent.add(quantityField, "wrap 30");
 		formContent.add(image);
 		formContent.add(imageBtn, "wrap 30");
-		formContent.add(ingredient);
-		//formContent.add(ingredientField, "split");
-		formContent.add(addIngredient, "wrap 30");
-		formContent.add(ingres);
-		//formContent.add(ingresL);
-		formContent.add(jresult);
-//		scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+		
 		buttonField = new JPanel(new MigLayout("align 50%"));
 		buttonField.setPreferredSize(new Dimension(screenSize.width - 200, 100));
 		buttonField.setBackground(Color.white);
@@ -252,7 +247,14 @@ public class addFoodForm extends JFrame implements ActionListener {
 		
 		String com = e.getActionCommand().toString();
 		if(com.equals("Save")) {
-			controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+			if(this.controllerAddFood.controllerAddNewFood()) {
+				
+				JOptionPane.showMessageDialog(this, "Vui lòng thêm thành phần cho món ăn");
+				//if(input == 0) {
+					addIngre ingre = new addIngre("edit", this.foodIDField.getText());
+			//	}
+				
+			}
 						
 		}
 		else if(com.equals("Cancel")) {
@@ -260,8 +262,13 @@ public class addFoodForm extends JFrame implements ActionListener {
 		}else if(com.equals("Choose a image")) {
 			controllerAddFood.OpenFileImage();
 		}else if(com.equals("Choose ingredient")) {
-			addIngre ingre = new addIngre("add");
+			//addIngre ingre = new addIngre("add");
 			
 		}
+	}
+
+	private addIngre addIngre(String string) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

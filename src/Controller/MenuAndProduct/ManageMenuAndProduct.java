@@ -25,6 +25,7 @@ import View.Frame.Product_MenuManagementUI;
 import View.Frame.Product_ProductManagementUI;
 import View.Frame.SpendingUI;
 import View.Frame.Staff_ManagerStaffUI;
+import View.Frame.ingredientMass;
 import View.form.addFoodForm;
 import View.form.addIngre;
 import View.form.addProductForm;
@@ -33,6 +34,7 @@ import View.form.editProductForm;
 
 public class ManageMenuAndProduct {
 	
+
 	private Product_MenuManagementUI productAndMenu;
 	
 	private addFoodForm addFoodUI;
@@ -54,6 +56,8 @@ public class ManageMenuAndProduct {
 	private editProductForm editProductUI;
 	
 	private SpendingUI spendUI;
+	
+	private ingredientMass massDetailUi;
 	
 	public ManageMenuAndProduct(SpendingUI spendUI) {
 		this.spendUI = spendUI;
@@ -146,7 +150,54 @@ public class ManageMenuAndProduct {
 		return listFood;
 	}
 	
+	public ManageMenuAndProduct(ingredientMass m) {
+		this.massDetailUi = m;
+		this.productModel = new Product();
+	}
+
+	public void addIngredient(ArrayList<String> nameFood, ArrayList<Integer> mass, String id) {
+			for(int i = 0; i < nameFood.size(); i++) {
+				Product a = new Product();
+				a.addIngredient(id, nameFood.get(i), mass.get(i));
+			}
+			JOptionPane.showMessageDialog(this.massDetailUi, "Thêm thành phần thành công");
+			//this.massDetailUi.dispose();
+	}
 	
+	public ArrayList<Product> getListProductForFood(String id){
+		ArrayList<Product> listProduct = new ArrayList<Product>();
+		if(this.productModel.getIngredientForFood(id)) {
+			listProduct = this.productModel.getListProduct();
+		}
+		return listProduct;
+	}
+	
+	public boolean removeIngredienttFromFood(ArrayList<Product> lstOld, String id) {
+		for(Product temp : lstOld) {
+			this.productModel.deleteIngredient(id, temp.getProductID());
+		}
+		return true;
+	}
+	
+	public void updateIngredient(ArrayList<Product> lstOld, ArrayList<Integer> mass, String id) {
+		if(this.removeIngredienttFromFood(lstOld, id)) {
+			//System.out.println("AAAAAA");
+			for(int i = 0; i < lstOld.size(); i++) {
+				Product a = new Product();
+				a.addIngredient(id, lstOld.get(i).getNameProduct(), mass.get(i));
+				//a.addIngredient(id, lstOld.get(i).getProductID(), mass.get(i));
+			}
+			
+		}
+	}
+	
+	
+	public void viewIngredient(String text) {
+		
+		ArrayList<String> lst = new ArrayList<String>();
+		ingredientMass ingredientDetail = new ingredientMass(lst , text, "edit");
+		
+	}
 	
 	// ADD NEW FOOD
 	
@@ -170,8 +221,9 @@ public class ManageMenuAndProduct {
 		
 	}
 	
-	public void passDataToFormFood(ArrayList<String> list) {
-		addFoodForm.ListIngredient(list);
+	public void passDataToFormFood(ArrayList<String> list, String id) {
+		//addFoodForm.ListIngredient(list);
+		ingredientMass ingredientDetail = new ingredientMass(list, id, "add");
 	}
 	
 	public void passDataToEditFood(ArrayList<String> list) {
@@ -244,7 +296,7 @@ public class ManageMenuAndProduct {
 		boolean check = this.menu.updateFood(newFood);
 		
 		if(check == true) {
-			ArrayList<Food> li = this.loadFoodFromMenu();	
+			ArrayList<Food> li = this.loadFoodFromMenu();
 			Product_MenuManagementUI.updateMenu(li);
 			
 			JOptionPane.showMessageDialog(this.editForm, "Chỉnh sửa " + newFood.getNameFood() + " thành công!");	
@@ -331,18 +383,6 @@ public class ManageMenuAndProduct {
 		
 	}
 
-	
-	public void addProductAndFoodToFoodDetailAndMenu() {
-		
-		if(this.controllerAddNewFood()) {
-			for(int i = 0; i < this.addFoodUI.listFoodName.size(); i++) {
-				Product a = new Product();
-				a.addIngredient(this.addFoodUI.foodIDField.getText(), this.addFoodUI.listFoodName.get(i));
-			}
-		}
-
-		
-	}
 	
 	public static void main(String[] args) {
 		//ManageMenuAndProduct a = new ManageMenuAndProduct();
@@ -514,7 +554,6 @@ public class ManageMenuAndProduct {
 		}
 		
 	}
-	
 	
 	
 }

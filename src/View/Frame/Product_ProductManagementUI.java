@@ -60,13 +60,30 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 									food.getPrice(), edit, delete});
 		}
 	}
-	
-	
+
 	public Product_ProductManagementUI() {
+		controllerPanel = new ControllerPanel(this);
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-	
+		navbar = new JPanel();
+		navbar.setPreferredSize(new Dimension(100, 70));
+
+		buttonMenu = new JButton("<html><span style='font-size:20px'>Menu Management</span></html>");
+		buttonMenu.setBackground(new Color(255, 192, 203));
+		
+
+		buttonProduct = new JButton("<html><span style='font-size:20px'>Product Management</span></html>");
+		buttonProduct.setBackground(new Color(0, 0, 0));
+		buttonProduct.setForeground(new Color(255, 192, 203));
+		
+		this.controllerPanel.setEventButton(buttonMenu, "MenuManagement");
+		
+		
+		navbar.setLayout(new GridLayout(1, 2));
+		navbar.add(buttonMenu);
+		navbar.add(buttonProduct);
+		
 		top = new JPanel();
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
@@ -82,8 +99,9 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 		icon.setBackground(new Color(0, 0, 0));
 		a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
-		controllerPanel = new ControllerPanel(this);
+		
 		controllerPanel.setEventButton(icon, "Home");
+		
 		
 		jlb_staff = new JLabel("<html><span style='font-size:25px'>Products</span></html>");
 		
@@ -244,6 +262,7 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 				content.add(scrollPane, BorderLayout.CENTER);
 	
 				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(navbar);
 				add(top);
 				add(content);
 				

@@ -16,6 +16,7 @@ import Model.Staff_Manager.Staff;
 import View.Frame.Product_MenuManagementUI;
 import View.Frame.Product_ProductManagementUI;
 import View.Frame.Staff_ManagerStaffUI;
+import View.Frame.Staff_PayrollUI;
 import View.Frame.Staff_TimekeepingUI;
 import View.form.addStaffForm;
 import View.form.editStaffForm;
@@ -40,11 +41,18 @@ public class ControllerManageStaff {
 	
 	private Staff_TimekeepingUI timekeepingUI;
 	
-	// SCHEDULE SHIFT
+	private Staff_PayrollUI payrollUI;
 	
-//	public removeShift(String id) {
-//		
-//	}
+	
+	// Payroll UI
+	
+	public ControllerManageStaff(Staff_PayrollUI a) {
+		this.payrollUI = a;
+		this.staffModel = new Staff();
+		
+	}
+	
+	
 	
 	public ControllerManageStaff(Staff_TimekeepingUI staff_TimekeepingUI) {
 		// TODO Auto-generated constructor stub
@@ -210,7 +218,7 @@ public class ControllerManageStaff {
 		} catch(NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Error");
 		}
-		Staff newStaff = new Staff(staffID,  staffName, dob, gender, address, salary, point);
+		Staff newStaff = new Staff(staffID,  staffName, dob, gender, address, salary, point, 0);
 		
 		boolean check = this.staffModel.editStaffFromDB(newStaff);
 	
@@ -293,7 +301,7 @@ public class ControllerManageStaff {
 				} catch(NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Error");
 				}
-				Staff newStaff = new Staff(staffID,  staffName, dob, gender, address, salary, point);
+				Staff newStaff = new Staff(staffID,  staffName, dob, gender, address, salary, point, 0);
 				
 				boolean check = this.staffModel.addStaffToDB(newStaff);
 			

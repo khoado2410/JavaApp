@@ -53,9 +53,9 @@ public class ControllerPanel implements ActionListener{
 			break;
 		case "Home":
 			setPanel(new MainFrame());
+			System.out.println("I'm here");
 			break;
 		case "Staff": {
-			System.out.println("STaf uii");
 			setPanel(new Staff_ManagerStaffUI());
 			break;
 		}
@@ -84,8 +84,20 @@ public class ControllerPanel implements ActionListener{
 			break;
 		
 			}
+		case "buttonProduct": {
+			setPanel(new Product_ProductManagementUI());
+			break;
+		
+			}
+		case "MenuManagement": {
+			setPanel(new Product_MenuManagementUI());
+			break;
+		
+			}
 
-		}}
+		}
+		
+	}
 }
 
 

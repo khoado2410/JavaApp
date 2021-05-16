@@ -18,12 +18,19 @@ public class Staff {
 	private int Salary;
 	private int Point;
 	private String Address;
-	private String hourWorking;
+	private int hourWorking;
 	
-	public String getHourWorking() {
+	public Staff(String id, String staffname, int workingHour, int sal) {
+		this.StaffID = id;
+		this.StaffName = staffname;
+		this.hourWorking = workingHour;
+		this.Salary = sal;
+	}
+	
+	public int getHourWorking() {
 		return hourWorking;
 	}
-	public void setHourWorking(String hourWorking) {
+	public void setHourWorking(int hourWorking) {
 		this.hourWorking = hourWorking;
 	}
 
@@ -46,7 +53,7 @@ public class Staff {
 		this.Point = 0;
 		this.listStaff = new ArrayList<Staff>();
 	}
-	public Staff(String id, String sname, String dob, String gen, String addr, int sal, int p) {
+	public Staff(String id, String sname, String dob, String gen, String addr, int sal, int p, int workhour) {
 		this.StaffID = id;
 		this.StaffName = sname;
 		this.DateOfBirth = dob;
@@ -54,6 +61,7 @@ public class Staff {
 		this.Salary = sal;
 		this.Address = addr;
 		this.Point = p;
+		this.hourWorking = workhour;
 	}
 	public String getStaffID() {
 		return StaffID;
@@ -112,7 +120,8 @@ public class Staff {
 					String add = rs.getString("Address");
 					int sal = rs.getInt("Salary");
 					int ffn = rs.getInt("Point");
-					Staff f = new Staff(fid, fn, fp, ft, add, sal, ffn);
+					int hours = rs.getInt("hourWorking");
+					Staff f = new Staff(fid, fn, fp, ft, add, sal, ffn, hours);
 					this.listStaff.add(f);
 				}
 				statement.close();
