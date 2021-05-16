@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import Controller.ControlMenuTable.ControllerTable;
 import Controller.PanelChange.ControllerPanel;
 
 public class TableFrame extends JPanel {
@@ -19,13 +20,12 @@ public class TableFrame extends JPanel {
 	private JButton payButton;
 	private JButton homeButton;
 	private JLabel numTableUsedLabel;
-	private JPanel tablePanel;
 	private JPanel nameTablePanel;
 	private JPanel listFoodPanel;
-	private JPanel foodPanel;
 	private JLabel tableName;
 	private ControllerPanel controller;
-
+	private ControllerTable controllerTable;
+	private JPanel coverPanel;
 	public TableFrame() {
 		setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -112,68 +112,28 @@ public class TableFrame extends JPanel {
 		JPanel listTableJPanel = new JPanel();
 		mainPanel.add(tableUsedAreaJPanel, BorderLayout.NORTH);
 		mainPanel.add(listTableJPanel, BorderLayout.CENTER);
-		numTableUsedLabel = new JLabel("Use 0/0");
+		
+		numTableUsedLabel = new JLabel();
 		tableUsedAreaJPanel.add(numTableUsedLabel);
-		listTableJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-
-		for (int i = 0; i < 20; i++) {
-			tablePanel = new JPanel();
-			tablePanel.setLayout(new BorderLayout());
-			tablePanel.setPreferredSize(new Dimension(80, 80));
-			JButton resButton = new JButton();
-			ImageIcon resIcon = new ImageIcon("./src/Icon/restaurant.png");
-			resButton.setIcon(resIcon);
-			resButton.setBackground(Color.WHITE);
-			JLabel nameTableLabel = new JLabel("", SwingConstants.CENTER);
-			tablePanel.add(resButton, BorderLayout.CENTER);
-			tablePanel.add(nameTableLabel, BorderLayout.SOUTH);
-			nameTableLabel.setText("Table " + (i + 1));
-			listTableJPanel.add(tablePanel);
-		}
-
+		listTableJPanel.setLayout(new BorderLayout(0, 0));
+		coverPanel = new JPanel();
+		coverPanel.setPreferredSize(new Dimension(leftSide, heightMain + 500));
+		JScrollPane sp = new JScrollPane(coverPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		listTableJPanel.add(sp, BorderLayout.CENTER);
+		
 		nameTablePanel = new JPanel();
-		tableName = new JLabel("Table 1");
-		nameTablePanel.add(tableName);
 		listFoodPanel = new JPanel();
+		tableName = new JLabel();
+		
+		controllerTable = new ControllerTable(numTableUsedLabel, coverPanel, tableName, listFoodPanel, controller);
+		controllerTable.loadListTable();
+		
+		nameTablePanel.add(tableName);
+		
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		for (int i = 0; i < 3; i++) {
-			foodPanel = new JPanel();
-			foodPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
-			JButton trashButton = new JButton(new ImageIcon("./src/Icon/Trash.png"));
-			JLabel idLabel = new JLabel(Integer.toString(i + 1) + ".");
-			JLabel nameFood = new JLabel("Fried Chicken");
-			JButton minusButton = new JButton(new ImageIcon("./src/Icon/Minus.png"));
-			JLabel quantityLabel = new JLabel("1");
-			JButton plusButton = new JButton(new ImageIcon("./src/Icon/Plus.png"));
-			JLabel singlePrice = new JLabel("12$");
-			JLabel totalPrice = new JLabel("12$");
-			foodPanel.add(trashButton);
-			foodPanel.add(idLabel);
-			foodPanel.add(nameFood);
-			foodPanel.add(minusButton);
-			foodPanel.add(quantityLabel);
-			foodPanel.add(plusButton);
-			foodPanel.add(singlePrice);
-			foodPanel.add(totalPrice);
-			listFoodPanel.add(foodPanel);
-		}
-		
 		sideFramePanel.add(nameTablePanel, BorderLayout.NORTH);
 		sideFramePanel.add(listFoodPanel, BorderLayout.CENTER);
 		setVisible(true);
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new TableFrame();
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
 	}
 }

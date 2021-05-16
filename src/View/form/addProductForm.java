@@ -15,22 +15,28 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import Controller.DBConnection.DBConnection;
+import Controller.DBConnection.*;
+import Controller.MenuAndProduct.ManageMenuAndProduct;
 import net.miginfocom.swing.MigLayout;
 
-public class addProductForm extends JFrame{
+public class addProductForm extends JFrame implements ActionListener{
+	
+	private ManageMenuAndProduct controllerAddProduct = new ManageMenuAndProduct(this);
+	
+	public JTextField productNameField;
+	public JTextField priceField;
+	public JTextField massField;
+	public JTextField productIDField;
+	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel productID;
-	private JTextField productIDField;
 	private JLabel productName;
-	private JTextField productNameField;
 	private JLabel mass;
-	private JTextField massField;
 	private JLabel price;
-	private JTextField priceField;
+	
 	private JPanel buttonField;
 	private JButton saveBtn;
 	private JButton cancelBtn;
@@ -70,7 +76,7 @@ public class addProductForm extends JFrame{
 		productIDField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		productIDField.setFont(productIDField.getFont().deriveFont(Font.PLAIN, 20));
 		productIDField.setEditable(false);
-		String text = getProductID();
+		String text = this.controllerAddProduct.getIDProductMax();
 		productIDField.setText(text);
 		
 		productName = new JLabel("Product's name");
@@ -115,12 +121,14 @@ public class addProductForm extends JFrame{
 		saveBtn.setForeground(Color.BLACK);
 		saveBtn.setPreferredSize(new Dimension(100, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		saveBtn.addActionListener(this);
 		
 		cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
 		cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		cancelBtn.addActionListener(this);
 		
 		buttonField.add(saveBtn);
 		buttonField.add(Box.createHorizontalStrut(150));
@@ -130,129 +138,29 @@ public class addProductForm extends JFrame{
 		mainFramePanel.add(formContent);
 		mainFramePanel.add(buttonField);
 		
-		setUpButtonActions();
+		
 		
 		setVisible(true);
 	}
 	
-	public void setUpButtonActions() {
-		ActionListener save = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				addProduct();
-				JOptionPane.showMessageDialog(null, "Success");
-				dispose();
-			}
-		};
-		
-		ActionListener cancel = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				dispose();
-			}
-		};
-		
-		saveBtn.addActionListener(save);
-		cancelBtn.addActionListener(cancel);	
-		
-	}	
-	
-	public String getProductID() {
-		String id = "";
-		
-		String cmd1 = "SELECT ProductID FROM Product WHERE ProductID = (SELECT max(ProductID) FROM Product)";
-		
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			String temp = "";
-			int length = 0;
-			try {
-				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-				ResultSet results = ps.executeQuery();
-				while(results.next()) {
-	     	   		temp = results.getString("ProductID");
-	     	   		temp = temp.replaceAll("\\s+", "");
-	     	   		length = temp.length();
-	     	   		DBConnection.connection.commit();
-	     	   	}
-				results.close();
-				int newTemp = Integer.parseInt(temp.replaceAll("\\D+",""));
-				newTemp++;
-				String zero = "";
-				for(int i = 0; i < length - 1 - String.valueOf(newTemp).length(); i++) {
-					zero += "0";
-				}
-				id += "P" + zero + String.valueOf(newTemp);
-			} catch (SQLException e){
-				e.printStackTrace();
-			}
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+
+		String com = ae.getActionCommand().toString();
+		if(com.equals("Save")) {
+			boolean check = this.controllerAddProduct.controllerAddNewProduct();
+			//controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+						
 		}
-		
-		return id;
-	}
-	
-	public static boolean isNumeric(String strNum) {
-	    if (strNum == null) {
-	        return false;
-	    }
-	    try {
-	        int d = Integer.parseInt(strNum);
-	    } catch (NumberFormatException nfe) {
-	        return false;
-	    }
-	    return true;
-	}
-	
-	public void addProduct() {
-		String productID = productIDField.getText();
-		String productName = productNameField.getText();
-		
-		int mass = 0;
-		try {
-			if(isNumeric(priceField.getText()))
-				mass = Integer.parseInt(massField.getText());
-		} catch(NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-				
-		int price = 0;
-		try {
-			if(isNumeric(priceField.getText()))
-				price = Integer.parseInt(priceField.getText());
-		} catch(NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-		
-		
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			try {
-				String query = "{call addProduct(?, ?, ?, ?)}";
-				CallableStatement cstmt = DBConnection.connection.prepareCall(query);
-				
-				cstmt.setString(1, productID);
-				cstmt.setString(2, productName);
-				cstmt.setInt(3, mass);
-				cstmt.setInt(4, price);
-				
-				cstmt.execute();
-				cstmt.close();
-		
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		else if(com.equals("Cancel")) {
+			this.dispose();
+		}else if(com.equals("Choose a image")) {
+			//controllerAddFood.OpenFileImage();
+		}else if(com.equals("Choose ingredient")) {
+			//addIngre ingre = new addIngre("add");
 			
 		}
-		else {
-			System.out.println("Failed");
-		}
-	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new addProductForm();
-			}
-		}); 
-	}
+			
+	}	
 	
 }

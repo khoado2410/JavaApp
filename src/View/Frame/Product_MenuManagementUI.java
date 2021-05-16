@@ -16,6 +16,8 @@ import javax.swing.table.TableCellRenderer;
 
 import Controller.MenuAndProduct.ManageMenuAndProduct;
 import Model.Food_Product.Food;
+import View.form.addFoodForm;
+import View.form.editFoodForm;
 
 
 
@@ -29,6 +31,12 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	public JButton buttonProduct;
 	public Object[][] data;
 	public JPanel fonc;
+	public static ArrayList<Food> listFood;
+	public DefaultTableModel defaultModel = new DefaultTableModel();
+	public static JButton edit;
+	public static  JButton delete;
+	public static JTable mytable = new JTable();
+	
 	
 	private JPanel navbar;
 	private JPanel left;
@@ -38,16 +46,28 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	private JLabel jlb_staff;
 	private JPanel center;
 	private JPanel right;
-	private JLabel add;
+	private JButton add;
 	private ImageIcon ad; 
-	private JLabel edit; 
+	//private JLabel edit; 
 	private ImageIcon _edit;
 	private ImageIcon _remove; 
 	private JLabel remove;
 	
+	public static void addRowToTable(Object[] dataRow) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		model.addRow(dataRow);
+	}
+	
+	public static void updateMenu(ArrayList<Food> lst) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		model.setNumRows(0);
+		for(Food food : lst) {
+			model.addRow(new Object[] {food.getFoodID(), food.getNameFood(), food.getFoodTypeName(), 
+									food.getQuantityOfStock(), food.getPrice(), edit, delete});
+		}
+	}
 	
 	public Product_MenuManagementUI() {
-		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		
@@ -109,10 +129,13 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		
 		right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
+		add = new JButton("<html><span style='font-size:18px'>Add item</span></html>");
 		add.setOpaque(true);
 		ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
 		add.setIcon(ad);
+		
+		add.setActionCommand("add");
+		add.addActionListener(this);
 		
 		SpringLayout springlayout1 = new SpringLayout();
 		right.setLayout(springlayout1);
@@ -124,8 +147,6 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		top.add(center);
 		top.add(right);
 		
-		// CONTENT
-		// CONTENT
 				content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(50, 50));
@@ -144,13 +165,11 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 
 				_remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
 
-				JTable mytable = new JTable();
-				DefaultTableModel defaultModel = new DefaultTableModel();
-				
-				JButton edit = new JButton();
+			
+				edit = new JButton();
 				edit.setIcon(_edit);
 				
-				JButton delete = new JButton();
+				delete = new JButton();
 				delete.setIcon(_remove);
 				
 				edit.addActionListener(this);
@@ -158,6 +177,7 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 				delete.addActionListener(this);
 				delete.setActionCommand("delete");
 				
+				defaultModel = new DefaultTableModel();
 				mytable.setModel(defaultModel);
 				
 				defaultModel.addColumn("ID Food");
@@ -168,11 +188,11 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 				defaultModel.addColumn("Edit");
 				defaultModel.addColumn("Remove");
 				
-				ArrayList<Food> listFood = new ArrayList<Food>();
+				listFood = new ArrayList<Food>();
 				listFood = this.menuAndProduct.loadFoodFromMenu();
 				
 				for(Food food : listFood) {
-					defaultModel.addRow(new Object[] {food.getFoodID(), food.getNameFood(), food.getFoodType(), 
+					defaultModel.addRow(new Object[] {food.getFoodID(), food.getNameFood(), food.getFoodTypeName(), 
 											food.getQuantityOfStock(), food.getPrice(),edit, delete});
 				}
 				
@@ -231,36 +251,32 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 				
 				mytable.setFillsViewportHeight(true);
 				
-				ListSelectionModel listSelectionMode = mytable.getSelectionModel();
-				
-				listSelectionMode.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
-				listSelectionMode.addListSelectionListener(new ListSelectionListener() {
-
-					@Override
-					public void valueChanged(ListSelectionEvent e) {
-						// TODO Auto-generated method stub
-						System.out.println(e.getSource().toString());
-						int[] rows = mytable.getSelectedRows();
-						int[] cols = mytable.getSelectedColumns();
-//						if(!listSelectionMode.isSelectionEmpty()) {
-//							int selectedRow = listSelectionMode.getMinSelectionIndex();
-//							//int selectedCol = listSelectionMode.getMinSelectionIndex();
-//							JOptionPane.showMessageDialog(null, "Selected Row ");
-//						}
-						
-						if(mytable.getSelectedColumn() == 5) {
-							//JOptionPane.showMessageDialog(null, "Selected Col: " + mytable.getSelectedColumn() + "row: " + mytable.getSelectedRow());
-						}
-						
-					}
-					
+				mytable.addMouseListener(new java.awt.event.MouseAdapter() {
+				    @Override
+				    public void mouseClicked(java.awt.event.MouseEvent evt) {
+				        int col = mytable.getSelectedColumn();
+				        int row = mytable.getSelectedRow();
+				        String id = (mytable.getModel().getValueAt(row, 0)).toString();
+				        if (col == 5) {
+				        	
+				        	String name = defaultModel.getValueAt(row, 1).toString().trim();
+				        	String price = defaultModel.getValueAt(row,  4).toString();
+				        	String amount = defaultModel.getValueAt(row,  3).toString();
+				        	String type = "edit";
+				        	
+				        	editFoodForm acc = new editFoodForm(id, name, price, amount);
+				        }
+				        else if(col == 6) {
+				        	
+				        	ManageMenuAndProduct.removeRow(id);
+				        	
+				        }
+				    }
 				});
 				
 				
 				mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
 				mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
-				//mytable.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 				
 				content.add(scrollPane, BorderLayout.CENTER);
 	
@@ -272,10 +288,11 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 				
 				setVisible(true);
 		
-		
-	}
+	}		
 	
 
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -285,16 +302,17 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		if(s.equals("Menu Management")) {
 			
 			this.menuAndProduct.changePanelMenu();
+			
 		}else if(s.equals("Product Management")) {
-			
 			this.menuAndProduct.changePanelProduct();
-			
 		}else if(s.equals("edit")) {
-			
+			//JOptionPane.showConfirmDialog(this, "AA");
 		}else if(s.equals("delete")) {
 			
-		}
+		}else if(s.equals("add")) {
+			addFoodForm a = new addFoodForm();
+			a.setVisible(true);
 		
 	}
 
-}
+}}

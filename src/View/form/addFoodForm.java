@@ -25,32 +25,46 @@ import javax.swing.filechooser.FileSystemView;
 
 import net.miginfocom.swing.MigLayout;
 import Controller.DBConnection.DBConnection;
+import Controller.MenuAndProduct.ManageMenuAndProduct;
 
 public class addFoodForm extends JFrame implements ActionListener {
+	
+	public ManageMenuAndProduct controllerAddFood = new ManageMenuAndProduct(this);
+	public static ArrayList<String> listFoodName = new ArrayList<String>();
+	
+	public JTextField foodIDField;
+	public JButton imageBtn;
+	public JTextField foodNameField;
+	public JTextField priceField;
+	public JComboBox foodTypeField;
+	public JTextField quantityField;
+	public static JLabel ingres;
+	public static JLabel ingresL;
+	
+	public static JScrollPane jresult;
 	private JPanel mainFramePanel;
 	private JPanel title;
+	
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel foodID;
-	private JTextField foodIDField;
 	private JLabel foodName;
-	private JTextField foodNameField;
+	
+	
 	private JLabel price;
-	private JTextField priceField;
 	private JLabel foodType;
-	private JComboBox foodTypeField;
 	private JLabel ingredient;
 	private JComboBox ingredientField;
 	private JLabel quantity;
-	private JTextField quantityField;
 	private JLabel image;
-	private JButton imageBtn;
 	private JButton addIngredient;
 	private JPanel buttonField;
 	private JButton saveBtn;
 	private JButton cancelBtn;
-	private String imgPath;
+	public String imgPath;
+	
 	private ArrayList<String> ingredientList;
+	
 
 	public addFoodForm() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -87,7 +101,7 @@ public class addFoodForm extends JFrame implements ActionListener {
 		foodIDField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		foodIDField.setFont(foodIDField.getFont().deriveFont(Font.PLAIN, 20));
 		foodIDField.setEditable(false);
-		String text = getFoodID();
+		String text = this.controllerAddFood.getIDFoodMax();
 		foodIDField.setText(text);
 
 		foodName = new JLabel("Food's name");
@@ -113,6 +127,8 @@ public class addFoodForm extends JFrame implements ActionListener {
 		foodTypeField = new JComboBox();
 		foodTypeField.setPreferredSize(new Dimension(330, 40));
 		foodTypeField.setFont(foodTypeField.getFont().deriveFont(Font.PLAIN, 20));
+		
+		this.controllerAddFood.getAllNameFoodTypeToCombobox();
 
 		quantity = new JLabel("Quantity");
 		quantity.setHorizontalAlignment(JLabel.LEFT);
@@ -130,22 +146,36 @@ public class addFoodForm extends JFrame implements ActionListener {
 		imageBtn.setPreferredSize(new Dimension(330, 40));
 		imageBtn.setFont(imageBtn.getFont().deriveFont(Font.PLAIN, 20));
 		imageBtn.setMaximumSize(new Dimension(330, 40));
+		
+		imageBtn.addActionListener(this);
 
 		ingredient = new JLabel("Ingredient");
 		ingredient.setHorizontalAlignment(JLabel.LEFT);
 		ingredient.setFont(ingredient.getFont().deriveFont(Font.PLAIN, 20));
 
-		ingredientField = new JComboBox();
-		ingredientField.setPreferredSize(new Dimension(330, 40));
-		ingredientField.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXX");
-		ingredientField.setFont(ingredient.getFont().deriveFont(Font.PLAIN, 20));
+		ingres = new JLabel("List of ingredients");
+		ingres.setHorizontalAlignment(JLabel.CENTER);
+		ingres.setFont(ingres.getFont().deriveFont(Font.PLAIN, 20));
+		
+		ingresL = new JLabel();
+		ingresL.setHorizontalAlignment(JLabel.CENTER);
+		ingresL.setFont(ingres.getFont().deriveFont(Font.PLAIN, 20));
+		
+		jresult = new JScrollPane(ingresL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jresult.setPreferredSize(new Dimension(340, 200));
+		
+//		ingredientField = new JComboBox();
+//		ingredientField.setPreferredSize(new Dimension(330, 40));
+//		ingredientField.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXX");
+//		ingredientField.setFont(ingredient.getFont().deriveFont(Font.PLAIN, 20));
 
-		addIngredient = new JButton("+");
-		addIngredient.setBackground(Color.WHITE);
-		addIngredient.setForeground(Color.BLACK);
-		addIngredient.setPreferredSize(new Dimension(40, 40));
-		addIngredient.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.white));
-		addIngredient.setFont(addIngredient.getFont().deriveFont(Font.BOLD, 35));
+		
+		addIngredient = new JButton("Choose ingredient");
+		addIngredient.setPreferredSize(new Dimension(330, 40));
+		addIngredient.setFont(imageBtn.getFont().deriveFont(Font.PLAIN, 20));
+		addIngredient.setMaximumSize(new Dimension(330, 40));
+		
+		addIngredient.addActionListener(this);
 
 		formContent.add(foodID);
 		formContent.add(foodIDField, "wrap 30");
@@ -160,8 +190,12 @@ public class addFoodForm extends JFrame implements ActionListener {
 		formContent.add(image);
 		formContent.add(imageBtn, "wrap 30");
 		formContent.add(ingredient);
-		formContent.add(ingredientField, "split");
+		//formContent.add(ingredientField, "split");
 		formContent.add(addIngredient, "wrap 30");
+		formContent.add(ingres);
+		//formContent.add(ingresL);
+		formContent.add(jresult);
+//		scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		buttonField = new JPanel(new MigLayout("align 50%"));
 		buttonField.setPreferredSize(new Dimension(screenSize.width - 200, 100));
@@ -172,13 +206,17 @@ public class addFoodForm extends JFrame implements ActionListener {
 		saveBtn.setForeground(Color.BLACK);
 		saveBtn.setPreferredSize(new Dimension(100, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		
+		saveBtn.addActionListener(this);
 
 		cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
 		cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
-
+		
+		cancelBtn.addActionListener(this);
+		
 		buttonField.add(saveBtn);
 		buttonField.add(Box.createHorizontalStrut(150));
 		buttonField.add(cancelBtn);
@@ -187,260 +225,17 @@ public class addFoodForm extends JFrame implements ActionListener {
 		mainFramePanel.add(formContent);
 		mainFramePanel.add(buttonField);
 
-		loadFoodType();
-		loadIngredients(ingredientField);
-		setUpButtonActions();
-
+		
 		setVisible(true);
 	}
-
-	public void setUpButtonActions() {
-		ActionListener save = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				addFood();
-				String foodID = foodIDField.getText();
-				String productName = (String) ingredientField.getSelectedItem();
-				System.out.println(foodID + " " + productName);
-				addIngredient(foodID, productName);
-				if (ingredientList.size() > 0) {
-					for (int i = 0; i < ingredientList.size(); i++) {
-						addIngredient(foodID, ingredientList.get(i));
-					}
-				}
-				JOptionPane.showMessageDialog(null, "Success");
-				dispose();
-			}
-		};
-
-		ActionListener cancel = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				dispose();
-			}
-		};
-
-		ActionListener chooseImg = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				JFileChooser f = new JFileChooser(FileSystemView.getFileSystemView());
-				int r = f.showSaveDialog(null);
-				if (r == JFileChooser.APPROVE_OPTION) {
-					imgPath = f.getSelectedFile().getPath();
-					imageBtn.setText(imgPath);
-				}
-
-			}
-		};
-
-		ActionListener add = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				JLabel newIngre = new JLabel("Ingredient");
-				newIngre.setHorizontalAlignment(JLabel.LEFT);
-				newIngre.setFont(newIngre.getFont().deriveFont(Font.PLAIN, 20));
-
-				JComboBox newIngreField = new JComboBox();
-				newIngreField.setPreferredSize(new Dimension(330, 40));
-				newIngreField.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXX");
-				newIngreField.setFont(newIngreField.getFont().deriveFont(Font.PLAIN, 20));
-				loadIngredients(newIngreField);
-
-				addIngredient = new JButton("+");
-				addIngredient.setBackground(Color.WHITE);
-				addIngredient.setForeground(Color.BLACK);
-				addIngredient.setPreferredSize(new Dimension(40, 40));
-				addIngredient.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 0, Color.white));
-				addIngredient.setFont(newIngre.getFont().deriveFont(Font.BOLD, 35));
-
-				formContent.add(newIngre);
-				formContent.add(newIngreField, "split");
-				formContent.add(addIngredient, "wrap 30");
-
-				mainFramePanel.add(title);
-				mainFramePanel.add(formContent);
-				mainFramePanel.add(buttonField);
-
-				setUpButtonActions();
-
-				ItemListener getItem = new ItemListener() {
-
-					@Override
-					public void itemStateChanged(ItemEvent e) {
-						// TODO Auto-generated method stub
-						ingredientList = new ArrayList<String>();
-
-						if (e.getStateChange() == ItemEvent.SELECTED) {
-							String ingre = (String) e.getItem();
-							ingredientList.add(ingre);
-						}
-
-					}
-
-				};
-
-				newIngreField.addItemListener(getItem);
-
-				setVisible(true);
-			}
-		};
-
-		saveBtn.addActionListener(save);
-		cancelBtn.addActionListener(cancel);
-		imageBtn.addActionListener(chooseImg);
-		addIngredient.addActionListener(add);
-
-	}
-
-	public void loadFoodType() {
-		String cmd1 = "SELECT FoodTypeName from FoodType";
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {			try {
-				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-				ResultSet results = ps.executeQuery();
-				while (results.next()) {
-					String foodTypeName = results.getString("FoodTypeName");
-					foodTypeField.addItem(foodTypeName);
-					DBConnection.connection.commit();
-				}
-				results.close();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	
+	public static void ListIngredient(ArrayList<String> a) {
+		listFoodName = a;
+		String list = "";
+		for(String s: a) {
+			list+=s+", ";
 		}
-	}
-
-	public void loadIngredients(JComboBox field) {
-		String cmd1 = "SELECT ProductName from Product";
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {			
-			try {
-				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-				ResultSet results = ps.executeQuery();
-				while (results.next()) {
-					String ingre = results.getString("ProductName");
-					field.addItem(ingre);
-					DBConnection.connection.commit();
-				}
-				results.close();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public String getFoodID() {
-		String id = "";
-
-		String cmd1 = "SELECT FoodID FROM Menu WHERE FoodID = (SELECT max(FoodID) FROM Menu)";
-
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			String temp = "";
-			int length = 0;
-			try {
-				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-				ResultSet results = ps.executeQuery();
-				while (results.next()) {
-					temp = results.getString("FoodID");
-					temp = temp.replaceAll("\\s+", "");
-					length = temp.length();
-					DBConnection.connection.commit();
-				}
-				results.close();
-				int newTemp = Integer.parseInt(temp.replaceAll("\\D+", ""));
-				newTemp++;
-				String zero = "";
-				System.out.println(temp.replaceAll("\\D+", "").length());
-				for (int i = 0; i < length - 1 - String.valueOf(newTemp).length(); i++) {
-					zero += "0";
-				}
-				id += "F" + zero + String.valueOf(newTemp);
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return id;
-	}
-
-	public static boolean isNumeric(String strNum) {
-		if (strNum == null) {
-			return false;
-		}
-		try {
-			int d = Integer.parseInt(strNum);
-		} catch (NumberFormatException nfe) {
-			return false;
-		}
-		return true;
-	}
-
-	public void addFood() {
-		String foodID = foodIDField.getText();
-		String foodName = foodNameField.getText();
-
-		int price = 0;
-		try {
-			if (isNumeric(priceField.getText()))
-				price = Integer.parseInt(priceField.getText());
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-
-		String foodType = (String) foodTypeField.getSelectedItem();
-		int quantity = 0;
-		try {
-			if (isNumeric(quantityField.getText()))
-				quantity = Integer.parseInt(quantityField.getText());
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-
-		String img = imgPath;
-
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {			
-			try {
-				String query = "{call addFood(?, ?, ?, ?, ?, ?)}";
-				CallableStatement cstmt = DBConnection.connection.prepareCall(query);
-
-				cstmt.setString(1, foodID);
-				cstmt.setString(2, foodName);
-				cstmt.setInt(3, price);
-				cstmt.setString(4, foodType);
-				cstmt.setInt(5, quantity);
-				cstmt.setString(6, img);
-
-				cstmt.execute();
-				cstmt.close();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} else {
-			System.out.println("Failed");
-		}
-	}
-
-	public void addIngredient(String foodID, String productName) {
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			try {
-				String query = "{call addIngredient(?, ?)}";
-				CallableStatement cstmt = DBConnection.connection.prepareCall(query);
-
-				cstmt.setString(1, foodID);
-				cstmt.setString(2, productName);
-
-				cstmt.execute();
-				cstmt.close();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-		} else {
-			System.out.println("Failed");
-		}
+		ingresL.setText(list);
 	}
 
 	public static void main(String[] args) {
@@ -454,9 +249,19 @@ public class addFoodForm extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
+		String com = e.getActionCommand().toString();
+		if(com.equals("Save")) {
+			controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+						
+		}
+		else if(com.equals("Cancel")) {
+			this.dispose();
+		}else if(com.equals("Choose a image")) {
+			controllerAddFood.OpenFileImage();
+		}else if(com.equals("Choose ingredient")) {
+			addIngre ingre = new addIngre("add");
+			
+		}
 	}
-
-
 }

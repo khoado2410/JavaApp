@@ -64,7 +64,7 @@ public class AccountManager {
 				
 				PreparedStatement ps = DBConnection.connection.prepareStatement(sql);
 	            ps.setString(1, a.getIdTable());
-	            ps.setInt(2, a.isStatus());
+	            ps.setInt(2, a.getStatus());
 	            ps.setInt(3, a.getNumClients());
 	            ps.executeUpdate();
 	            
