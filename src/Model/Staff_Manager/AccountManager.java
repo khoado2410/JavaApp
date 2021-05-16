@@ -82,25 +82,33 @@ public class AccountManager {
 		}
 	}
 	
-	public void logIn(String username, String pass) {
+	public boolean logIn(String username, String pass) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				String searchString = "Select * from AccountManager where Username = '" + username +"' and Password ='"+ pass+"'";
-				Statement statement =  DBConnection.connection.createStatement();
-				ResultSet rs = statement.executeQuery(searchString);
-				if(rs.wasNull()) {
-					System.out.println("Ten dang nhap hoac mat khau khong hop le!");
-				}else {
-					System.out.println("Dang nhap thanh cong!");
-				}
+				 String query = "Select Username, Password from AccountManager WHERE Username=? and Password =?";
+				   PreparedStatement ps =  DBConnection.connection.prepareStatement(query);
+				   ps.setString(1, username);
+				   ps.setString(2, pass);
+				   ResultSet rs = ps.executeQuery();
+				   int check = 0;
+				   while (rs.next()) {
+						check++;
+					}
+				   ps.close();
+				   if(check == 0) {
+					   return false;
+				   }else
+					   return true;
 				
-				statement.close();
+				
 			} catch (SQLException e) {
-				System.out.println("Cannot search food: " + e);
+	
+				return false;
 			}
 		}
 		else {
 			System.out.println("Something went wrong!!!");
+			return false;
 		}
 	}
 	

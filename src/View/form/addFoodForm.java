@@ -166,11 +166,6 @@ public class addFoodForm extends JFrame implements ActionListener {
 		jresult = new JScrollPane(ingresL, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jresult.setPreferredSize(new Dimension(340, 200));
 		
-//		ingredientField = new JComboBox();
-//		ingredientField.setPreferredSize(new Dimension(330, 40));
-//		ingredientField.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXX");
-//		ingredientField.setFont(ingredient.getFont().deriveFont(Font.PLAIN, 20));
-
 		
 		addIngredient = new JButton("Choose ingredient");
 		addIngredient.setPreferredSize(new Dimension(330, 40));
@@ -248,12 +243,8 @@ public class addFoodForm extends JFrame implements ActionListener {
 		String com = e.getActionCommand().toString();
 		if(com.equals("Save")) {
 			if(this.controllerAddFood.controllerAddNewFood()) {
-				
 				JOptionPane.showMessageDialog(this, "Vui lòng thêm thành phần cho món ăn");
-				//if(input == 0) {
 					addIngre ingre = new addIngre("edit", this.foodIDField.getText());
-			//	}
-				
 			}
 						
 		}
