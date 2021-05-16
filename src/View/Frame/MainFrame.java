@@ -49,7 +49,7 @@ public class MainFrame extends JPanel {
 				case 4:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Login.png"));
 					jbtn.setText("Login");
-					
+					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 				case 5:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Deal.png"));

@@ -110,7 +110,12 @@ public class ControllerPanel implements ActionListener{
 		
 			}
 		case "Login": {
-			loginForm a = new loginForm();
+			if(MainFrame.use == 0) {
+				loginForm a = new loginForm();
+			}
+			else {
+				JOptionPane.showMessageDialog(this.main, "Đã đăng nhập");
+			}
 				break;
 			}
 
