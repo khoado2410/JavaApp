@@ -1,5 +1,6 @@
 package Model.Food_Product;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -13,7 +14,7 @@ public class Table {
 	private int status;
 	private String idBill;
 	public Table() {}
-	public Table(String id, int num, int status, String billID) {
+	public Table(String id, int status, int num, String billID) {
 		this.idTable = id;
 		this.numClients = num;
 		this.status = status;
@@ -68,6 +69,26 @@ public class Table {
 		} else {
 			System.out.println("Something went wrong!!!");
 			return res;
+		}
+	}
+	public boolean updateTableToDB(Bill b) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_update = "{call sp_updatetable}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_update);
+				statement.setString(1, b.getTableID());
+				statement.setString(2, "ABC");
+				statement.setInt(3, 0);
+				statement.executeUpdate();
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot update table status: " + e);
+				return true;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
 		}
 	}
 }

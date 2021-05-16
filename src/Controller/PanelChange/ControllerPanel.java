@@ -13,18 +13,24 @@ public class ControllerPanel implements ActionListener{
 	private String nameAction;
 	private JPanel main;
 	private JPanel billPanel;
+	private JLabel idTable;
 	private ControllerBill controllerBill;
 	private ControllerTable controllerTable;
 	public ControllerBill getControllerBill() {
 		return controllerBill;
 	}
-	public void setControllerBill(ControllerBill controllerBill, ControllerTable controllerTable, JPanel billPanel) {
+	public void setControllerBill(ControllerBill controllerBill, ControllerTable controllerTable, JPanel billPanel, JLabel idTable) {
 		this.controllerBill = controllerBill;
 		this.controllerTable = controllerTable;
 		this.billPanel = billPanel;
+		this.idTable	= idTable;
 	}
 	public ControllerPanel(JPanel p) {
 		main = p;
+	}
+	public ControllerPanel(JPanel p, ControllerBill cb) {
+		main = p;
+		this.controllerBill = cb;
 	}
 	public void setEventButton(JButton jb, String na) {
 		this.nameAction = na;
@@ -45,10 +51,11 @@ public class ControllerPanel implements ActionListener{
 			break;
 		}
 		case "Menu": {
-			setPanel(new MenuFrame(controllerBill, controllerTable, billPanel));
+			setPanel(new MenuFrame(controllerBill, controllerTable, billPanel, idTable));
 			break;
 		}
 		case "Tables":
+			controllerBill.createBill();
 			setPanel(new TableFrame());
 			break;
 		case "Home":

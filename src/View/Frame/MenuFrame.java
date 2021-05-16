@@ -1,6 +1,7 @@
 package View.Frame;
 
 import javax.swing.*;
+
 import javax.swing.border.*;
 
 import Controller.ControlMenuTable.ControllerBill;
@@ -28,7 +29,7 @@ public class MenuFrame extends JPanel {
 	private JLabel tableName;
 	private ControllerPanel controllerPanel;
 	private ControllerMenu controllerMenu;
-	public MenuFrame(ControllerBill cb, ControllerTable ct, JPanel billPanel) {
+	public MenuFrame(ControllerBill cb, ControllerTable ct, JPanel billPanel, JLabel idTable) {
 		setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(screenSize);
@@ -56,7 +57,7 @@ public class MenuFrame extends JPanel {
 		listFoodPanel = billPanel;
 		
 		controllerMenu = new ControllerMenu(coverPanel, listFoodPanel, listTypeFood, cb, ct);
-		controllerPanel = new ControllerPanel(this);
+		controllerPanel = new ControllerPanel(this, cb);
 		
 		navbarPanel = new JPanel();
 		navbarPanel.setPreferredSize(new Dimension(leftSide, heightNav));
@@ -139,7 +140,7 @@ public class MenuFrame extends JPanel {
 		controllerMenu.loadListMenu();
 
 		nameTablePanel = new JPanel();
-		tableName = new JLabel("Table 1");
+		tableName = idTable;
 		nameTablePanel.add(tableName);
 		
 		listFoodPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
