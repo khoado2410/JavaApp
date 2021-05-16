@@ -6,38 +6,45 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import Controller.ManageStaff.ControllerManageStaff;
 import net.miginfocom.swing.MigLayout;
 
-public class editStaffForm extends JFrame {
+public class editStaffForm extends JFrame implements ActionListener{
+	
+	private ControllerManageStaff controllerStaff = new ControllerManageStaff(this);
+	
+	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel staffID;
-	private JTextField staffIDField;
+	public JTextField staffIDField;
 	private JLabel staffName;
-	private JTextField staffNameField;
+	public JTextField staffNameField;
 	private JLabel dateOfBirth;
-	private JTextField dateOfBirthField;
+	public JTextField dateOfBirthField;
 	private JLabel gender;
 	private JLabel male;
-	private JCheckBox maleCheck;
+	public JCheckBox maleCheck;
 	private JLabel female;
-	private JCheckBox femaleCheck;
+	public JCheckBox femaleCheck;
 	private JLabel address;
-	private JTextField addressField;
+	public JTextField addressField;
 	private JLabel salary;
-	private JTextField salaryField;
+	public JTextField salaryField;
 	private JLabel point;
-	private JTextField pointField;
+	public JTextField pointField;
 	private JPanel buttonField;
 	private JButton saveBtn;
 	private JButton cancelBtn;
 	
-	public editStaffForm() {
+	public editStaffForm(String id, String name1, String add1, String gender1, String dob, String sal, String point1) {
 		setSize(700, 700);
 		setUndecorated(true);
 		setLocationRelativeTo(null);
@@ -67,10 +74,12 @@ public class editStaffForm extends JFrame {
 		staffID = new JLabel("Staff's ID");
 		staffID.setHorizontalAlignment(JLabel.LEFT);
 		staffID.setFont(staffID.getFont().deriveFont(Font.PLAIN, 20));
+	
 		
 		staffIDField = new JTextField(20);
 		staffIDField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		staffIDField.setFont(staffIDField.getFont().deriveFont(Font.PLAIN, 20));
+		staffIDField.setText(id);
 		
 		staffName = new JLabel("Staff's name");
 		staffName.setHorizontalAlignment(JLabel.LEFT);
@@ -79,6 +88,7 @@ public class editStaffForm extends JFrame {
 		staffNameField = new JTextField(20);
 		staffNameField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		staffNameField.setFont(staffNameField.getFont().deriveFont(Font.PLAIN, 20));
+		staffNameField.setText(name1);
 		
 		dateOfBirth = new JLabel("Date of birth");
 		dateOfBirth.setHorizontalAlignment(JLabel.LEFT);
@@ -87,6 +97,7 @@ public class editStaffForm extends JFrame {
 		dateOfBirthField = new JTextField(20);
 		dateOfBirthField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		dateOfBirthField.setFont(dateOfBirthField.getFont().deriveFont(Font.PLAIN, 20));
+		dateOfBirthField.setText(dob);
 		
 		gender = new JLabel("Gender");
 		gender.setHorizontalAlignment(JLabel.LEFT);
@@ -109,6 +120,7 @@ public class editStaffForm extends JFrame {
 		addressField = new JTextField(20);
 		addressField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		addressField.setFont(addressField.getFont().deriveFont(Font.PLAIN, 20));
+		addressField.setText(add1);
 		
 		salary = new JLabel("Salary");
 		salary.setHorizontalAlignment(JLabel.LEFT);
@@ -117,6 +129,7 @@ public class editStaffForm extends JFrame {
 		salaryField = new JTextField(20);
 		salaryField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		salaryField.setFont(salaryField.getFont().deriveFont(Font.PLAIN, 20));
+		salaryField.setText(sal);
 		
 		point = new JLabel("Point");
 		point.setHorizontalAlignment(JLabel.LEFT);
@@ -125,6 +138,7 @@ public class editStaffForm extends JFrame {
 		pointField = new JTextField(20);
 		pointField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		pointField.setFont(pointField.getFont().deriveFont(Font.PLAIN, 20));
+		pointField.setText(point1);
 		
 		formContent.add(staffID);
 		formContent.add(staffIDField, "wrap 30");
@@ -153,12 +167,14 @@ public class editStaffForm extends JFrame {
 		saveBtn.setForeground(Color.BLACK);
 		saveBtn.setPreferredSize(new Dimension(100, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		saveBtn.addActionListener(this);
 		
 		cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
 		cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		cancelBtn.addActionListener(this);
 		
 		buttonField.add(saveBtn);
 		buttonField.add(Box.createHorizontalStrut(150));
@@ -169,14 +185,29 @@ public class editStaffForm extends JFrame {
 		mainFramePanel.add(buttonField);
 		setVisible(true);
 	}
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new editStaffForm();
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+			String com = e.getActionCommand().toString();
+			if(com.equals("Save")) {
+				this.controllerStaff.updatStaff();
+				//this.controller.updateFood();
+				//controllerAddFood.addProductAndFoodToFoodDetailAndMenu();
+							
 			}
-		}); 
+			else if(com.equals("Cancel")) {
+				this.dispose();
+			}else if(com.equals("Choose a image")) {
+				//this.controller.OpenFileImageEditForm();
+				//controllerAddFood.OpenFileImage();
+			}else if(com.equals("Choose ingredient")) {
+		//		addIngre ingre = new addIngre("edit");
+				
+			}
+		
 	}
+	
+	
+
 
 }

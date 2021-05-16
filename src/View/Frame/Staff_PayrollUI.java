@@ -8,12 +8,15 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-public class Staff_PayrollUI extends JFrame {
+import Controller.PanelChange.ControllerPanel;
+
+public class Staff_PayrollUI extends JPanel {
+	
+	ControllerPanel controller;
 
 	public Staff_PayrollUI() {
-		JFrame jfrm = new JFrame("Manager Staff");
-		jfrm.setVisible(true);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
 
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
@@ -44,7 +47,7 @@ public class Staff_PayrollUI extends JFrame {
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 
-		JLabel icon = new JLabel();
+		JButton icon = new JButton();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
@@ -160,23 +163,19 @@ public class Staff_PayrollUI extends JFrame {
 		content.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		content.add(scrollPane, BorderLayout.CENTER);
 
-		jfrm.setLayout(new BoxLayout(jfrm.getContentPane(), BoxLayout.Y_AXIS));
-		jfrm.add(navbar);
-		jfrm.add(top);
-		jfrm.add(content);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(navbar);
+		add(top);
+		add(content);
+		setVisible(true);
+		controller = new ControllerPanel(this);
+		
+		controller.setEventButton(icon, "Home");
+		controller.setEventButton(buttonStaff, "Staff");
+		controller.setEventButton(buttonTimekeeping, "buttonTimekeeping");
+		
 
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Staff_PayrollUI();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 }

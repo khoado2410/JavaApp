@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.table.*;
 
 import Controller.MenuAndProduct.ManageMenuAndProduct;
+import Controller.PanelChange.ControllerPanel;
 import Model.Food_Product.Food;
 import Model.Food_Product.Product;
 import View.form.addFoodForm;
@@ -30,6 +31,7 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 	public ManageMenuAndProduct controller = new ManageMenuAndProduct(this);
 	public static ArrayList<Product> listProduct;
 	public JButton add;
+	private ControllerPanel controllerPanel;
 	
 	
 	private JPanel navbar;
@@ -37,7 +39,7 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 	private JButton buttonProduct;
 	private JPanel left;
 	private JLabel jlb1;
-	private JLabel icon;
+	private JButton icon;
 	private ImageIcon a;
 	private JLabel jlb_staff;
 	private JPanel center; 
@@ -75,11 +77,13 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 		left.setBackground(new Color(255, 255, 255));
 		jlb1 = new JLabel("Staff");
 		
-		icon = new JLabel();
+		icon = new JButton();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
+		controllerPanel = new ControllerPanel(this);
+		controllerPanel.setEventButton(icon, "Home");
 		
 		jlb_staff = new JLabel("<html><span style='font-size:25px'>Products</span></html>");
 		
@@ -231,8 +235,6 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 				        	
 				        }
 				        else if(col == 5) {
-				        	//ManageMenuAndProduct.
-				        	//ManageMenuAndProduct.removeRow(id);
 				        	ManageMenuAndProduct.removeRowOfProduct(id);
 				        	
 				        }
@@ -266,9 +268,7 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 		}else if(s.equals("add")) {
 			
 			addProductForm formProduct = new addProductForm();
-			//addFoodForm a = new addFoodForm();
-			//a.setVisible(true);
-		
+
 	}
 	
 	}	

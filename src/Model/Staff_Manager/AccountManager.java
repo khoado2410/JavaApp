@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import Model.Food_Product.*;
@@ -15,6 +16,27 @@ public class AccountManager {
 	private String accID;
 	private String username;
 	private String password;
+	
+	private ArrayList<AccountManager> listAcc;
+	
+	public ArrayList<AccountManager> getListAcc() {
+		return listAcc;
+	}
+
+	public void setListAcc(ArrayList<AccountManager> listAcc) {
+		this.listAcc = listAcc;
+	}
+
+	public AccountManager() {
+		this.listAcc = new ArrayList<AccountManager>();
+;	}
+	
+	public AccountManager(String id, String user, String pass) {
+		this.accID = id;
+		this.username = user;
+		this.password = pass;
+	}
+	
 	public String getAccID() {
 		return accID;
 	}
@@ -32,6 +54,32 @@ public class AccountManager {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean loadAccount() {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call loadAcc}";
+				Statement statement = DBConnection.connection.createStatement();
+				ResultSet rs = statement.executeQuery(sp_load);
+				while (rs.next()) {
+					String fid = rs.getString("AccountManagerID");
+					String fn = rs.getString("Username");
+					String fp = rs.getString("Password");
+					
+					AccountManager f = new AccountManager(fid, fn, fp);
+					this.listAcc.add(f);
+				}
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
 	
 	public void logIn(String username, String pass) {

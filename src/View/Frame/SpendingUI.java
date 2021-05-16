@@ -1,18 +1,40 @@
 package View.Frame;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
+import Controller.MenuAndProduct.ManageMenuAndProduct;
+import Controller.PanelChange.ControllerPanel;
+import Model.Food_Product.Product;
 
 
-public class SpendingUI extends JFrame{
+public class SpendingUI extends JPanel{
 	
 	JPanel panelSpending = new JPanel();
+	public JPanel top;
+	public JPanel content;
+	public static JButton edit;
+	public static JButton delete;
+	public static JTable mytable = new JTable();
+	public DefaultTableModel defaultModel = new DefaultTableModel();
+	public ManageMenuAndProduct controller = new ManageMenuAndProduct(this);
+	public static ArrayList<Product> listProduct;
+	public JButton add;
+	private ControllerPanel controllerPanel;
+	public ControllerPanel control = new ControllerPanel(this);
 	
 	public SpendingUI() {
 		
+		listProduct = new ArrayList<Product>();
+		listProduct = this.controller.getListProduct();
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		
 		JPanel navbar = new JPanel();
@@ -25,6 +47,7 @@ public class SpendingUI extends JFrame{
 		JButton buttonSpending = new JButton("<html><span style='font-size:20px'>Spending</span></html>");
 		buttonSpending.setBackground(new Color(255, 192, 203));
 		
+		control.setEventButton(buttonRevenue, "Cash Book");
 		
 		
 		navbar.setLayout(new GridLayout(1, 2));
@@ -42,11 +65,12 @@ public class SpendingUI extends JFrame{
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 		
-		JLabel icon = new JLabel();
+		JButton icon = new JButton();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
+		control.setEventButton(icon, "Home");
 		
 		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>List of spending</span></html>");
 		
@@ -67,14 +91,17 @@ public class SpendingUI extends JFrame{
 		
 		JPanel right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		JLabel add = new JLabel("<html><span style='font-size:18px'>Add item</span></html>");
+		JLabel add = new JLabel("<html><span style='font-size:18px'></span></html>");
 		add.setOpaque(true);
-		ImageIcon ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
-		add.setIcon(ad);
+		
+		add.setText("Total of spending: " + this.controller.sumSpending(listProduct));
+		add.setHorizontalAlignment(JLabel.CENTER);
+		add.setFont(add.getFont().deriveFont(Font.PLAIN, 25));
+		
 		
 		SpringLayout springlayout1 = new SpringLayout();
 		right.setLayout(springlayout1);
-		springlayout1.putConstraint(SpringLayout.WEST, add, 200, SpringLayout.WEST, right);
+		springlayout1.putConstraint(SpringLayout.WEST, add, 150, SpringLayout.WEST, right);
 		springlayout1.putConstraint(SpringLayout.SOUTH, add, -30 , SpringLayout.SOUTH, right);
 		right.add(add);
 		
@@ -85,113 +112,78 @@ public class SpendingUI extends JFrame{
 				JPanel content = new JPanel();
 				content.setLayout(new BorderLayout());
 				content.setPreferredSize(new Dimension(100, 400));
-				
-				class JPanelImage implements TableCellRenderer{
-
-					@Override
-					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-							boolean hasFocus, int row, int column) {
-						return (Component)value;
-					}
-					
-				}
-				
+			
 				// JLabel chua 2 icon
-				JLabel edit = new JLabel();
-				ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
-				edit.setIcon(_edit);
+				defaultModel = new DefaultTableModel();
+				mytable.setModel(defaultModel);
 				
-				ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-				JLabel remove = new JLabel();
-				remove.setIcon(_remove);
+				defaultModel.addColumn("Product ID");
+				defaultModel.addColumn("Product Name");
+				defaultModel.addColumn("Mass");
+				defaultModel.addColumn("Price");
+		
 				
-				JPanel fonc = new JPanel();
-				SpringLayout springlayout2 = new SpringLayout();
-				fonc.setLayout(springlayout2);
-				springlayout2.putConstraint(SpringLayout.WEST, edit, 120, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, edit, -15, SpringLayout.SOUTH, fonc);
-				springlayout2.putConstraint(SpringLayout.WEST, remove, 150, SpringLayout.WEST, fonc);
-				springlayout2.putConstraint(SpringLayout.SOUTH, remove, -15, SpringLayout.SOUTH, fonc);
-				fonc.add(edit);
-				fonc.add(remove);
-				String[] columnNames = {"IDProduct", "Product", "Mass", "Price", ""};
 				
-				Object[][] data = {
-						{
-							"P001", "Fish", "500g", "1500", fonc,
-						},
-						{
-							"P002", "King crab", "500g", "2000", fonc,
-						},
-						{
-							"P003", "Fish", "500g", "3000", fonc,
-						},
-						{
-							"P004", "Fish", "500g", "4000", fonc,
-						}		
-				};
-						
-				class MyJTable extends JTable{
-					MyJTable(Object[][] data, String[] columnNames){
-						super(data, columnNames);
-					}
-					public java.awt.Component prepareRenderer
-					(javax.swing.table.TableCellRenderer rendrer, int row, int col){
-						Component comp = super.prepareRenderer(rendrer, row, col);
-						if(row % 2 == 0 && !isCellSelected(row, col)) {
-							comp.setBackground(new Color(196, 196, 196));
-						}else if(!isCellSelected(row, col)) {
-							comp.setBackground(new Color(169, 169, 169));
-							
-						}else {
-							comp.setBackground(Color.black);
-						}
-						return comp;
-					}
+				
+				for(Product product : listProduct) {
+					defaultModel.addRow(new Object[] {product.getProductID(), product.getNameProduct(), product.getMass(), 
+											product.getPrice()});
 				}
-				MyJTable table = new MyJTable(data, columnNames);
-				JScrollPane scrollPane = new JScrollPane(table);
-				scrollPane.setPreferredSize(new Dimension(500, 100));
-				table.setFillsViewportHeight(true);
-				table.setRowHeight(60);
+				
+
+			     TableColumn column = mytable.getColumnModel().getColumn(0);
+			     column.setMinWidth(100);
+			     column.setMaxWidth(150);
+			     column.setPreferredWidth(150);
+			     
+			     TableColumn column6 = mytable.getColumnModel().getColumn(2);
+			     column6.setMinWidth(100);
+			     column6.setMaxWidth(200);
+			     column6.setPreferredWidth(200);
+			    
+			     
+			     TableColumn column5 = mytable.getColumnModel().getColumn(3);
+			     column5.setMinWidth(100);
+			     column5.setMaxWidth(200);
+			     column5.setPreferredWidth(200);
+
+			     
+	    
+			       				
+				mytable.setRowHeight(50);
+				
+				JScrollPane scrollPane = new JScrollPane(mytable);
+				scrollPane.setPreferredSize(new Dimension(400, 100));
+				
 				DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 				centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-				for(int i = 0; i < 5; i++) {
-					table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-				}
+				DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+				bgcolor.setBackground(Color.white);
 				
-				table.getColumnModel().getColumn(4).setCellRenderer(new JPanelImage());
-			
+				for(int i = 0; i < 4; i++) {
+					mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+				}				
 				
-				table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-				table.getTableHeader().setPreferredSize(new Dimension(100, 60));
-				table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-				content.add(table.getTableHeader(), BorderLayout.PAGE_START);
+				mytable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);				
+				
+				
+				mytable.setFillsViewportHeight(true);
+				mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+				mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
+				
 				content.add(scrollPane, BorderLayout.CENTER);
 	
-				this.panelSpending.setLayout(new BoxLayout(this.panelSpending, BoxLayout.Y_AXIS));
-				this.panelSpending.add(navbar);
-				this.panelSpending.add(top);
-				this.panelSpending.add(content);
+				setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+				add(navbar);
+				add(top);
+				add(content);
 				
-				add(this.panelSpending);
-				
-				setExtendedState(MAXIMIZED_BOTH);
+				setVisible(true);
 		
 		
 	}
 	
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new SpendingUI().setVisible(true);;
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 }

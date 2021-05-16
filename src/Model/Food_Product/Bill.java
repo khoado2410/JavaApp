@@ -3,6 +3,8 @@ package Model.Food_Product;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import Controller.DBConnection.DBConnection;
@@ -16,7 +18,28 @@ public class Bill {
 	private String CheckInHour;
 	private String CheckOutHour;
 	private String accManagerID;
+	
+	ArrayList<Food> listFoodforDetailBill;
+	public ArrayList<Food> getListFoodforDetailBill() {
+		return listFoodforDetailBill;
+	}
+
+	public void setListFoodforDetailBill(ArrayList<Food> listFoodforDetailBill) {
+		this.listFoodforDetailBill = listFoodforDetailBill;
+	}
+
 	HashMap<Food, Integer> listFood = new HashMap<>();
+	
+	ArrayList<Bill> listBill = new ArrayList<Bill>();
+	
+	public ArrayList<Bill> getListBill() {
+		return listBill;
+	}
+
+	public void setListBill(ArrayList<Bill> listBill) {
+		this.listBill = listBill;
+	}
+
 
 	public HashMap<Food, Integer> getListFood() {
 		return listFood;
@@ -27,8 +50,9 @@ public class Bill {
 	}
 
 	public Bill() {
-
+		this.listBill = new ArrayList<Bill>();
 	}
+	
 
 	public Bill(String billid) {
 		this.BillID = billid;
@@ -43,9 +67,11 @@ public class Bill {
 			}
 		}
 	}
+
+	
 	
 	public Bill(String billID, String staffName, int payment, int status, String tableID, String checkInHour,
-			String checkOutHour, String accManagerID, HashMap<Food, Integer> lf) {
+			String checkOutHour, String accManagerID) {
 		super();
 		BillID = billID;
 		StaffName = staffName;
@@ -55,7 +81,6 @@ public class Bill {
 		CheckInHour = checkInHour;
 		CheckOutHour = checkOutHour;
 		this.accManagerID = accManagerID;
-		listFood = lf;
 	}
 
 	public String getBillID() {
@@ -148,6 +173,103 @@ public class Bill {
 			return -1;
 		}
 	}
+	
+	public boolean loadAllBill() {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call loadAllBill}";
+				Statement statement = DBConnection.connection.createStatement();
+				ResultSet rs = statement.executeQuery(sp_load);
+				while (rs.next()) {
+					String fid = rs.getString("BillID");
+					String fn = rs.getString("StaffName");
+					int fp = rs.getInt("Payment");
+					int ft = rs.getInt("BillStatus");
+					String fq = rs.getString("TableID");
+					String fi = rs.getString("CheckInHour");
+					String ffn = rs.getString("CheckOutHour");
+					String facc = rs.getString("AccountManagerID");
+					Bill f = new Bill(fid, fn, fp, ft, fq, fi, ffn, facc);
+					this.listBill.add(f);
+				}
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	
+	}
+	
+	public boolean getFoodForDetail(String id) {
+		this.listFoodforDetailBill = new ArrayList<Food>();
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call sp_loadfoodforBillDetail(?)}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_load);
+				statement.setString(1, id);
+				
+				ResultSet rs = statement.executeQuery();
+				while (rs.next()) {
+					String fid = rs.getString("FoodID");
+					String name = rs.getString("Name");
+					int price = rs.getInt("Price");
+					int quantity = rs.getInt("Quantity");
+					Food f = new Food(fid, name, price, quantity);
+					this.listFoodforDetailBill.add(f);
+				}
+			
+				
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
+	public	boolean getInfoBill(String id) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call getInfoBill(?)}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_load);
+				statement.setString(1, id);
+				
+				ResultSet rs = statement.executeQuery();
+				while (rs.next()) {
+					String fid = rs.getString("BillID");
+					String fn = rs.getString("nameStaff");
+					int fp = rs.getInt("Payment");
+					int ft = rs.getInt("BillStatus");
+					String fq = rs.getString("TableID");
+					String fi = rs.getString("CheckInHour");
+					String ffn = rs.getString("CheckOutHour");
+					String facc = rs.getString("AccountManagerID");
+					Bill f = new Bill(fid, fn, fp, ft, fq, fi, ffn, facc);
+					this.listBill.add(f);
+					return true;
+				}
+				statement.close();
+			} catch (SQLException e) {
+				System.out.println("Cannot load menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+		return false;
+		
+	}
+	
 	public HashMap<String, Integer> loadListFoodInBill(String billID) {
 		HashMap<String, Integer> res = new HashMap<>();
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {

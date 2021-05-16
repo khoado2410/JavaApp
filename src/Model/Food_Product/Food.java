@@ -30,6 +30,13 @@ public class Food {
 		this.foodTypeName = foodTypeName;
 	}
 	
+	public Food(String id, String name, int price, int quantity) {
+		this.FoodID = id;
+		this.nameFood = name;
+		this.price = price;
+		this.QuantityOfStock = quantity;
+	}
+	
 	public Food(String id) {
 		this.FoodID = id;
 	}

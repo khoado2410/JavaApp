@@ -36,6 +36,7 @@ public class MainFrame extends JPanel {
 				case 2:
 					jbtn.setIcon(new ImageIcon("./src/Icon/CashBook.png"));
 					jbtn.setText("Cash Book");
+					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 				case 3:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Staff.png"));

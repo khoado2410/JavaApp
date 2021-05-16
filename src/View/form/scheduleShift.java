@@ -7,157 +7,177 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
+import Controller.CashBook.ControllerCashBook;
+import Controller.ManageStaff.ControllerManageStaff;
+import Model.Food_Product.Food;
+import View.Frame.Staff_ManagerStaffUI;
 import net.miginfocom.swing.MigLayout;
 
-public class scheduleShift extends JFrame{
-	private JFrame jfrm;
-	private JPanel screen;
-	private JPanel contain;
-	private JLabel theme; 
-	private JLabel _date;
-	private JTextField date;
-	private JLabel shift;
-	private JComboBox _shift;
-	private JTextField search;
+public class scheduleShift extends JFrame implements ActionListener{
+	
+	private ControllerManageStaff controllerStaff = new ControllerManageStaff(this);
+	
+	private JPanel mainFramePanel;
+	private JPanel title;
+	JLabel formTitle;
+	private JPanel formContent;
+	private JLabel staffName;
+	public JComboBox staffNameField;
+	private JLabel hourstartLabel;
+	public JComboBox hourStart;
+	private JLabel hoursEndLabel;
+	private JLabel manageID;
+	public JComboBox manageAccount;
+	
+	private JLabel dateWorkingLabel;
+	public JTextField dateworkField;
+	
+	public JComboBox hourEnd;
+	
+	private JPanel buttonField;
+	
+	private JButton saveBtn;
+	private JButton cancelBtn;
+	
+
 	
 	public scheduleShift() {
-		jfrm = new JFrame("Schedule Shift");
-		jfrm.setVisible(true);
-		jfrm.setBackground(Color.white);
-		jfrm.setExtendedState(jfrm.MAXIMIZED_BOTH);
+		setSize(700, 700);
+		setUndecorated(true);
+		setLocationRelativeTo(null);
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Restaurant Management System");
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+		mainFramePanel = new JPanel();
+		add(mainFramePanel, BorderLayout.CENTER);
+		mainFramePanel.setLayout(new FlowLayout(1, 0, 0));
+		mainFramePanel.setBackground(Color.white);
 		
-		screen = new JPanel();
-		screen.setBackground(new Color(255, 255, 255));
+		title = new JPanel();
+		title.setPreferredSize(new Dimension(screenSize.width - 200, 100));
+		title.setLayout(new FlowLayout(FlowLayout.CENTER, 250, 40));
+		formTitle = new JLabel("Add new shift for staff");
+		formTitle.setHorizontalAlignment(JLabel.LEFT);
+		formTitle.setFont(title.getFont().deriveFont(Font.BOLD, 30));
+		title.add(formTitle);
+		title.setBackground(Color.white);
 		
-		contain = new JPanel();
-		contain.setPreferredSize(new Dimension(600, 500));
-		contain.setBackground(new Color(255, 255, 255));
+		formContent = new JPanel(new MigLayout("align 50%"));
+		formContent.setPreferredSize(new Dimension(screenSize.width - 200, screenSize.height - 400));
+		formContent.setBackground(Color.white);
+
+		this.dateWorkingLabel = new JLabel("Date working: ");
+		this.dateWorkingLabel.setHorizontalAlignment(JLabel.LEFT);
+		this.dateWorkingLabel.setFont(this.dateWorkingLabel.getFont().deriveFont(Font.PLAIN, 20));		
+		
+		this.dateworkField = new JTextField();
+		this.dateworkField.setPreferredSize(new Dimension(330, 40));
+		this.dateworkField.setFont(this.dateworkField.getFont().deriveFont(Font.PLAIN, 20));
 		
 		
-		SpringLayout springlayout = new SpringLayout();
-		screen.setLayout(springlayout);
-		springlayout.putConstraint(SpringLayout.WEST, contain, 450, SpringLayout.WEST, screen);
-		springlayout.putConstraint(SpringLayout.NORTH, contain, 100, SpringLayout.NORTH, screen);
-		screen.add(contain);
+		
+		this.manageID = new JLabel("Manage ID: ");
+		this.manageID.setHorizontalAlignment(JLabel.LEFT);
+		this.manageID.setFont(this.manageID.getFont().deriveFont(Font.PLAIN, 20));		
+		
+		this.manageAccount = new JComboBox();
+		this.manageAccount.setPreferredSize(new Dimension(330, 40));
+		this.manageAccount.setFont(this.manageAccount.getFont().deriveFont(Font.PLAIN, 20));
+		
+		this.controllerStaff.getIDAccToCombobox();
+		
+		staffName = new JLabel("Staff Name: ");
+		staffName.setHorizontalAlignment(JLabel.LEFT);
+		staffName.setFont(staffName.getFont().deriveFont(Font.PLAIN, 20));		
+		
+		staffNameField = new JComboBox();
+		staffNameField.setPreferredSize(new Dimension(330, 40));
+		staffNameField.setFont(staffNameField.getFont().deriveFont(Font.PLAIN, 20));
+		
+		this.controllerStaff.getAllNameStaffToCombobox();
 		
 		
-		theme = new JLabel("<html><span style='font-size:20px; font-weight:bold'>Schedule a shift</span></html>");
-		_date = new JLabel("Date");
-		_date.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		_date.setForeground(Color.gray);
+		this.hourstartLabel = new JLabel("Hour start: ");
+		hourstartLabel.setHorizontalAlignment(JLabel.LEFT);
+		hourstartLabel.setFont(hourstartLabel.getFont().deriveFont(Font.PLAIN, 20));	
 		
-		date = new JTextField(15);
-		date.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-		date.setFont(date.getFont().deriveFont(Font.PLAIN, 20));
-		date.setText("01/05/2021");
+		this.hourStart = new JComboBox();
+		this.hourStart.setPreferredSize(new Dimension(330, 40));
+		this.hourStart.setFont(this.hourStart.getFont().deriveFont(Font.PLAIN, 20));
 		
-		shift = new JLabel("Shift");
-		shift.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		shift.setForeground(Color.gray);
-		
-		String chooses[] = {
-				"7h-11h", "11h-15h", "15h-19h", "19h-23h",
-		};
-		_shift = new JComboBox(chooses);
-		_shift.setFont(date.getFont().deriveFont(Font.PLAIN, 20));
-		_shift.setPreferredSize(new Dimension(250, 30));
-		_shift.setBackground(Color.white);
-		
-		search = new JTextField(20);
-		search.setText("Search by staff's ID");
-		search.setPreferredSize(new Dimension(0, 50));
-		search.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
-		search.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-		
-		String[] columnNames = {"Staff's ID", "Staff's Name", "Department"};
-		
-		Object[][] data = {
-				{
-					"NV1", "Nguyen Nhat Minh", "Cashier"
-				},
-					
-		};
-				
-		class MyJTable extends JTable{
-			MyJTable(Object[][] data, String[] columnNames){
-				super(data, columnNames);
-			}
-			public java.awt.Component prepareRenderer
-			(javax.swing.table.TableCellRenderer rendrer, int row, int col){
-				Component comp = super.prepareRenderer(rendrer, row, col);
-				if(row % 2 == 0 && !isCellSelected(row, col)) {
-					comp.setBackground(new Color(196, 196, 196));
-				}else if(!isCellSelected(row, col)) {
-					comp.setBackground(new Color(169, 169, 169));
-					
-				}else {
-					comp.setBackground(Color.black);
-				}
-				return comp;
-			}
-		}
-		MyJTable table = new MyJTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(500, 98));
-		table.setFillsViewportHeight(true);
-		table.setRowHeight(54);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		for(int i = 0; i < 3; i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		for(int i = 0; i < 24; i++) {
+			this.hourStart.addItem(i);
 		}
 		
-		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-		table.getTableHeader().setPreferredSize(new Dimension(400, 40));
-		table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		this.hoursEndLabel = new JLabel("Hour end: ");
+		this.hoursEndLabel.setHorizontalAlignment(JLabel.LEFT);
+		this.hoursEndLabel.setFont(this.hoursEndLabel.getFont().deriveFont(Font.PLAIN, 20));		
 		
+		this.hourEnd = new JComboBox();
+		this.hourEnd.setPreferredSize(new Dimension(330, 40));
+		this.hourEnd.setFont(this.hourEnd.getFont().deriveFont(Font.PLAIN, 20));
 		
-		SpringLayout sprintlayout_contain = new SpringLayout();
-		contain.setLayout(sprintlayout_contain);
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, theme, 100, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, theme, 50, SpringLayout.NORTH, contain);
+		for(int i = 0; i < 24; i++) {
+			this.hourEnd.addItem(i);
+		}
 		
-		//date
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, _date, 90, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, _date, 120, SpringLayout.NORTH, contain);
+		formContent.add(this.dateWorkingLabel);
+		formContent.add(this.dateworkField, "wrap 30");
 		
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, date, 170, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, date, 120, SpringLayout.NORTH, contain);
+		formContent.add(this.manageID);
+		formContent.add(this.manageAccount, "wrap 30");
 		
-		// _shift
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, shift, 90, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, shift, 180, SpringLayout.NORTH, contain);
+		formContent.add(this.staffName);
+		formContent.add(this.staffNameField, "wrap 30");
 		
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, _shift, 170, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, _shift, 180, SpringLayout.NORTH, contain);
-		// search
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, search, 90, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, search, 230, SpringLayout.NORTH, contain);
+		formContent.add(this.hourstartLabel);
+		formContent.add(this.hourStart, "wrap 30");
 		
-		//table
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, table.getTableHeader(), 80, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, table.getTableHeader(), 200, SpringLayout.NORTH, contain);
+		formContent.add(this.hoursEndLabel);
+		formContent.add(this.hourEnd, "wrap 30");
 		
-		sprintlayout_contain.putConstraint(SpringLayout.WEST, scrollPane, 80, SpringLayout.WEST, contain);
-		sprintlayout_contain.putConstraint(SpringLayout.NORTH, scrollPane, 330, SpringLayout.NORTH, contain);
+		buttonField = new JPanel(new MigLayout("align 50%"));
+		buttonField.setPreferredSize(new Dimension(screenSize.width - 200, 100));
+		buttonField.setBackground(Color.white);
 		
-		contain.add(scrollPane, BorderLayout.CENTER);
-		contain.add(table.getTableHeader());
-		contain.add(search);
-		contain.add(shift);
-		contain.add(_shift);
-		contain.add(_date);
-		contain.add(date);
-		contain.add(theme);
+		saveBtn = new JButton("Save");
+		saveBtn.setBackground(Color.PINK);
+		saveBtn.setForeground(Color.BLACK);
+		saveBtn.setPreferredSize(new Dimension(100, 40));
+		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		saveBtn.addActionListener(this);
 		
+		cancelBtn = new JButton("Cancel");
+		cancelBtn.setBackground(Color.BLACK);
+		cancelBtn.setForeground(Color.WHITE);
+		cancelBtn.setPreferredSize(new Dimension(100, 40));
+		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		cancelBtn.addActionListener(this);
 		
+		buttonField.add(saveBtn);
+		buttonField.add(Box.createHorizontalStrut(150));
+		buttonField.add(cancelBtn);
 		
+		mainFramePanel.add(title);
+		mainFramePanel.add(formContent);
+		mainFramePanel.add(buttonField);
 		
-		jfrm.add(screen);
+		setVisible(true);
 		
 		
 	}
@@ -169,6 +189,20 @@ public class scheduleShift extends JFrame{
 				new scheduleShift();
 			}
 		}); 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String com = e.getActionCommand().toString();
+		if(com.equals("Cancel")) {
+			this.dispose();
+		}
+		else if (com.equals("Save")){
+			
+			this.controllerStaff.addNewShift();
+			
+		}
 	}
 	
 }

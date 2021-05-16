@@ -1,23 +1,54 @@
 package View.Frame;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.table.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
+
+import Controller.ManageStaff.ControllerManageStaff;
+import Controller.PanelChange.ControllerPanel;
+import Model.Food_Product.Product;
+import Model.Shift.Shift;
+import Model.Staff_Manager.Staff;
+import View.form.editStaffForm;
+import View.form.scheduleShift;
 
 
-public class Staff_TimekeepingUI extends JFrame{
+public class Staff_TimekeepingUI extends JPanel implements ActionListener{
 	
 	JPanel panelTime = new JPanel();
 	
+	JPanel panelManageStaff = new JPanel();
+	public static JButton remove;
+	public static JButton edit;
+	public static JButton delete;
+	public static JTable mytable = new JTable();
+	public DefaultTableModel defaultModel = new DefaultTableModel();
+	
+	public static ArrayList<Shift> listShift;
+	
+	
+	ControllerPanel controller;
+	ControllerManageStaff control = new ControllerManageStaff(this);
+	
+	public static void refreshTable(ArrayList<Shift> lst) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		model.setNumRows(0);
+		for(Shift food : lst) {
+			model.addRow(new Object[] {food.getShiftID(), food.getStaff().getStaffName(), food.getWorkingTimeStart(),
+					food.getEndWork(), food.getDateWork(), remove});		}
+	}
+	
 	public Staff_TimekeepingUI() {
-		super("Timekeeping");
 		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
-
+	
 		JPanel navbar = new JPanel();
 		navbar.setPreferredSize(new Dimension(100, 70));
 
@@ -37,7 +68,7 @@ public class Staff_TimekeepingUI extends JFrame{
 		navbar.add(buttonTimekeeping);
 		navbar.add(buttonPayroll);
 
-		// TOP
+//		// TOP
 		JPanel top = new JPanel();
 		top.setPreferredSize(new Dimension(100, 100));
 		top.setBackground(new Color(255, 255, 255));
@@ -47,12 +78,18 @@ public class Staff_TimekeepingUI extends JFrame{
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 
-		JLabel icon = new JLabel();
+		JButton icon = new JButton();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
 
+		controller = new ControllerPanel(this);
+		
+		controller.setEventButton(icon, "Home");
+		controller.setEventButton(buttonStaff, "Staff");
+		controller.setEventButton(buttonPayroll, "buttonPayroll");
+			
 		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>Timekeeping</span></html>");
 
 		SpringLayout springlayout = new SpringLayout();
@@ -74,6 +111,9 @@ public class Staff_TimekeepingUI extends JFrame{
 		JButton add = new JButton("<html><span style='font-size:18px; color:white'>Schedule a shift</span></html>");
 		add.setBackground(new Color(0, 0, 0));
 		add.setOpaque(true);
+		
+		add.setActionCommand("add");
+		add.addActionListener(this);
 
 		SpringLayout springlayout1 = new SpringLayout();
 		right.setLayout(springlayout1);
@@ -84,116 +124,111 @@ public class Staff_TimekeepingUI extends JFrame{
 		top.add(left);
 		top.add(center);
 		top.add(right);
+//
 
 		// CONTENT
-		JPanel content = new JPanel();
-		content.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 0));
-		content.setPreferredSize(new Dimension(100, 400));
-		content.setBackground(new Color(255, 255, 255));
+			JPanel content = new JPanel();
+			content.setLayout(new BorderLayout());
+			content.setPreferredSize(new Dimension(100, 400));
+			
+			class JPanelImage implements TableCellRenderer{
 
-		Border blackline = BorderFactory.createLineBorder(Color.black);
-		JPanel shift = new JPanel();
-		JPanel con_shift = new JPanel();
-		con_shift.setPreferredSize(new Dimension(198, 100));
-		con_shift.setBackground(new Color(255, 255, 255));
-		con_shift.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		JLabel _shift = new JLabel("<html><span style='font-size:20px'>Shift</span></html>");
-
-		con_shift.add(_shift);
-
-		shift.setBackground(Color.white);
-		shift.setPreferredSize(new Dimension(200, 300));
-		shift.setBorder(blackline);
-		SpringLayout springlayout_shift = new SpringLayout();
-		con_shift.setLayout(springlayout_shift);
-		springlayout_shift.putConstraint(SpringLayout.WEST, _shift, 60, SpringLayout.WEST, con_shift);
-		springlayout_shift.putConstraint(SpringLayout.SOUTH, _shift, -40, SpringLayout.SOUTH, con_shift);
-		shift.add(con_shift);
-
-		// shift.add(_shift);
-
-		JPanel time = new JPanel();
-		// time.setBackground(Color.black);
-		time.setBackground(new Color(255, 255, 255));
-		time.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		time.setPreferredSize(new Dimension(1000, 300));
-		time.setBorder(blackline);
-		JPanel calen = new JPanel();
-		calen.setPreferredSize(new Dimension(998, 50));
-		calen.setBackground(new Color(255, 255, 255));
-		calen.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		JLabel _calen = new JLabel("<html><span style='font-size:20px'>February, 2021</span></html>");
-		calen.add(_calen);
-		time.add(calen);
-
-		String[] columnNames = { "Mon 22", "Tue 23", "Web 24", "Thu 25", "Fri 26", "Sat 27", "Sun 28" };
-
-		Object[][] data = { { "", "", "", "", "", "", "" }, { "", "", "", "", "", "", "" },
-				{ "", "", "", "", "", "", "" } };
-
-		class MyJTable extends JTable {
-			MyJTable(Object[][] data, String[] columnNames) {
-				super(data, columnNames);
-			}
-
-			public java.awt.Component prepareRenderer(javax.swing.table.TableCellRenderer rendrer, int row, int col) {
-				Component comp = super.prepareRenderer(rendrer, row, col);
-				if (row % 2 == 0 && !isCellSelected(row, col)) {
-					comp.setBackground(new Color(196, 196, 196));
-				} else if (!isCellSelected(row, col)) {
-					comp.setBackground(new Color(169, 169, 169));
-
-				} else {
-					comp.setBackground(Color.black);
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					return (Component)value;
 				}
-				return comp;
+				
 			}
-		}
-		MyJTable table = new MyJTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(998, 500));
-		table.setFillsViewportHeight(true);
-		table.setRowHeight(70);
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+			
+			// JLabel chua 2 icon
+			edit = new JButton();
+			ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
+			edit.setIcon(_edit);
+			
+			ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
+			remove = new JButton();
+			remove.setIcon(_remove);
+			
+			
+			defaultModel = new DefaultTableModel();
+			mytable.setModel(defaultModel);
+			
+			defaultModel.addColumn("Shift ID");
+			defaultModel.addColumn("Staff Name");
+			defaultModel.addColumn("WorkingTimeStart");
+			defaultModel.addColumn("WorkingTimeEnd");
+			defaultModel.addColumn("DateWorking");
+			defaultModel.addColumn("Remove");
+			
+			listShift = new ArrayList<Shift>();
+			listShift = this.control.getListShift();
+			
+			for(Shift s : listShift) {
+				defaultModel.addRow(new Object[] {s.getShiftID(), s.getStaff().getStaffName(), s.getWorkingTimeStart(),
+						s.getEndWork(), s.getDateWork(),remove});
+			}
+			
+		       				
+			mytable.setRowHeight(50);
+			
+			JScrollPane scrollPane = new JScrollPane(mytable);
+			scrollPane.setPreferredSize(new Dimension(400, 100));
+			
+			DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+			centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+			DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+			bgcolor.setBackground(Color.white);
+			
+			for(int i = 0; i < 6; i++) {
+				mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			}				
+			
+			mytable.getColumnModel().getColumn(5).setCellRenderer(new JPanelImage());
+			
+			mytable.setFillsViewportHeight(true);
+			mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+			mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
+			
+			mytable.addMouseListener(new java.awt.event.MouseAdapter() {
+			    @Override
+			    public void mouseClicked(java.awt.event.MouseEvent evt) {
+			        int col = mytable.getSelectedColumn();
+			        int row = mytable.getSelectedRow();
+			        String id = (mytable.getModel().getValueAt(row, 0)).toString();
+			        if (col == 5) {
+			        	
+			        	
+			        	ControllerManageStaff.RemoveTimekeeping(id);
+			        	
+			        }
+			       
+			    }
+			});
+			
+			content.add(scrollPane, BorderLayout.CENTER);
 
-		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-		table.getTableHeader().setPreferredSize(new Dimension(900, 50));
-		table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-
-		JPanel _table = new JPanel();
-		_table.setPreferredSize(new Dimension(1000, 400));
-		_table.add(table.getTableHeader());
-		_table.add(scrollPane);
-		time.add(_table);
-		content.add(shift);
-		content.add(time);
-
+		
 	
-		this.panelTime.setLayout(new BoxLayout(this.panelTime, BoxLayout.Y_AXIS));
-		this.panelTime.add(navbar);
-		this.panelTime.add(top);
-		this.panelTime.add(content);
-		
-		add(this.panelTime);
-		
-		setExtendedState(MAXIMIZED_BOTH);
-		
-		
+	//	content.add(scrollPane, BorderLayout.CENTER);
 
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(navbar);
+		add(top);
+		add(content);
+	
+		setVisible(true);
+		
 	}
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Staff_TimekeepingUI().setVisible(true);;
-					} catch (Exception e) {
-
-					e.printStackTrace();
-				}
-			}
-		});
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String com = e.getActionCommand().toString();
+		
+		if(com.equals("add")) {
+			scheduleShift ab = new scheduleShift();
+		}
 	}
 
 }

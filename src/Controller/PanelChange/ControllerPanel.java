@@ -42,6 +42,7 @@ public class ControllerPanel implements ActionListener{
 			setPanel(new MainFrame());
 			break;
 		case "Staff": {
+			System.out.println("STaf uii");
 			setPanel(new Staff_ManagerStaffUI());
 			break;
 		}
@@ -50,7 +51,28 @@ public class ControllerPanel implements ActionListener{
 			break;
 		
 			}
-		}
-	}
+		case "buttonPayroll": {
+			setPanel(new Staff_PayrollUI());
+			break;
+		
+			}
+		case "buttonTimekeeping": {
+			setPanel(new Staff_TimekeepingUI());
+			break;
+		
+			}
+		case "Cash Book": {
+			setPanel(new RevenueUI());
+			break;
+		
+			}
+		case "buttonSpending": {
+			setPanel(new SpendingUI());
+			break;
+		
+			}
+
+		}}
 }
+
 

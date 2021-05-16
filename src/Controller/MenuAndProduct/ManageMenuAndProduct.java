@@ -23,6 +23,7 @@ import Model.Food_Product.Menu;
 import Model.Food_Product.Product;
 import View.Frame.Product_MenuManagementUI;
 import View.Frame.Product_ProductManagementUI;
+import View.Frame.SpendingUI;
 import View.Frame.Staff_ManagerStaffUI;
 import View.form.addFoodForm;
 import View.form.addIngre;
@@ -51,6 +52,23 @@ public class ManageMenuAndProduct {
 	private addProductForm addproductUI;
 	
 	private editProductForm editProductUI;
+	
+	private SpendingUI spendUI;
+	
+	public ManageMenuAndProduct(SpendingUI spendUI) {
+		this.spendUI = spendUI;
+		this.productModel = new Product();
+	}
+	
+	public int sumSpending(ArrayList<Product> listProduct) {
+		int sum = 0;
+		
+		for(Product pri: listProduct) {
+			sum += pri.getPrice();
+		}
+		return sum;
+	}
+
 	
 	public ManageMenuAndProduct(Product_ProductManagementUI a) {
 		this.productUI = a;

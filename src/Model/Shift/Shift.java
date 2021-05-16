@@ -5,10 +5,12 @@ import java.util.Scanner;
 
 import Controller.DBConnection.*;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -16,190 +18,245 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import Model.Food_Product.Food;
 import Model.Staff_Manager.*;
 
 public class Shift {
-	private String ShiftID;
-	private ArrayList<Staff> ListStaff;
-	private Date WorkingTimeStart;
+	private int ShiftID;
+	private Staff staff = new Staff();
+	private int  WorkingTimeStart;
+	private int endWork; 
+	private String accID;
+	private ArrayList<Shift> listShift;
+	private String dateWork;
 	
-	public String getAccountManager() {
-		return accountManager;
+	public String getDateWork() {
+		return dateWork;
 	}
 
-	public void setAccountManager(String accountManager) {
-		this.accountManager = accountManager;
+	public void setDateWork(String dateWork) {
+		this.dateWork = dateWork;
 	}
 
-	private Date WorkingTimeEnd;
-	private String accountManager;
-
-	public Date getWorkingTimeEnd() {
-		return WorkingTimeEnd;
+	public Shift() {
+		this.listShift = new ArrayList<Shift>();
 	}
-
-	public void setWorkingTimeEnd(Date workingTimeEnd) {
-		WorkingTimeEnd = workingTimeEnd;
-	}
-
-	public String getShiftID() {
+	
+	public int getShiftID() {
 		return ShiftID;
 	}
 
-	public void setShiftID(String shiftID) {
+	public void setShiftID(int shiftID) {
 		ShiftID = shiftID;
 	}
 
-	public ArrayList<Staff> getListStaff() {
-		return ListStaff;
+	public Staff getStaff() {
+		return staff;
 	}
 
-	public void setListStaff(ArrayList<Staff> listStaff) {
-		ListStaff = listStaff;
+	public void setStaff(Staff staff) {
+		this.staff = staff;
 	}
 
-	public Date getWorkingTimeStart() {
+	public int getWorkingTimeStart() {
 		return WorkingTimeStart;
 	}
 
-	public void setWorkingTimeStart(Date workingTimeStart) {
+	public void setWorkingTimeStart(int workingTimeStart) {
 		WorkingTimeStart = workingTimeStart;
 	}
 
-	public static Date readDate(String input) throws ParseException {
-		Scanner sc = new Scanner(System.in);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-		return (Date) sdf.parse(input);
+	public int getEndWork() {
+		return endWork;
 	}
 
-	public void inputShift() throws ParseException {
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("Enter shift ID: ");
-		this.ShiftID = sc.nextLine();
-
-		System.out.println("Enter list of staffs: ");
-		System.out.println("How many staffs?");
-		int n = sc.nextInt();
-		/*
-		 * for ( i = 0; i < n; i++) { this.ListStaff.get(i).inputStaff(); }
-		 */
-
-		System.out.println("Working time starts from: ");
-		String startingTime = sc.nextLine();
-		this.WorkingTimeStart = readDate(startingTime);
-		String endingTime = sc.nextLine();
-		this.WorkingTimeEnd = readDate(endingTime);
+	public void setEndWork(int endWork) {
+		this.endWork = endWork;
 	}
 
-	public void printShift() {
-		System.out.println("List Shift ");
-
-		System.out.println("Shift ID: " + this.getShiftID());
-
-		System.out.println("List staff: ");
-		/*
-		 * for ( i = 0; i < this.ListStaff.size(); i++)
-		 * this.ListStaff.get(i).printStaff();
-		 */
-
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		System.out.println("Working time starts from: " + formatter.format(this.getWorkingTimeStart()));
-		System.out.println("Working time ends at: " + formatter.format(this.getWorkingTimeEnd()));
+	public String getAccID() {
+		return accID;
 	}
 
-	public static boolean checkID(ArrayList<Shift> list, String id) {
-		if (list.size() > 0) {
-			for (Shift st : list) {
-				if (st.getShiftID().compareTo(id) == 0)
-					return true;
-			}
-		}
-		return false;
+	public void setAccID(String accID) {
+		this.accID = accID;
 	}
 
-	public static void addShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws ParseException, SQLException {
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			try {
-				if (checkID(list, st.getShiftID()) == false) {
-					String cmd1 = "INSERT INTO Shift VALUES('" + st.getShiftID() + "','" + st.getAccountManager() + "','" + st.getWorkingTimeStart() + "','"
-							+ st.getWorkingTimeEnd() + "')";
-					Statement stm1 = DBConnection.connection.createStatement();
-					stm1.executeUpdate(cmd1);
-					DBConnection.connection.commit();
-					stm1.close();
-					
-					System.out.println("Successfully added new shift!");
-					System.out.println("Add list staff to the new shift: ");
-					for(int i = 0; i < listStaff.size(); i++) {
-						String cmd2 = "INSERT INTO ShiftDetail VALUES('" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
-						Statement stm2 = DBConnection.connection.createStatement();
-						stm2.executeUpdate(cmd2);
-						DBConnection.connection.commit();
-						stm2.close();
-					}											
-				}
-				else
-					System.out.println("Try again! ");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		} else
-			System.out.println("Something went wrong!!!");
+	public ArrayList<Shift> getListShift() {
+		return listShift;
+	}
+
+	public void setListShift(ArrayList<Shift> listShift) {
+		this.listShift = listShift;
+	}
+
+
+	
+	public Shift(int shift, String nameStaff, int end, int start, String acc, String datework) {
+		this.ShiftID = shift;
+		this.staff.setStaffName(nameStaff);
+		this.endWork = end;
+		this.WorkingTimeStart = start;
+		this.accID = acc;
+		this.dateWork = datework;
 	}
 	
-
-	public static void editShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws SQLException {
+	public boolean deleteShift(int s) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			if(checkID(list, st.getShiftID())) {
-				String cmd1 = "UPDATE Shift SET ShiftID = '" + st.getShiftID() + "', AccountManagerID = '"
-						+ st.getAccountManager() + "', WorkingTimeStart = '" + st.getWorkingTimeStart() + "', WorkingTimeEnd ='"
-						+ st.getWorkingTimeEnd() +"' Where ID ='" + st.getShiftID() + "'";
-				Statement stm1 = DBConnection.connection.createStatement();
-				stm1.executeUpdate(cmd1);
-				DBConnection.connection.commit();
-				stm1.close();
+			try {
 				
-				System.out.println("Edit list of staff");
-				for(int i = 0; i < listStaff.size(); i++) {
-					String cmd2 = "UPDATE ShiftDetail SET ShiftID = '" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
-					Statement stm2 = DBConnection.connection.createStatement();
-					stm2.executeUpdate(cmd2);
-					DBConnection.connection.commit();
-					stm2.close();
-				}			
+				String deleteString = "{call removeShift(?)}";
+				
+				CallableStatement cstmt = DBConnection.connection.prepareCall(deleteString);
+				cstmt.setInt(1, s);
+				cstmt.executeUpdate();
+
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot delete food: " + e);
+				return false;
 			}
-			else
-				System.out.println("Something went wrong!!!");
-		}
-		else
+		} else {
 			System.out.println("Something went wrong!!!");
-		
+			return false;
+		}
 	}
 	
-	public static void removeShift(ArrayList<Shift> list, Shift st) {
+	public boolean addNewShift(Shift a) {
+		String querySql = "{call addShiftAndShiftDetail(?, ?, ?, ?, ?)}";
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)){
+			try {
+				System.out.println("time: " + a.getDateWork());
+				CallableStatement cstmt = DBConnection.connection.prepareCall(querySql);
+				cstmt.setString(1, a.getAccID());
+				cstmt.setInt(2, a.getWorkingTimeStart());
+				cstmt.setInt(3, a.getEndWork());
+				cstmt.setString(4, a.getStaff().getStaffName());
+				cstmt.setString(5, a.getDateWork());
+				cstmt.executeUpdate();
+
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot insert food to menu: " + e);
+				return false;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	
+	public boolean loadShift() {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				if (checkID(list, st.getShiftID())) {
-					String cmd1 = "DELETE FROM ShiftDetail WHERE ID = '" + st.getShiftID() + "'";
-					Statement stm1 = DBConnection.connection.createStatement();
-					stm1.executeUpdate(cmd1);
-					DBConnection.connection.commit();
-					stm1.close();
-					
-					String cmd2 = "DELETE FROM Shift WHERE ID = '" + st.getShiftID() + "'";
-					Statement stm2 = DBConnection.connection.createStatement();
-					stm2.executeUpdate(cmd2);
-					DBConnection.connection.commit();
-					stm2.close();
-					
-				} else
-					System.out.println("This shift does not exist! ");
+				String sp_load = "{call loadShift}";
+				Statement statement = DBConnection.connection.createStatement();
+				ResultSet rs = statement.executeQuery(sp_load);
+				while (rs.next()) {
+					int fid = rs.getInt("ShiftID");
+					String fidman = rs.getString("AccountManagerID");
+					int fp = rs.getInt("WorkingTimeStart");
+					int ft = rs.getInt("WorkingTimeEnd");
+					String fq = rs.getString("StaffName");
+					String dateWork = rs.getString("dateWorking");
+					Shift f = new Shift(fid,fq, ft, fp, fidman, dateWork);
+					this.listShift.add(f);
+				}
+				statement.close();
+				return true;
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("Cannot load menu: " + e);
+				return false;
 			}
-		} else
+		} else {
 			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
+
+
+//	public static void addShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws ParseException, SQLException {
+//		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+//			try {
+//				if (checkID(list, st.getShiftID()) == false) {
+//					String cmd1 = "INSERT INTO Shift VALUES('" + st.getShiftID() + "','" + st.getAccountManager() + "','" + st.getWorkingTimeStart() + "','"
+//							+ st.getWorkingTimeEnd() + "')";
+//					Statement stm1 = DBConnection.connection.createStatement();
+//					stm1.executeUpdate(cmd1);
+//					DBConnection.connection.commit();
+//					stm1.close();
+//					
+//					System.out.println("Successfully added new shift!");
+//					System.out.println("Add list staff to the new shift: ");
+//					for(int i = 0; i < listStaff.size(); i++) {
+//						String cmd2 = "INSERT INTO ShiftDetail VALUES('" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
+//						Statement stm2 = DBConnection.connection.createStatement();
+//						stm2.executeUpdate(cmd2);
+//						DBConnection.connection.commit();
+//						stm2.close();
+//					}											
+//				}
+//				else
+//					System.out.println("Try again! ");
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		} else
+//			System.out.println("Something went wrong!!!");
+//	}
+	
+
+//	public static void editShift(ArrayList<Shift> list, Shift st, ArrayList<Staff> listStaff) throws SQLException {
+//		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+//			if(checkID(list, st.getShiftID())) {
+//				String cmd1 = "UPDATE Shift SET ShiftID = '" + st.getShiftID() + "', AccountManagerID = '"
+//						+ st.getAccountManager() + "', WorkingTimeStart = '" + st.getWorkingTimeStart() + "', WorkingTimeEnd ='"
+//						+ st.getWorkingTimeEnd() +"' Where ID ='" + st.getShiftID() + "'";
+//				Statement stm1 = DBConnection.connection.createStatement();
+//				stm1.executeUpdate(cmd1);
+//				DBConnection.connection.commit();
+//				stm1.close();
+//				
+//				System.out.println("Edit list of staff");
+//				for(int i = 0; i < listStaff.size(); i++) {
+//					String cmd2 = "UPDATE ShiftDetail SET ShiftID = '" + st.getShiftID() + "','" + listStaff.get(i).getStaffID() + "')'"; 
+//					Statement stm2 = DBConnection.connection.createStatement();
+//					stm2.executeUpdate(cmd2);
+//					DBConnection.connection.commit();
+//					stm2.close();
+//				}			
+//			}
+//			else
+//				System.out.println("Something went wrong!!!");
+//		}
+//		else
+//			System.out.println("Something went wrong!!!");
+//		
+//	}
+//	
+//	public static void removeShift(ArrayList<Shift> list, Shift st) {
+//		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+//			try {
+//				if (checkID(list, st.getShiftID())) {
+//					String cmd1 = "DELETE FROM ShiftDetail WHERE ID = '" + st.getShiftID() + "'";
+//					Statement stm1 = DBConnection.connection.createStatement();
+//					stm1.executeUpdate(cmd1);
+//					DBConnection.connection.commit();
+//					stm1.close();
+//					
+//					String cmd2 = "DELETE FROM Shift WHERE ID = '" + st.getShiftID() + "'";
+//					Statement stm2 = DBConnection.connection.createStatement();
+//					stm2.executeUpdate(cmd2);
+//					DBConnection.connection.commit();
+//					stm2.close();
+//					
+//				} else
+//					System.out.println("This shift does not exist! ");
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		} else
+//			System.out.println("Something went wrong!!!");
+//	}
 
 }

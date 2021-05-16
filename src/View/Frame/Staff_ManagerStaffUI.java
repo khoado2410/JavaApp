@@ -3,17 +3,64 @@ package View.Frame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.table.*;
 
+import Controller.ManageStaff.ControllerManageStaff;
+import Controller.MenuAndProduct.ManageMenuAndProduct;
+import Controller.PanelChange.ControllerPanel;
+import Model.Food_Product.Product;
+import Model.Staff_Manager.Staff;
+import View.form.addProductForm;
+import View.form.addStaffForm;
+import View.form.editProductForm;
+import View.form.editStaffForm;
+
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
 
 public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 	
+	private ControllerManageStaff controllerStaff = new ControllerManageStaff(this);
+	private ControllerPanel controller;
+	
 	JPanel panelManageStaff = new JPanel();
+	public static JButton remove;
+	public static JButton edit;
+	public static JButton delete;
+	public static JTable mytable = new JTable();
+	public DefaultTableModel defaultModel = new DefaultTableModel();
+	
+	public static ArrayList<Staff> listStaff;
+	
+	public static void addRowToTable(Object[] dataRow) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		//DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		//centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		//DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+		//bgcolor.setBackground(Color.white);
+		
+		//for(int i = 0; i < 8; i++) {
+			//mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		//}	
+		model.addRow(dataRow);
+	}
+	
+	public static void updateStaff(ArrayList<Staff> lst) {
+		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
+		model.setNumRows(0);
+		ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
+		edit.setIcon(_edit);
+		for(Staff s : lst) {
+			model.addRow(new Object[] {s.getStaffID(), s.getStaffName(), s.getAddress(), 
+					s.getGender(), s.getDateOfBirth(), s.getSalary(), s.getPoint(), edit, remove});
+		}
+	}
+	
 	
 	public Staff_ManagerStaffUI() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -30,6 +77,7 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 		JButton buttonPayroll = new JButton("<html><span style='font-size:20px'>Payroll</span></html>");
 		buttonPayroll.setBackground(new Color(0, 0, 0));
 		buttonPayroll.setForeground(new Color(255, 192, 203));
+
 		
 		buttonStaff.setActionCommand("Staff");
 		buttonTimekeeping.setActionCommand("Timekeeping");
@@ -54,11 +102,16 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 		left.setBackground(new Color(255, 255, 255));
 		JLabel jlb1 = new JLabel("Staff");
 		
-		JLabel icon = new JLabel();
+		JButton icon = new JButton();
 		icon.setOpaque(true);
 		icon.setBackground(new Color(0, 0, 0));
 		ImageIcon a = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/baseline_house_white_24dp.png"));
 		icon.setIcon(a);
+		icon.setActionCommand("home");
+		controller = new ControllerPanel(this);
+		controller.setEventButton(icon, "Home");
+		controller.setEventButton(buttonPayroll, "buttonPayroll");
+		controller.setEventButton(buttonTimekeeping, "buttonTimekeeping");
 		
 		JLabel jlb_staff = new JLabel("<html><span style='font-size:25px'>Staff</span></html>");
 		
@@ -79,15 +132,17 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 		
 		JPanel right = new JPanel();
 		right.setBackground(new Color(255, 255, 255));
-		JLabel add = new JLabel("<html><span style='font-size:18px'>Add staff</span></html>");
+		JButton add = new JButton("<html><span style='font-size:18px'>Add staff</span></html>");
 		add.setOpaque(true);
 		ImageIcon ad = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/add.png"));
 		add.setIcon(ad);
+		add.setActionCommand("addStaff");
+		add.addActionListener(this);
 		
 		
 		SpringLayout springlayout1 = new SpringLayout();
 		right.setLayout(springlayout1);
-		springlayout1.putConstraint(SpringLayout.WEST, add, 300, SpringLayout.WEST, right);
+		springlayout1.putConstraint(SpringLayout.WEST, add, 270, SpringLayout.WEST, right);
 		springlayout1.putConstraint(SpringLayout.SOUTH, add, -30 , SpringLayout.SOUTH, right);
 		right.add(add);
 		
@@ -111,84 +166,131 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 		}
 		
 		// JLabel chua 2 icon
-		JLabel edit = new JLabel();
+		edit = new JButton();
 		ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
 		edit.setIcon(_edit);
 		
 		ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-		JLabel remove = new JLabel();
+		remove = new JButton();
 		remove.setIcon(_remove);
 		
-		JPanel fonc = new JPanel();
-		SpringLayout springlayout2 = new SpringLayout();
-		fonc.setLayout(springlayout2);
-		springlayout2.putConstraint(SpringLayout.WEST, edit, 60, SpringLayout.WEST, fonc);
-		springlayout2.putConstraint(SpringLayout.SOUTH, edit, -15, SpringLayout.SOUTH, fonc);
-		springlayout2.putConstraint(SpringLayout.WEST, remove, 90, SpringLayout.WEST, fonc);
-		springlayout2.putConstraint(SpringLayout.SOUTH, remove, -15, SpringLayout.SOUTH, fonc);
-		fonc.add(edit);
-		fonc.add(remove);
-		String[] columnNames = {"ID", "Name", "Address", "Gender", "Date of bỉthday", "Salary", "Point", ""};
 		
-		Object[][] data = {
-				{
-					"NV1", "Nguyen Nhat Minh", "12 Tran Binh Trong", "Male", "14/03/2000", "2000", "123", fonc,
-				},
-				{
-					"NV2", "Nguyen Nhat Minh", "12 Tran Binh Trong", "Male", "14/03/2000", "2000", "123", fonc,
-				},
-				{
-					"NV3", "Nguyen Nhat Minh", "12 Tran Binh Trong", "Male", "14/03/2000", "2000", "123", fonc, 
-				},
-				{
-					"NV4", "Nguyen Nhat Minh", "12 Tran Binh Trong", "Male", "14/03/2000", "2000", "123", fonc,
-				}		
-		};
-				
-		class MyJTable extends JTable{
-			MyJTable(Object[][] data, String[] columnNames){
-				super(data, columnNames);
-			}
-			public java.awt.Component prepareRenderer
-			(javax.swing.table.TableCellRenderer rendrer, int row, int col){
-				Component comp = super.prepareRenderer(rendrer, row, col);
-				if(row % 2 == 0 && !isCellSelected(row, col)) {
-					comp.setBackground(new Color(196, 196, 196));
-				}else if(!isCellSelected(row, col)) {
-					comp.setBackground(new Color(169, 169, 169));
-					
-				}else {
-					comp.setBackground(Color.black);
-				}
-				return comp;
-			}
+		defaultModel = new DefaultTableModel();
+		mytable.setModel(defaultModel);
+		
+		defaultModel.addColumn("ID");
+		defaultModel.addColumn("Name");
+		defaultModel.addColumn("Address");
+		defaultModel.addColumn("Gender");
+		defaultModel.addColumn("Date of birth");
+		defaultModel.addColumn("Salary");
+		defaultModel.addColumn("Point");
+		defaultModel.addColumn("Edit");
+		defaultModel.addColumn("Remove");
+		
+		listStaff = new ArrayList<Staff>();
+		listStaff = this.controllerStaff.loadStaff();
+		
+		for(Staff s : listStaff) {
+			defaultModel.addRow(new Object[] {s.getStaffID(), s.getStaffName(), s.getAddress(), 
+									s.getGender(), s.getDateOfBirth(), s.getSalary(), s.getPoint(), edit, remove});
 		}
-		MyJTable table = new MyJTable(data, columnNames);
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(500, 100));
-		table.setFillsViewportHeight(true);
-		table.setRowHeight(60);
+		
+
+	     TableColumn column = mytable.getColumnModel().getColumn(0);
+	     column.setMinWidth(100);
+	     column.setMaxWidth(110);
+	     column.setPreferredWidth(110);
+	
+	    
+	     
+	     TableColumn column5 = mytable.getColumnModel().getColumn(3);
+	     column5.setMinWidth(100);
+	     column5.setMaxWidth(100);
+	     column5.setPreferredWidth(100);
+
+	     TableColumn column1 = mytable.getColumnModel().getColumn(4);
+	     column1.setMinWidth(100);
+	     column1.setMaxWidth(150);
+	     column1.setPreferredWidth(150);
+	     
+	     TableColumn column2 = mytable.getColumnModel().getColumn(5);
+	     column2.setMinWidth(100);
+	     column2.setMaxWidth(100);
+	     column2.setPreferredWidth(100);
+	     
+	     TableColumn column6 = mytable.getColumnModel().getColumn(6);
+	     column6.setMinWidth(100);
+	     column6.setMaxWidth(100);
+	     column6.setPreferredWidth(100);
+	     
+	     TableColumn column9 = mytable.getColumnModel().getColumn(7);
+	     column9.setMinWidth(100);
+	     column9.setMaxWidth(100);
+	     column9.setPreferredWidth(100);
+	     
+	     TableColumn column10 = mytable.getColumnModel().getColumn(8);
+	     column10.setMinWidth(100);
+	     column10.setMaxWidth(100);
+	     column10.setPreferredWidth(100);
+
+	     
+	       				
+		mytable.setRowHeight(50);
+		
+		JScrollPane scrollPane = new JScrollPane(mytable);
+		scrollPane.setPreferredSize(new Dimension(400, 100));
+		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
+		bgcolor.setBackground(Color.white);
+		
 		for(int i = 0; i < 8; i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
+			mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}				
 		
-		table.getColumnModel().getColumn(7).setCellRenderer(new JPanelImage());
+		//mytable.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);				
+		mytable.getColumnModel().getColumn(7).setCellRenderer(new JPanelImage());
+		mytable.getColumnModel().getColumn(8).setCellRenderer(new JPanelImage());
 		
-		table.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
-		table.getTableHeader().setPreferredSize(new Dimension(100, 60));
-		table.getTableHeader().setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		content.add(table.getTableHeader(), BorderLayout.PAGE_START);
+		mytable.setFillsViewportHeight(true);
+		mytable.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+		mytable.getTableHeader().setPreferredSize(new Dimension(50, 50));
+		
+		mytable.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int col = mytable.getSelectedColumn();
+		        int row = mytable.getSelectedRow();
+		        String id = (mytable.getModel().getValueAt(row, 0)).toString();
+		        if (col == 7) {
+		        	
+		        	String name = defaultModel.getValueAt(row, 1).toString().trim();
+		        	//String mass = defaultModel.getValueAt(row,  2).toString();
+		        	String address = defaultModel.getValueAt(row,  2).toString();
+		        	String gender = defaultModel.getValueAt(row, 3).toString();
+		        	String dob = defaultModel.getValueAt(row, 4).toString();
+		        	String sal = defaultModel.getValueAt(row, 5).toString();
+		        	String point = defaultModel.getValueAt(row, 6).toString();
+		        	
+		        	String type = "edit";
+		        	//Date date1=(Date) new SimpleDateFormat("MM/dd/yyyy").parse(dob);  
+		        	editStaffForm fc = new editStaffForm(id, name, address, gender, dob, sal, point);
+		        	
+		        }
+		        else if(col == 8) {
+		        		ControllerManageStaff.removeRowOfStaff(id);
+		        }
+		    }
+		});
+		
 		content.add(scrollPane, BorderLayout.CENTER);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(navbar);
 		add(top);
 		add(content);
-		
-		
-		
 		setVisible(true);
 		
 
@@ -196,28 +298,26 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		String s = e.getActionCommand();
-//		System.out.println(s);
-//		if(s.equals("Staff")) {
-//			
-//		}
-//		else if(s.equals("Timekeeping")) {
-//			//System.out.println("nice");
-//			this.jfrm.setVisible(false);
-//			new Staff_TimekeepingUI();
-//		}
+		String s = e.getActionCommand();
+		
+		
+		if(s.equals("Menu Management")) {
+		
+			//this.menuAndProduct.changePanelMenu();
+			
+		}else if(s.equals("home")) {
+			//this.menuAndProduct.changePanelProduct();
+		}else if(s.equals("edit")) {
+			//JOptionPane.showConfirmDialog(this, "AA");
+		}else if(s.equals("delete")) {
+			
+		}else if(s.equals("addStaff")) {
+			addStaffForm form = new addStaffForm();
+			
+			
+	}
+		
 	}
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new Staff_ManagerStaffUI();
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 }

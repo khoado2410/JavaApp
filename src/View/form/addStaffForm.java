@@ -14,31 +14,35 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
-import Controller.DBConnection.DBConnection;
+import Controller.DBConnection.*;
+import Controller.ManageStaff.ControllerManageStaff;
 import net.miginfocom.swing.MigLayout;
 
-public class addStaffForm extends JFrame{
+public class addStaffForm extends JFrame implements ActionListener{
+	
+	private ControllerManageStaff controllerStaff = new ControllerManageStaff(this);
+	
 	private JPanel mainFramePanel;
 	private JPanel title;
 	JLabel formTitle;
 	private JPanel formContent;
 	private JLabel staffID;
-	private JTextField staffIDField;
+	public JTextField staffIDField;
 	private JLabel staffName;
-	private JTextField staffNameField;
+	public JTextField staffNameField;
 	private JLabel dateOfBirth;
-	private JTextField dateOfBirthField;
+	public JTextField dateOfBirthField;
 	private JLabel gender;
 	private JLabel male;
-	private JCheckBox maleCheck;
+	public JCheckBox maleCheck;
 	private JLabel female;
-	private JCheckBox femaleCheck;
+	public JCheckBox femaleCheck;
 	private JLabel address;
-	private JTextField addressField;
+	public JTextField addressField;
 	private JLabel salary;
-	private JTextField salaryField;
+	public JTextField salaryField;
 	private JLabel point;
-	private JTextField pointField;
+	public JTextField pointField;
 	private JPanel buttonField;
 	private JButton saveBtn;
 	private JButton cancelBtn;
@@ -78,7 +82,7 @@ public class addStaffForm extends JFrame{
 		staffIDField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		staffIDField.setFont(staffIDField.getFont().deriveFont(Font.PLAIN, 20));
 		staffIDField.setEditable(false);
-		String text = getStaffID();
+		String text = this.controllerStaff.getIDStaffMax();
 		staffIDField.setText(text);
 		
 		staffName = new JLabel("Staff's name");
@@ -162,12 +166,14 @@ public class addStaffForm extends JFrame{
 		saveBtn.setForeground(Color.BLACK);
 		saveBtn.setPreferredSize(new Dimension(100, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		saveBtn.addActionListener(this);
 		
 		cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
 		cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
+		cancelBtn.addActionListener(this);
 		
 		buttonField.add(saveBtn);
 		buttonField.add(Box.createHorizontalStrut(150));
@@ -177,159 +183,28 @@ public class addStaffForm extends JFrame{
 		mainFramePanel.add(formContent);
 		mainFramePanel.add(buttonField);
 		
-		setUpButtonActions();
+		//setUpButtonActions();
 		
 		setVisible(true);
 	}
-	
-	public void setUpButtonActions() {
-		ActionListener save = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				addStaff();
-				JOptionPane.showMessageDialog(null, "Success");
-				dispose();
-			}
-		};
-		
-		ActionListener cancel = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				dispose();
-			}
-		};
-		
-		saveBtn.addActionListener(save);
-		cancelBtn.addActionListener(cancel);	
-		
-	}	
-	
-	public String getStaffID() {
-		String id = "";
-		
-		String cmd1 = "SELECT StaffID FROM Staff WHERE StaffID = (SELECT max(StaffID) FROM Staff)";
-		
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			String temp = "";
-			int length = 0;
-			try {
-				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-				ResultSet results = ps.executeQuery();
-				while(results.next()) {
-	     	   		temp = results.getString("StaffID");
-	     	   		temp = temp.replaceAll("\\s+", "");
-	     	   		length = temp.length();
-	     	   		DBConnection.connection.commit();
-	     	   	}
-				results.close();
-				int newTemp = Integer.parseInt(temp.replaceAll("\\D+",""));
-				newTemp++;
-				String zero = "";
-				System.out.println(temp.replaceAll("\\D+","").length());
-				for(int i = 0; i < length - 1 - String.valueOf(newTemp).length(); i++) {
-					zero += "0";
-				}
-				id += "S" + zero + String.valueOf(newTemp);
-				
-			} catch (SQLException e){
-				e.printStackTrace();
-			}
-		}
-		
-//		String cmd1 = "SELECT COUNT(*) FROM Menu";
-//		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-//			try {
-//				PreparedStatement ps = DBConnection.connection.prepareStatement(cmd1);
-//				ResultSet results = ps.executeQuery();
-//				String temp = "";
-//				while(results.next()) {
-//					temp = results.getString(1);
-//	     	   		DBConnection.connection.commit();
-//	     	   	}
-//				results.close();
-//				id += "F00" + temp;
-//				
-//			} catch (SQLException e){
-//				e.printStackTrace();
-//			}
-//		}
-		return id;
-	}
-	
-	public static boolean isNumeric(String strNum) {
-	    if (strNum == null) {
-	        return false;
-	    }
-	    try {
-	        int d = Integer.parseInt(strNum);
-	    } catch (NumberFormatException nfe) {
-	        return false;
-	    }
-	    return true;
-	}
-	
-	public void addStaff() {
-		String staffID = staffIDField.getText();
-		String staffName = staffNameField.getText();
-		String dob = dateOfBirthField.getText();
-		String gender = "";
-		if(maleCheck.isSelected())
-			gender = "Male";
-		else
-			gender = "Female";
-		String address = addressField.getText();
-		int salary = 0;
-		try {
-			if(isNumeric(salaryField.getText()))
-				salary = Integer.parseInt(salaryField.getText());
-		} catch(NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-				
-		int point = 0;
-		try {
-			if(isNumeric(pointField.getText()))
-				point = Integer.parseInt(pointField.getText());
-		} catch(NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Error");
-		}
-		
-		
-		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
-			try {
-				String query = "{call addStaff(?, ?, ?, ?, ?, ?, ?)}";
-				CallableStatement cstmt = DBConnection.connection.prepareCall(query);
-				
-				cstmt.setString(1, staffID);
-				cstmt.setString(2, staffName);
-				cstmt.setString(3, dob);
-				cstmt.setString(4, gender);
-				cstmt.setString(5, address);
-				cstmt.setInt(6, salary);
-				cstmt.setInt(7, point);
-				
-				cstmt.execute();
-				cstmt.close();
-		
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		String com = e.getActionCommand().toString();
+		if(com.equals("Save")) {
+			boolean check = this.controllerStaff.addNewStaff();
 			
 		}
-		else {
-			System.out.println("Failed");
+		else if(com.equals("Cancel")) {
+			this.dispose();
+		}else if(com.equals("Choose a image")) {
+			//controllerAddFood.OpenFileImage();
+		}else if(com.equals("Choose ingredient")) {
+			//addIngre ingre = new addIngre("add");
+			
 		}
-	}
-	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new addStaffForm();
-			}
-		}); 
+		
 	}
 
 }
