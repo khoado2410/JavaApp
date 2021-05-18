@@ -21,6 +21,8 @@ import Model.Food_Product.FoodType;
 //import Model.Food_Product.*;
 import Model.Food_Product.Menu;
 import Model.Food_Product.Product;
+import Model.History.EditHistory;
+import Model.Staff_Manager.AccountManager;
 import View.Frame.Product_MenuManagementUI;
 import View.Frame.Product_ProductManagementUI;
 import View.Frame.SpendingUI;
@@ -58,6 +60,8 @@ public class ManageMenuAndProduct {
 	private SpendingUI spendUI;
 	
 	private ingredientMass massDetailUi;
+	
+	private static EditHistory editHistoryModel = new EditHistory();
 	
 	public ManageMenuAndProduct(SpendingUI spendUI) {
 		this.spendUI = spendUI;
@@ -161,7 +165,6 @@ public class ManageMenuAndProduct {
 				a.addIngredient(id, nameFood.get(i), mass.get(i));
 			}
 			JOptionPane.showMessageDialog(this.massDetailUi, "Thêm thành phần thành công");
-			//this.massDetailUi.dispose();
 	}
 	
 	public ArrayList<Product> getListProductForFood(String id){
@@ -181,11 +184,11 @@ public class ManageMenuAndProduct {
 	
 	public void updateIngredient(ArrayList<Product> lstOld, ArrayList<Integer> mass, String id) {
 		if(this.removeIngredienttFromFood(lstOld, id)) {
-			//System.out.println("AAAAAA");
+			
 			for(int i = 0; i < lstOld.size(); i++) {
 				Product a = new Product();
 				a.addIngredient(id, lstOld.get(i).getNameProduct(), mass.get(i));
-				//a.addIngredient(id, lstOld.get(i).getProductID(), mass.get(i));
+				
 			}
 			
 		}
@@ -222,7 +225,7 @@ public class ManageMenuAndProduct {
 	}
 	
 	public void passDataToFormFood(ArrayList<String> list, String id) {
-		//addFoodForm.ListIngredient(list);
+		
 		ingredientMass ingredientDetail = new ingredientMass(list, id, "add");
 	}
 	
@@ -296,6 +299,8 @@ public class ManageMenuAndProduct {
 		boolean check = this.menu.updateFood(newFood);
 		
 		if(check == true) {
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Update", "Food");
+			this.editHistoryModel.addEditHistory(edit123);
 			ArrayList<Food> li = this.loadFoodFromMenu();
 			Product_MenuManagementUI.updateMenu(li);
 			
@@ -342,20 +347,16 @@ public class ManageMenuAndProduct {
 		boolean check = this.menu.addNewFood(newFood);
 	
 		if(check == true) {
-		ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
-
-		ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Add", "Food");
+			this.editHistoryModel.addEditHistory(edit123);
 		
-		JButton edit = new JButton();
-		JButton remove = new JButton();
-		edit.setIcon(_edit);
-		remove.setIcon(_remove);
-		Product_MenuManagementUI.addRowToTable(new Object[] {newFood.getFoodID(), newFood.getNameFood(), newFood.getFoodTypeName(),
-				newFood.getPrice(), newFood.getQuantityOfStock(), edit, remove});
-		this.addFoodUI.dispose();
-		
-		JOptionPane.showMessageDialog(addFoodUI, "Thêm " + newFood.getNameFood() + " thành công!");	
-		return true;
+			ArrayList<Food> listFoodFromMenu = this.loadFoodFromMenu();
+			Product_MenuManagementUI.updateMenu(listFoodFromMenu);
+			this.addFoodUI.dispose();
+			
+			JOptionPane.showMessageDialog(addFoodUI, "Thêm " + newFood.getNameFood() + " thành công!");	
+				
+			return true;
 			
 		}else {
 			JOptionPane.showMessageDialog(addFoodUI, "Thêm thất bại!");
@@ -399,6 +400,8 @@ public class ManageMenuAndProduct {
 			Food food = new Food(id);
 			boolean check = a.deleteFoodFromMenu(food);
 			if(check) {
+				EditHistory edit123 = new EditHistory(AccountManager.managerID, "Remove", "Food");
+				editHistoryModel.addEditHistory(edit123);
 				ArrayList<Food> listFood = new ArrayList<Food>();
 				if(a.loadFoodFromDB()) {
 					listFood = a.getMenu();
@@ -470,17 +473,12 @@ public class ManageMenuAndProduct {
 		boolean check = this.productModel.addNewProduct(newProduct);
 	
 		if(check == true) {
-			ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
-	
-			ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Add", "Product");
+			this.editHistoryModel.addEditHistory(edit123);
 			
-			JButton edit = new JButton();
-			JButton remove = new JButton();
-			edit.setIcon(_edit);
-			remove.setIcon(_remove);
+			ArrayList<Product> listProductFromMenu = this.getListProduct();
+			Product_ProductManagementUI.updateProduct(listProductFromMenu);
 			
-			Product_ProductManagementUI.addRowToTable(new Object[] {newProduct.getProductID(), newProduct.getNameProduct(), 
-																newProduct.getMass(), newProduct.getPrice(), edit, remove});
 			this.addproductUI.dispose();
 			
 			JOptionPane.showMessageDialog(this.addproductUI, "Thêm " + newProduct.getProductID() + " thành công!");	
@@ -520,6 +518,8 @@ public class ManageMenuAndProduct {
 		boolean check = this.productModel.updateProduct(newProduct);
 		
 		if(check == true) {
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Update", "Product");
+			this.editHistoryModel.addEditHistory(edit123);
 			ArrayList<Product> li = this.getListProduct();
 			Product_ProductManagementUI.updateProduct(li);
 			
@@ -549,6 +549,8 @@ public class ManageMenuAndProduct {
 				if(a.loadProductFromDB()) {
 					listProduct = a.getListProduct();
 				}
+				EditHistory edit123 = new EditHistory(AccountManager.managerID, "Remove", "Product");
+				editHistoryModel.addEditHistory(edit123);
 				Product_ProductManagementUI.updateProduct(listProduct);
 			}
 		}

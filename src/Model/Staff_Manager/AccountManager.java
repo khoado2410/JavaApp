@@ -17,6 +17,10 @@ public class AccountManager {
 	private String username;
 	private String password;
 	
+	public static int checkLogin = 0;
+	public static String managerID;
+	public static String usernameManager;
+	
 	private ArrayList<AccountManager> listAcc;
 	
 	public ArrayList<AccountManager> getListAcc() {
@@ -85,22 +89,28 @@ public class AccountManager {
 	public boolean logIn(String username, String pass) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				 String query = "Select Username, Password from AccountManager WHERE Username=? and Password =?";
+				 String query = "Select * from AccountManager WHERE Username=? and Password =?";
 				   PreparedStatement ps =  DBConnection.connection.prepareStatement(query);
 				   ps.setString(1, username);
 				   ps.setString(2, pass);
 				   ResultSet rs = ps.executeQuery();
 				   int check = 0;
 				   while (rs.next()) {
-						check++;
+						//System.out.println("AAAA: " + rs.getString("AccountManagerID"));
+						String fid = rs.getString("AccountManagerID");
+						String fn = rs.getString("Username");
+						String fp = rs.getString("Password");
+						AccountManager f = new AccountManager(fid, fn, fp);
+						this.listAcc.add(f);
+						System.out.println(fid);
+						//check++;
 					}
 				   ps.close();
-				   if(check == 0) {
-					   return false;
-				   }else
+				   if(this.listAcc.size() > 0)
 					   return true;
-				
-				
+				   else
+				   		return false;
+
 			} catch (SQLException e) {
 	
 				return false;

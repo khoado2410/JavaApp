@@ -43,7 +43,7 @@ public class scheduleShift extends JFrame implements ActionListener{
 	public JComboBox manageAccount;
 	
 	private JLabel dateWorkingLabel;
-	public JTextField dateworkField;
+	public JLabel dateworkField;
 	
 	public JComboBox hourEnd;
 	
@@ -85,11 +85,14 @@ public class scheduleShift extends JFrame implements ActionListener{
 		this.dateWorkingLabel.setHorizontalAlignment(JLabel.LEFT);
 		this.dateWorkingLabel.setFont(this.dateWorkingLabel.getFont().deriveFont(Font.PLAIN, 20));		
 		
-		this.dateworkField = new JTextField();
+		this.dateworkField = new JLabel();
 		this.dateworkField.setPreferredSize(new Dimension(330, 40));
 		this.dateworkField.setFont(this.dateworkField.getFont().deriveFont(Font.PLAIN, 20));
-		
-		
+		String querySql = "{call addEditHistory(?, ?, ?, ?)}";
+		java.util.Date date= java.util.Calendar.getInstance().getTime(); 
+		DateFormat dateFormatMDY = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		String vDateYMD = dateFormatMDY.format(date);
+		this.dateworkField.setText(vDateYMD);
 		
 		this.manageID = new JLabel("Manage ID: ");
 		this.manageID.setHorizontalAlignment(JLabel.LEFT);

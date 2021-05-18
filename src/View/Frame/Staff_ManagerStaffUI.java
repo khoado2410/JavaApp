@@ -37,18 +37,6 @@ public class Staff_ManagerStaffUI extends JPanel implements ActionListener{
 	
 	public static ArrayList<Staff> listStaff;
 	
-	public static void addRowToTable(Object[] dataRow) {
-		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
-		//DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		//centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		//DefaultTableCellRenderer bgcolor = new DefaultTableCellRenderer();
-		//bgcolor.setBackground(Color.white);
-		
-		//for(int i = 0; i < 8; i++) {
-			//mytable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		//}	
-		model.addRow(dataRow);
-	}
 	
 	public static void updateStaff(ArrayList<Staff> lst) {
 		DefaultTableModel model = (DefaultTableModel)mytable.getModel();

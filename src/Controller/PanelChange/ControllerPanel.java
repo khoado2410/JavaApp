@@ -7,6 +7,8 @@ import javax.swing.*;
 
 import Controller.ControlMenuTable.ControllerBill;
 import Controller.ControlMenuTable.ControllerTable;
+import Model.History.EditHistory;
+import Model.Staff_Manager.AccountManager;
 import View.Frame.*;
 import View.form.loginForm;
 
@@ -63,7 +65,7 @@ public class ControllerPanel implements ActionListener{
 			setPanel(new MainFrame());
 			break;
 		case "Staff": {
-			if(MainFrame.use>0) {
+			if(AccountManager.checkLogin>0) {
 				setPanel(new Staff_ManagerStaffUI());
 			}else {
 				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
@@ -72,7 +74,7 @@ public class ControllerPanel implements ActionListener{
 			break;
 		}
 		case "Stock": {
-			if(MainFrame.use>0) {
+			if(AccountManager.checkLogin>0) {
 				setPanel(new Product_MenuManagementUI());
 			}else {
 				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
@@ -92,7 +94,7 @@ public class ControllerPanel implements ActionListener{
 		
 			}
 		case "Cash Book": {
-			;if(MainFrame.use>0) {
+			if(AccountManager.checkLogin>0) {
 				setPanel(new RevenueUI());
 			}else {
 				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
@@ -117,13 +119,23 @@ public class ControllerPanel implements ActionListener{
 		
 			}
 		case "Login": {
-			if(MainFrame.use == 0) {
+			if(AccountManager.checkLogin == 0) {
 				loginForm a = new loginForm();
 			}
 			else {
 				JOptionPane.showMessageDialog(this.main, "Đã đăng nhập");
 			}
 				break;
+			}
+		case "Deal": {
+			if(AccountManager.checkLogin>0) {
+				setPanel(new EditHistoryData());
+			}else {
+				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
+				loginForm a = new loginForm();
+			}
+			break;
+		
 			}
 
 		}

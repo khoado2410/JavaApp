@@ -248,7 +248,7 @@ public class editFoodForm extends JFrame implements ActionListener{
 			this.controller.updateFood();		
 		}
 		else if(com.equals("Cancel")) {
-			this.dispose();
+			this.setVisible(false);
 		}else if(com.equals("Choose a image")) {
 			this.controller.OpenFileImageEditForm();
 			//controllerAddFood.OpenFileImage();
