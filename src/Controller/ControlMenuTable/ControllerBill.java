@@ -35,6 +35,7 @@ public class ControllerBill {
 		this.billPanel = p;
 		this.table = t;
 		this.bill = b;
+		this.bill.setTableID(t.getIdTable());
 		menu = new Menu();
 		menu.loadFoodFromDB();
 		listFoods = menu.getMenu();
@@ -95,6 +96,14 @@ public class ControllerBill {
 		billPanel.revalidate();
 		billPanel.repaint();
 	}
+	
+	public void createBill() {
+		if (table.getStatus() == 1)
+			bill.createBillInDB();
+		else {
+			bill.updateBillDetail();
+		}
+	}
 }
 
 class FoodUpdate implements ActionListener {
@@ -119,7 +128,6 @@ class FoodUpdate implements ActionListener {
 	public void updateFoodAction(JButton jbtn, String na) {
 		jbtn.addActionListener(this);
 		jbtn.setActionCommand(na);
-
 	}
 
 	@Override

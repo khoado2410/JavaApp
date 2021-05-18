@@ -18,8 +18,9 @@ public class Bill {
 	private String CheckInHour;
 	private String CheckOutHour;
 	private String accManagerID;
-	
+
 	ArrayList<Food> listFoodforDetailBill;
+
 	public ArrayList<Food> getListFoodforDetailBill() {
 		return listFoodforDetailBill;
 	}
@@ -29,9 +30,9 @@ public class Bill {
 	}
 
 	HashMap<Food, Integer> listFood = new HashMap<>();
-	
+
 	ArrayList<Bill> listBill = new ArrayList<Bill>();
-	
+
 	public ArrayList<Bill> getListBill() {
 		return listBill;
 	}
@@ -39,7 +40,6 @@ public class Bill {
 	public void setListBill(ArrayList<Bill> listBill) {
 		this.listBill = listBill;
 	}
-
 
 	public HashMap<Food, Integer> getListFood() {
 		return listFood;
@@ -52,15 +52,14 @@ public class Bill {
 	public Bill() {
 		this.listBill = new ArrayList<Bill>();
 	}
-	
 
 	public Bill(String billid) {
 		this.BillID = billid;
 		HashMap<String, Integer> temp = loadListFoodInBill(billid);
 		Menu m = new Menu();
 		m.loadFoodFromDB();
-		for (String t: temp.keySet()) {
-			for (Food f: m.getMenu()) {
+		for (String t : temp.keySet()) {
+			for (Food f : m.getMenu()) {
 				if (f.getNameFood().equals(t)) {
 					listFood.put(f, temp.get(t));
 				}
@@ -68,8 +67,6 @@ public class Bill {
 		}
 	}
 
-	
-	
 	public Bill(String billID, String staffName, int payment, int status, String tableID, String checkInHour,
 			String checkOutHour, String accManagerID) {
 		super();
@@ -147,15 +144,18 @@ public class Bill {
 		this.accManagerID = accManagerID;
 	}
 
-	public void sumBill() {
-		System.out.println("Sum bill: 1.000.000");
+	public int sumBill() {
+		int sum = 0;
+		for (Food f : this.listFood.keySet()) {
+			sum += f.getPrice() * this.listFood.get(f);
+		}
+		return sum;
 	}
 
 	public void addFood(Food a, int q) {
 		if (this.listFood.containsKey(a)) {
 			this.updateQuantity(a, 1);
-		}
-		else
+		} else
 			this.listFood.put(a, q);
 	}
 
@@ -167,6 +167,7 @@ public class Bill {
 		if (this.listFood.containsKey(a))
 			this.listFood.remove(a);
 	}
+
 	public int getQuantityFoodInBill(Food a) {
 		if (this.listFood.containsKey(a))
 			return this.listFood.get(a);
@@ -174,7 +175,7 @@ public class Bill {
 			return -1;
 		}
 	}
-	
+
 	public boolean loadAllBill() {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
@@ -203,9 +204,9 @@ public class Bill {
 			System.out.println("Something went wrong!!!");
 			return false;
 		}
-	
+
 	}
-	
+
 	public boolean getFoodForDetail(String id) {
 		this.listFoodforDetailBill = new ArrayList<Food>();
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
@@ -213,7 +214,7 @@ public class Bill {
 				String sp_load = "{call sp_loadfoodforBillDetail(?)}";
 				CallableStatement statement = DBConnection.connection.prepareCall(sp_load);
 				statement.setString(1, id);
-				
+
 				ResultSet rs = statement.executeQuery();
 				while (rs.next()) {
 					String fid = rs.getString("FoodID");
@@ -223,8 +224,7 @@ public class Bill {
 					Food f = new Food(fid, name, price, quantity);
 					this.listFoodforDetailBill.add(f);
 				}
-			
-				
+
 				statement.close();
 				return true;
 			} catch (SQLException e) {
@@ -236,14 +236,13 @@ public class Bill {
 			return false;
 		}
 	}
-	
-	public	boolean getInfoBill(String id) {
+
+	public boolean getInfoBill(String id) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
 				String sp_load = "{call getInfoBill(?)}";
 				CallableStatement statement = DBConnection.connection.prepareCall(sp_load);
 				statement.setString(1, id);
-				
 				ResultSet rs = statement.executeQuery();
 				while (rs.next()) {
 					String fid = rs.getString("BillID");
@@ -268,9 +267,9 @@ public class Bill {
 			return false;
 		}
 		return false;
-		
+
 	}
-	
+
 	public HashMap<String, Integer> loadListFoodInBill(String billID) {
 		HashMap<String, Integer> res = new HashMap<>();
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
@@ -293,6 +292,73 @@ public class Bill {
 		} else {
 			System.out.println("Something went wrong!!!");
 			return res;
+		}
+	}
+
+	public boolean createBillInDB() {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_update = "{call sp_createbill(?,?,?)}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_update);
+				statement.setInt(1, sumBill());
+				statement.setInt(2, 0);
+				statement.setString(3, TableID);
+				statement.executeUpdate();
+				statement.close();
+				String getBill = "{call sp_getBillIdFromTable(?)}";
+				statement = DBConnection.connection.prepareCall(getBill);
+				statement.setString(1, TableID);
+				ResultSet rs =  statement.executeQuery();
+				String billid = "";
+				while (rs.next()) {
+					billid = rs.getString("BillID");
+				}
+				statement.close();
+				sp_update = "{call sp_insertBillDetail(?,?,?)}";
+				statement = DBConnection.connection.prepareCall(sp_update);
+				for (Food f : listFood.keySet()) {
+					statement.setString(1, billid);
+					statement.setString(2, f.getFoodID());
+					statement.setInt(3, listFood.get(f));
+					statement.executeUpdate();
+				}
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot create bill:: " + e);
+				return true;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+
+	public boolean updateBillDetail() {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_del = "{call sp_delBillDetail(?)}";
+				CallableStatement s = DBConnection.connection.prepareCall(sp_del);
+				s.setString(1, this.BillID);
+				s.executeUpdate();
+				s.close();
+				String sp_update = "{call sp_insertBillDetail(?,?,?)}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_update);
+				for (Food f : listFood.keySet()) {
+					statement.setString(1, this.BillID);
+					statement.setString(2, f.getFoodID());
+					statement.setInt(3, listFood.get(f));
+					statement.executeUpdate();
+				}
+				statement.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot update bill:: " + e);
+				return true;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
 		}
 	}
 }

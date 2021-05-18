@@ -76,12 +76,6 @@ public class ControllerMenu implements ActionListener, ItemListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		/*
-		 * for (Food f : menu.getMenu()) { if
-		 * (f.getNameFood().equals(e.getActionCommand())) { if
-		 * (!controllerBill.getBill().getListFood().containsKey(f)) { bill.addFood(f,
-		 * 1); controllerBill.addToBill(f); } } }
-		 */
 		for (Food f: bill.getListFood().keySet())
 			if (!f.getNameFood().equals(e.getActionCommand()))
 				continue;
