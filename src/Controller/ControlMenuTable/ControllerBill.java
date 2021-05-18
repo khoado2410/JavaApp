@@ -134,7 +134,7 @@ class FoodUpdate implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Minus": {
-			b.updateQuantity(f, -1);
+			b.addFood(f, -1);
 			if (b.getQuantityFoodInBill(f) == 0) {
 				b.removeFood(f);
 				billPanel.remove(foodPanel);
@@ -144,20 +144,26 @@ class FoodUpdate implements ActionListener {
 				singlePrice.setText(Integer.toString(f.getPrice()));
 				totalPrice.setText(Integer.toString(f.getPrice() * b.getListFood().get(f)));
 				quantityLabel.setText(Integer.toString(b.getListFood().get(f)));
+				b.updateProduct(f, false);
 			}
 			break;
 		}
 		case "Plus": {
-			b.updateQuantity(f, 1);
-			singlePrice.setText(Integer.toString(f.getPrice()));
-			totalPrice.setText(Integer.toString(f.getPrice() * b.getListFood().get(f)));
-			quantityLabel.setText(Integer.toString(b.getListFood().get(f)));
+			if (b.addFood(f, 1)) {
+				singlePrice.setText(Integer.toString(f.getPrice()));
+				totalPrice.setText(Integer.toString(f.getPrice() * b.getListFood().get(f)));
+				quantityLabel.setText(Integer.toString(b.getListFood().get(f)));
+				b.updateProduct(f, true);
+			} else {
+				JOptionPane.showMessageDialog(null, "The ingredients doesn't enough to order");
+			}
 			break;
 		}
 		case "Delete": {
 			billPanel.remove(foodPanel);
 			billPanel.revalidate();
 			billPanel.repaint();
+			b.updateProductByDelete(f, b.getQuantityFoodInBill(f));
 			b.removeFood(f);
 			break;
 		}

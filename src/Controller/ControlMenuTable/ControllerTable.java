@@ -25,7 +25,6 @@ public class ControllerTable implements ActionListener {
 	private JLabel idTable;
 	private Bill bill;
 	private ControllerPanel controllerPanel;
-	private int temp;
 	public ControllerTable(JLabel usedTableLabel, JPanel liTablePanel, JLabel idTable, JPanel liFIBPanel, ControllerPanel cp) {
 		listTablePanel = liTablePanel;
 		listTablePanel.setLayout(new FlowLayout(FlowLayout.LEADING, 15, 5));

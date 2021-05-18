@@ -1,12 +1,22 @@
 package Model.Food_Product;
 
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import Controller.DBConnection.DBConnection;
 
 public class Food {
 	private String FoodID;
 	private String nameFood;
 	private String foodType;
 	private String foodTypeName;
+	private int QuantityOfStock;
+	private int price;
+	private String ImageFood;
+	private ArrayList<Product> ingredient;
+	
 	public String getFoodTypeName() {
 		return foodTypeName;
 	}
@@ -14,11 +24,6 @@ public class Food {
 	public void setFoodTypeName(String foodTypeName) {
 		this.foodTypeName = foodTypeName;
 	}
-
-	private int QuantityOfStock;
-	private int price;
-	private String ImageFood;
-	private ArrayList<Product> ingredient;
 
 	public Food(String id, String name, int price, String type, int quantity, String img, String foodTypeName){
 		this.FoodID = id;
@@ -95,5 +100,43 @@ public class Food {
 
 	public void setImageFood(String imageFood) {
 		ImageFood = imageFood;
+	}
+	
+	public boolean loadListIngredient() {
+		this.ingredient = new ArrayList<>();
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_load = "{call sp_loadlistingredient(?)}";
+				CallableStatement s = DBConnection.connection.prepareCall(sp_load);
+				s.setString(1, this.FoodID);
+				ResultSet rs = s.executeQuery();
+				while (rs.next()) {
+					String pid = rs.getString("ProductID");
+					int mass = rs.getInt("Mass");
+					this.ingredient.add(new Product(pid, mass));
+				}
+				s.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot update bill:: " + e);
+				return true;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	public boolean checkIngredientMass() {
+		this.loadListIngredient();
+		Product listProduct = new Product();
+		listProduct.loadProductFromDB();
+		for (Product p: this.ingredient) {
+			for (Product q: listProduct.getListProduct()) {
+				if (p.getProductID().trim().equals(q.getProductID().trim()) && p.getMass() > q.getMass()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

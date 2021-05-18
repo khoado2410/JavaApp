@@ -7,6 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import Controller.DBConnection.DBConnection;
 
 public class Bill {
@@ -152,17 +154,29 @@ public class Bill {
 		return sum;
 	}
 
-	public void addFood(Food a, int q) {
-		if (this.listFood.containsKey(a)) {
-			this.updateQuantity(a, 1);
-		} else
-			this.listFood.put(a, q);
+	public boolean addFood(Food a, int q) {
+		if(a.checkIngredientMass())
+			if (this.listFood.containsKey(a)) {
+				this.listFood.put(a, this.listFood.get(a) + q);
+				return true;
+			} else {
+				this.listFood.put(a, q);
+				return true;
+			}
+		else {
+			return false;
+		}
 	}
 
-	public void updateQuantity(Food a, int t) {
-		this.listFood.put(a, this.listFood.get(a) + t);
+	public void updateProduct(Food a, boolean flag) {
+		Product p = new Product();
+		p.updateMassInDB(a, flag);
 	}
-
+	public void updateProductByDelete(Food a, int t) {
+		for (int i = 0; i < t; i++)
+			updateProduct(a, false);
+	}
+	
 	public void removeFood(Food a) {
 		if (this.listFood.containsKey(a))
 			this.listFood.remove(a);

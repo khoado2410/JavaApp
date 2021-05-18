@@ -83,8 +83,13 @@ public class ControllerMenu implements ActionListener, ItemListener {
 				return;
 		for (Food f: menu.getMenu())
 			if (f.getNameFood().equals(e.getActionCommand())) {
-				bill.addFood(f, 1);
-				controllerBill.addToBill(f);
+				if (bill.addFood(f, 1)) {
+					bill.updateProduct(f, true);
+					controllerBill.addToBill(f);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "The ingredients doesn't enough to order");
+				}
 			}
 	}
 

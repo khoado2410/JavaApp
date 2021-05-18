@@ -38,7 +38,10 @@ public class Product {
 		this.mass = mass;
 	}
 	
-	
+	public Product(String id, int mass) {
+		this.productID = id;
+		this.mass = mass;
+	}
 	
 	public int getMass() {
 		return mass;
@@ -75,12 +78,6 @@ public class Product {
 	}
 	public void setProductID(String s) {
 		this.productID = s;
-	}
-	public int getAmount() {
-		return mass;
-	}
-	public void setAmount(int m) {
-		this.mass = m;
 	}
 	public int getPrice() {
 		return price;
@@ -128,7 +125,7 @@ public class Product {
 					int fp = rs.getInt("Mass");
 					int ft = rs.getInt("Price");
 					
-					Product f = new Product(fid, fn, fp, ft);
+					Product f = new Product(fid, fn, ft, fp);
 					this.listProduct.add(f);
 				}
 				statement.close();
@@ -276,15 +273,35 @@ public class Product {
 		}
 	}
 	
-	
-	public static void main(String[] args) {
-		Product m = new Product();
-		if (m.loadProductFromDB()) {
-			ArrayList<Product> a = m.getListProduct();
-			for (Product f : a) {
-				System.out.print(f.getNameProduct()+ ", ");
+	public boolean updateMassInDB(Food a, boolean flag) {
+		a.loadListIngredient();
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {		
+				String sp_upd = "{call sp_updateMassProduct(?, ?)}";
+				CallableStatement cstmt = DBConnection.connection.prepareCall(sp_upd);
+				if (flag) {
+					for (Product p : a.getIngredient()) {
+						cstmt.setString(1, p.getProductID());
+						cstmt.setInt(2, 1);
+						cstmt.executeUpdate();
+					}
+				}
+				else {
+					for (Product p : a.getIngredient()) {
+						cstmt.setString(1, p.getProductID());
+						cstmt.setInt(2, 0);
+						cstmt.executeUpdate();
+					}
+				}
+				cstmt.close();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot update product mass: " + e);
+				return false;
 			}
-		}		
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
 	}
-
 }
