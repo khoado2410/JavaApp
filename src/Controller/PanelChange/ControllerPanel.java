@@ -128,7 +128,7 @@ public class ControllerPanel implements ActionListener{
 			}
 				break;
 			}
-		case "Deal": {
+		case "History": {
 			if(AccountManager.checkLogin>0) {
 				setPanel(new EditHistoryData());
 			}else {

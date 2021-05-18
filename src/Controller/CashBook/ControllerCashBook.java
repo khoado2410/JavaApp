@@ -49,7 +49,6 @@ public class ControllerCashBook {
 	
 	public ArrayList<Food> loadFoodForDetailBill(String id){
 		ArrayList<Food> li = new ArrayList<Food>();
-		System.out.println("DDDD: " + id);
 		if(this.billModel.getFoodForDetail(id)) {
 			li = this.billModel.getListFoodforDetailBill(); 
 		}

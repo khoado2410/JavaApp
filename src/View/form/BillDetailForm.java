@@ -64,34 +64,20 @@ public class BillDetailForm extends JFrame implements ActionListener {
 		formContent.setPreferredSize(new Dimension(screenSize.width - 200, screenSize.height - 400));
 		formContent.setBackground(Color.white);
 		
-		billID = new JLabel(cb.getBill().getBillID());
-		billID.setHorizontalAlignment(JLabel.LEFT);
-		billID.setFont(billID.getFont().deriveFont(Font.PLAIN, 20));
-		
-		billIDField = new JLabel("This is the content");
+		billIDField = new JLabel(cb.getBill().getBillID());
 		billIDField.setHorizontalAlignment(JLabel.LEFT);
 		billIDField.setFont(billIDField.getFont().deriveFont(Font.PLAIN, 20));
 		
-		foodName = new JLabel("List of dishes: ");
-		foodName.setHorizontalAlignment(JLabel.LEFT);
-		foodName.setFont(foodName.getFont().deriveFont(Font.PLAIN, 20));
+		billID = new JLabel("ID: ");
+		billID.setHorizontalAlignment(JLabel.LEFT);
+		billID.setFont(billID.getFont().deriveFont(Font.PLAIN, 20));
 		
-		
-		JPanel containerField = new JPanel(); 
-		containerField.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0)); 
-		foodNameField = new JTextArea();
-		JScrollPane scrollPane = new JScrollPane(foodNameField);
-		scrollPane.setPreferredSize(new Dimension(330, 100));
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		containerField.add(scrollPane); 
-		foodNameField.setFont(foodNameField.getFont().deriveFont(Font.PLAIN, 20));
-		containerField.setBackground(Color.red);
 			
-		numFood = new JLabel("The number of dishes: ");
+		numFood = new JLabel("Payment: ");
 		numFood.setHorizontalAlignment(JLabel.LEFT);
 		numFood.setFont(numFood.getFont().deriveFont(Font.PLAIN, 20));
 		
-		numFoodField = new JLabel("This is the content");
+		numFoodField = new JLabel(Integer.toString(cb.getBill().sumBill()));
 		numFoodField.setHorizontalAlignment(JLabel.LEFT);
 		numFoodField.setFont(numFoodField.getFont().deriveFont(Font.PLAIN, 20));
 		
@@ -119,8 +105,7 @@ public class BillDetailForm extends JFrame implements ActionListener {
 		
 		formContent.add(billID);
 		formContent.add(billIDField, "wrap 30");
-		formContent.add(foodName);
-		formContent.add(containerField, "wrap 30");
+		//formContent.add(foodName);
 		formContent.add(numFood);
 		formContent.add(numFoodField, "wrap 30");
 		formContent.add(staffName);

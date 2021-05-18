@@ -51,7 +51,7 @@ public class MainFrame extends JPanel {
 					break;
 				case 5:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Deal.png"));
-					jbtn.setText("Deal");
+					jbtn.setText("History");
 					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 			}

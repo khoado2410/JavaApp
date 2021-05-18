@@ -260,7 +260,7 @@ public class Bill {
 				ResultSet rs = statement.executeQuery();
 				while (rs.next()) {
 					String fid = rs.getString("BillID");
-					String fn = rs.getString("nameStaff");
+					String fn = rs.getString("StaffName");
 					int fp = rs.getInt("Payment");
 					int ft = rs.getInt("BillStatus");
 					String fq = rs.getString("TableID");

@@ -109,6 +109,7 @@ public class ManageMenuAndProduct {
 	public ManageMenuAndProduct(Product_MenuManagementUI a){
 		this.productAndMenu = a;
 		this.product = new Product_ProductManagementUI();
+		
 		menu = new Menu();
 	}
 	
