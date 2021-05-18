@@ -101,7 +101,7 @@ public class MenuFrame extends JPanel {
 		payButton.setForeground(Color.PINK);
 		payButton.setFont(payButton.getFont().deriveFont(Font.BOLD, 20));
 		payButton.setPreferredSize(new Dimension(screenSize.width - leftSide, 100));
-		
+		cb.saveBill(payButton);
 		sideFramePanel.add(payButton, BorderLayout.SOUTH);
 
 		ImageIcon homeIcon = new ImageIcon("./src/Icon/Home.png");

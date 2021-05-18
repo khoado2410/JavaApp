@@ -365,9 +365,35 @@ public class Bill {
 					statement.executeUpdate();
 				}
 				statement.close();
+				sp_update = "{call sp_updatebillpayment(?,?)}";
+				statement = DBConnection.connection.prepareCall(sp_update);
+				statement.setString(1, this.BillID);
+				statement.setInt(2, sumBill());
+				statement.executeUpdate();
+				statement.close();
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Cannot update bill:: " + e);
+				return true;
+			}
+		} else {
+			System.out.println("Something went wrong!!!");
+			return false;
+		}
+	}
+	public boolean saveBillInDB(String staffname, int point) {
+		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
+			try {
+				String sp_update = "{call sp_updatebill(?,?,?,?)}";
+				CallableStatement statement = DBConnection.connection.prepareCall(sp_update);
+				statement.setString(1, this.getBillID());
+				statement.setString(2, staffname);
+				statement.setInt(3, 1);
+				statement.setString(4, TableID);
+				statement.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				System.out.println("Cannot save bill: " + e);
 				return true;
 			}
 		} else {

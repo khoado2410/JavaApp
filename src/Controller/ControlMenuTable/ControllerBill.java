@@ -10,8 +10,9 @@ import java.util.HashMap;
 import javax.swing.*;
 
 import Model.Food_Product.*;
+import View.form.BillDetailForm;
 
-public class ControllerBill {
+public class ControllerBill implements ActionListener {
 	private Bill bill;
 	private Food food;
 	private JLabel singlePrice;
@@ -103,6 +104,24 @@ public class ControllerBill {
 		else {
 			bill.updateBillDetail();
 		}
+	}
+	public void saveBill(JButton jb) {
+		jb.addActionListener(this);
+	}
+	public void saveBillToDB(String staffname, int point) {
+		bill.saveBillInDB(staffname, point);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Pay")) {
+			if (bill.getListFood().size() != 0) {
+				createBill();
+				new BillDetailForm(this);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "No food to pay");;
+			}
+		}	
 	}
 }
 

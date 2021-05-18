@@ -235,8 +235,7 @@ public class Staff {
 			return false;
 		}
 	}
-	
-	
+
 	public void sortStaffPoint() {
 		System.out.println("Sort success!");
 	}

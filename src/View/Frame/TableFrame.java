@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import Controller.ControlMenuTable.ControllerBill;
 import Controller.ControlMenuTable.ControllerTable;
 import Controller.PanelChange.ControllerPanel;
 
