@@ -65,12 +65,13 @@ public class ControllerPanel implements ActionListener{
 			setPanel(new MainFrame());
 			break;
 		case "Staff": {
-			if(AccountManager.checkLogin>0) {
-				setPanel(new Staff_ManagerStaffUI());
-			}else {
-				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
-				loginForm a = new loginForm();
-			}
+			setPanel(new Staff_ManagerStaffUI());
+//			if(AccountManager.checkLogin>0) {
+//				setPanel(new Staff_ManagerStaffUI());
+//			}else {
+//				JOptionPane.showMessageDialog(this.main, "Vui lòng đăng nhập");
+//				loginForm a = new loginForm();
+//			}
 			break;
 		}
 		case "Stock": {

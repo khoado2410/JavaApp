@@ -56,7 +56,7 @@ public class loginForm extends JFrame implements ActionListener{
 		title.setBackground(Color.white);
 		
 		formContent = new JPanel(new MigLayout("align 50%"));
-		formContent.setPreferredSize(new Dimension(screenSize.width - 200, screenSize.height - 500));
+		formContent.setPreferredSize(new Dimension(screenSize.width - 200, 300));
 		formContent.setBackground(Color.white);
 		
 		username = new JLabel("Username");
@@ -74,27 +74,27 @@ public class loginForm extends JFrame implements ActionListener{
 		passField = new JPasswordField(20);
 		passField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 		passField.setFont(passField.getFont().deriveFont(Font.PLAIN, 20));
-		
+
 		formContent.add(username);
 		formContent.add(usernameField, "wrap 50");
 		formContent.add(pass);
 		formContent.add(passField);
 		
 		buttonField = new JPanel(new MigLayout("align 50%"));
-		buttonField.setPreferredSize(new Dimension(screenSize.width - 200, 100));
+		//buttonField.setPreferredSize(new Dimension(screenSize.width - 200, 100));
 		buttonField.setBackground(Color.white);
 		
 		loginBtn = new JButton("Login");
 		loginBtn.setBackground(Color.PINK);
 		loginBtn.setForeground(Color.BLACK);
-		loginBtn.setPreferredSize(new Dimension(100, 40));
+		//loginBtn.setPreferredSize(new Dimension(100, 40));
 		loginBtn.setFont(loginBtn.getFont().deriveFont(Font.PLAIN, 20));
 		loginBtn.addActionListener(this);
 		
 		JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setBackground(Color.BLACK);
 		cancelBtn.setForeground(Color.WHITE);
-		cancelBtn.setPreferredSize(new Dimension(100, 40));
+		//cancelBtn.setPreferredSize(new Dimension(100, 40));
 		cancelBtn.setFont(cancelBtn.getFont().deriveFont(Font.PLAIN, 20));
 		cancelBtn.addActionListener(this);
 		

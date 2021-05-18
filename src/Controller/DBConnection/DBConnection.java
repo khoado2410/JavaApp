@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-	public static final String DB_URL = "jdbc:sqlserver://localhost:49702;databaseName=RestaurantManagement;integratedSecurity=true";
+	//public static final String DB_URL = "jdbc:sqlserver://localhost:49163;databaseName=RestaurantManagement;integratedSecurity=true";
 //	public static final String DB_URL = "jdbc:sqlserver://LAPTOP-IQKFBUD7\\HAN181;databaseName=RestaurantManagement";
-	//public static final String DB_URL = "jdbc:sqlserver://localhost:53155;databaseName=RestaurantManagement";
+	public static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=RestaurantManagement";
 	static final String USER = "sa";
 	static final String PASS = "123456";
 	public static Connection connection;
@@ -36,6 +36,8 @@ public class DBConnection {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(DBConnection.connectDatabase(DB_URL));
+		System.out.println("AAAAAAAAAAA");
+		System.out.println("Result: " + DBConnection.loadDriver());
+		System.out.println("Result1: " + DBConnection.connectDatabase(DB_URL));
 	}
 }
