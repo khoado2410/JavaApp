@@ -31,8 +31,14 @@ public class ControllerLogin {
 		}else {
 			if(this.acc.logIn(username, pass)) {
 				JOptionPane.showMessageDialog(null, "Login success");
+				AccountManager.checkLogin++;
+				for(int i = 0; i < this.acc.getListAcc().size(); i++) {
+					AccountManager.managerID = this.acc.getListAcc().get(i).getAccID();
+					AccountManager.usernameManager = this.acc.getListAcc().get(i).getUsername();
+
+				}
 				this.loginUI.dispose();
-				MainFrame.use++;
+				
 			}else {
 				JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", 2);
 			}

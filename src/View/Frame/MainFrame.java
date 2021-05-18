@@ -12,8 +12,6 @@ public class MainFrame extends JPanel {
 	private JPanel mainPanel;
 	private ControllerPanel controller;
 	
-	public static int use = 0;
-	
 	public MainFrame() {
 		setLayout(new BorderLayout());
 		controller = new ControllerPanel(this);
@@ -54,6 +52,7 @@ public class MainFrame extends JPanel {
 				case 5:
 					jbtn.setIcon(new ImageIcon("./src/Icon/Deal.png"));
 					jbtn.setText("Deal");
+					controller.setEventButton(jbtn, jbtn.getText());
 					break;
 			}
 			

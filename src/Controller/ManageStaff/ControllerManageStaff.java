@@ -10,6 +10,7 @@ import Model.Food_Product.Food;
 import Model.Food_Product.FoodType;
 import Model.Food_Product.Menu;
 import Model.Food_Product.Product;
+import Model.History.EditHistory;
 import Model.Shift.Shift;
 import Model.Staff_Manager.AccountManager;
 import Model.Staff_Manager.Staff;
@@ -43,6 +44,7 @@ public class ControllerManageStaff {
 	
 	private Staff_PayrollUI payrollUI;
 	
+	private static EditHistory editHistoryModel = new EditHistory();
 	
 	// Payroll UI
 	
@@ -51,8 +53,6 @@ public class ControllerManageStaff {
 		this.staffModel = new Staff();
 		
 	}
-	
-	
 	
 	public ControllerManageStaff(Staff_TimekeepingUI staff_TimekeepingUI) {
 		// TODO Auto-generated constructor stub
@@ -100,13 +100,13 @@ public class ControllerManageStaff {
 		int end = (Integer) this.scheduleShiftUI.hourEnd.getSelectedItem();
 		String datework = this.scheduleShiftUI.dateworkField.getText();
 		
-		//System.out.println("controller: " + datework);
-		
 		Shift sh = new Shift(0, staffName, end, start, acc, datework);
 		
 		boolean check = this.shiftModel.addNewShift(sh);
 		
 		if(check == true) {
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Add", "TimeShift");
+			this.editHistoryModel.addEditHistory(edit123);
 			ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
 
 			ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
@@ -122,12 +122,10 @@ public class ControllerManageStaff {
 			this.scheduleShiftUI.dispose();
 			
 			JOptionPane.showMessageDialog(this.scheduleShiftUI, "Thêm " + sh.getAccID() + " thành công!");	
-			//return true;
 				
 			}else {
 				JOptionPane.showMessageDialog(this.scheduleShiftUI, "Thêm thất bại!");
 				this.scheduleShiftUI.dispose();
-				//return false;
 			}
 	 }
 	
@@ -139,6 +137,8 @@ public class ControllerManageStaff {
 			Shift sh = new Shift();
 			boolean check = sh.deleteShift(Integer.parseInt(id));
 			if(check) {
+				EditHistory edit123 = new EditHistory(AccountManager.managerID, "Remove", "TimeShift");
+				editHistoryModel.addEditHistory(edit123);
 				ArrayList<Shift> listShift = new ArrayList<Shift>();
 				if(sh.loadShift()) {
 					listShift = sh.getListShift();
@@ -175,6 +175,8 @@ public class ControllerManageStaff {
 			Staff food = new Staff(id);
 			boolean check = a.deleteStaffFromDB(food);
 			if(check) {
+				EditHistory edit123 = new EditHistory(AccountManager.managerID, "Remove", "Staff");
+				editHistoryModel.addEditHistory(edit123);
 				ArrayList<Staff> listStaff = new ArrayList<Staff>();
 				if(a.loadStaff()) {
 					listStaff = a.getListStaff();
@@ -223,6 +225,8 @@ public class ControllerManageStaff {
 		boolean check = this.staffModel.editStaffFromDB(newStaff);
 	
 		if(check == true) {
+			EditHistory edit123 = new EditHistory(AccountManager.managerID, "Update", "Staff");
+			this.editHistoryModel.addEditHistory(edit123);
 					ArrayList<Staff> li = this.loadStaff();
 					Staff_ManagerStaffUI.updateStaff(li);
 					
@@ -306,18 +310,13 @@ public class ControllerManageStaff {
 				boolean check = this.staffModel.addStaffToDB(newStaff);
 			
 				if(check == true) {
-				ImageIcon _edit = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/pencil.png"));
-
-				ImageIcon _remove = new ImageIcon(Staff_ManagerStaffUI.class.getResource("/images/delete.png"));
-				
-				JButton edit = new JButton();
-				JButton remove = new JButton();
-				
-				edit.setIcon(_edit);
-				remove.setIcon(_remove);
-				Staff_ManagerStaffUI.addRowToTable(new Object[] {newStaff.getStaffID(), newStaff.getStaffName(), 
-						newStaff.getAddress(), newStaff.getGender(), newStaff.getDateOfBirth(), 
-						newStaff.getSalary(), newStaff.getPoint(), edit, remove});
+					EditHistory edit123 = new EditHistory(AccountManager.managerID, "Add", "Staff");
+					this.editHistoryModel.addEditHistory(edit123);
+					ArrayList<Staff> listStaff = new ArrayList<Staff>();
+					if(this.staffModel.loadStaff()) {
+						listStaff = this.staffModel.getListStaff();
+					}
+					Staff_ManagerStaffUI.updateStaff(listStaff);
 				this.addStaffUI.dispose();
 				
 				JOptionPane.showMessageDialog(this.addStaffUI, "Thêm " + newStaff.getStaffName() + " thành công!");	

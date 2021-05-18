@@ -47,10 +47,6 @@ public class Product_ProductManagementUI extends JPanel implements ActionListene
 	private ImageIcon ad;
 	
 	
-	public static void addRowToTable(Object[] dataRow) {
-		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
-		model.addRow(dataRow);
-	}
 	
 	public static void updateProduct(ArrayList<Product> lst) {
 		DefaultTableModel model = (DefaultTableModel)mytable.getModel();

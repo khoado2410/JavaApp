@@ -55,10 +55,6 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 	private ImageIcon _remove; 
 	private JLabel remove;
 	
-	public static void addRowToTable(Object[] dataRow) {
-		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
-		model.addRow(dataRow);
-	}
 	
 	public static void updateMenu(ArrayList<Food> lst) {
 		DefaultTableModel model = (DefaultTableModel)mytable.getModel();
@@ -88,13 +84,6 @@ public class Product_MenuManagementUI extends JPanel implements ActionListener{
 		
 		controller.setEventButton(buttonProduct, "buttonProduct");
 		
-		
-		
-		//buttonMenu.setActionCommand("Menu Management");
-		//buttonProduct.setActionCommand("Product Management");
-		
-		//buttonMenu.addActionListener(this);
-		//buttonProduct.addActionListener(this);
 		
 		navbar.setLayout(new GridLayout(1, 2));
 		navbar.add(buttonMenu);
