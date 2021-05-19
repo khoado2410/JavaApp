@@ -54,6 +54,7 @@ public class BillDetailForm extends JFrame implements ActionListener {
 		title = new JPanel();
 		title.setPreferredSize(new Dimension(screenSize.width - 200, 100));
 		title.setLayout(new FlowLayout(FlowLayout.CENTER, 250, 40));
+		
 		formTitle = new JLabel("Bill detail");
 		formTitle.setHorizontalAlignment(JLabel.LEFT);
 		formTitle.setFont(title.getFont().deriveFont(Font.BOLD, 30));
@@ -62,6 +63,7 @@ public class BillDetailForm extends JFrame implements ActionListener {
 
 		formContent = new JPanel(new MigLayout("align 50%"));
 		formContent.setPreferredSize(new Dimension(screenSize.width - 200, screenSize.height - 400));
+		//formContent.setPreferredSize(new Dimension(300, 300));
 		formContent.setBackground(Color.white);
 		
 		billIDField = new JLabel(cb.getBill().getBillID());
@@ -120,7 +122,7 @@ public class BillDetailForm extends JFrame implements ActionListener {
 		saveBtn = new JButton("Pay");
 		saveBtn.setBackground(Color.PINK);
 		saveBtn.setForeground(Color.BLACK);
-		saveBtn.setPreferredSize(new Dimension(100, 40));
+		saveBtn.setPreferredSize(new Dimension(40, 40));
 		saveBtn.setFont(saveBtn.getFont().deriveFont(Font.PLAIN, 20));
 		saveBtn.addActionListener(this);
 
@@ -154,7 +156,8 @@ public class BillDetailForm extends JFrame implements ActionListener {
 			this.dispose();
 			break;
 		}
-		
 	}
+	
+
 }
 

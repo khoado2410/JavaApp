@@ -384,12 +384,13 @@ public class Bill {
 	public boolean saveBillInDB(String staffname, int point) {
 		if (DBConnection.loadDriver() && DBConnection.connectDatabase(DBConnection.DB_URL)) {
 			try {
-				String sp_update = "{call sp_updatebill(?,?,?,?)}";
+				String sp_update = "{call sp_updatebill(?,?,?,?,?)}";
 				CallableStatement statement = DBConnection.connection.prepareCall(sp_update);
 				statement.setString(1, this.getBillID());
 				statement.setString(2, staffname);
 				statement.setInt(3, 1);
 				statement.setString(4, TableID);
+				statement.setInt(5, point);
 				statement.executeUpdate();
 				return true;
 			} catch (SQLException e) {
